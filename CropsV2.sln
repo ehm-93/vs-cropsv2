@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CakeBuild", "CakeBuild\CakeBuild.csproj", "{0EDF37D4-321E-4C69-BC4C-3CD2E85D92EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CropsV2", "CropsV2\CropsV2.csproj", "{7E547D96-8213-A626-0354-AC365A382073}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EDF37D4-321E-4C69-BC4C-3CD2E85D92EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EDF37D4-321E-4C69-BC4C-3CD2E85D92EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EDF37D4-321E-4C69-BC4C-3CD2E85D92EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EDF37D4-321E-4C69-BC4C-3CD2E85D92EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E547D96-8213-A626-0354-AC365A382073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E547D96-8213-A626-0354-AC365A382073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E547D96-8213-A626-0354-AC365A382073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E547D96-8213-A626-0354-AC365A382073}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {06B51EFA-4C98-49E8-A8C3-CBAA46834680}
+	EndGlobalSection
+EndGlobal
