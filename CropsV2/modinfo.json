@@ -1,13 +1,11 @@
 {
-    "type": "code",
-    "modid": "cropsv2",
-    "name": "CropsV2",
-    "authors": [
-        "Unknown"
-    ],
-    "description": "To be added",
-    "version": "1.0.0",
-    "dependencies": {
-        "game": ""
-    }
+  "type": "code",
+  "modid": "cropsv2",
+  "name": "CropsV2",
+  "authors": ["emmett_chef"],
+  "description": "Farming evolves into a strategic, hands-on challenge with rising rewards across generations.",
+  "version": "0.1.0",
+  "dependencies": {
+    "game": ""
+  }
 }

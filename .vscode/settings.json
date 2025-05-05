@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "*.json": "json5"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.parser": "json5",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.formatOnType": false
+}
