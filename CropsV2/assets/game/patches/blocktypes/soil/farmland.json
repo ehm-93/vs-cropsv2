@@ -1,14 +1,14 @@
 [
-  // {
-  //   "file": "blocktypes/soil/farmland.json",
-  //   "op": "replace",
-  //   "path": "/class",
-  //   "value": "BlockFarmlandV2"
-  // },
-  // {
-  //   "file": "blocktypes/soil/farmland.json",
-  //   "op": "replace",
-  //   "path": "/entityClass",
-  //   "value": "BEFarmlandV2"
-  // }
+  {
+    "file": "blocktypes/soil/farmland.json",
+    "op": "add",
+    "path": "/class",
+    "value": "BlockFarmlandV2"
+  },
+  {
+    "file": "blocktypes/soil/farmland.json",
+    "op": "add",
+    "path": "/entityClass",
+    "value": "BEFarmlandV2"
+  }
 ]
