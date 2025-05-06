@@ -34,7 +34,14 @@ public class BlockCropV2 : BlockCrop
         var nextGen = gen;
         if (Code.EndVariant().Equals(LastStage.ToString()))
         {
+            // add 1 if the crop completed growth
             nextGen++;
+        }
+        BlockEntityFarmland blockEntityFarmland = world.BlockAccessor.GetBlockEntity(pos.DownCopy()) as BlockEntityFarmland;
+        if (blockEntityFarmland == null)
+        {
+            // wild crops always drop gen 0
+            nextGen = 0;
         }
 
         foreach (var drop in drops)
