@@ -52,7 +52,7 @@ public class ItemPlantableSeedV2 : ItemPlantableSeed
                 itemslot.MarkDirty();
             }
             
-            var seedGen = itemslot.Itemstack?.Attributes?.GetInt("generation") ?? 1;
+            var seedGen = itemslot.Itemstack?.Attributes?.GetInt("generation") ?? 0;
             var cropEntity = byEntity.World.BlockAccessor.GetBlockEntity(position.UpCopy()) as BlockEntityCropV2;
             if (cropEntity != null)
             {

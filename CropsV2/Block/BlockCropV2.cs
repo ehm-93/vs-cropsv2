@@ -15,8 +15,7 @@ public class BlockCropV2 : BlockCrop
         var drops = base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier);
         
         var cropEntity = world.BlockAccessor.GetBlockEntity(pos) as BlockEntityCropV2;
-        int gen = cropEntity?.Generation ?? 1;
-        gen = GameMath.Clamp(gen, 1, 10);
+        int gen = cropEntity?.Generation ?? 0;
 
         float yieldMultiplier = GetYieldMultiplier(gen);
         foreach (var drop in drops)
@@ -35,7 +34,14 @@ public class BlockCropV2 : BlockCrop
         var nextGen = gen;
         if (Code.EndVariant().Equals(LastStage.ToString()))
         {
+            // add 1 if the crop completed growth
             nextGen++;
+        }
+        BlockEntityFarmland blockEntityFarmland = world.BlockAccessor.GetBlockEntity(pos.DownCopy()) as BlockEntityFarmland;
+        if (blockEntityFarmland == null)
+        {
+            // wild crops always drop gen 0
+            nextGen = 0;
         }
 
         foreach (var drop in drops)
