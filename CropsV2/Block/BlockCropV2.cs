@@ -15,8 +15,7 @@ public class BlockCropV2 : BlockCrop
         var drops = base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier);
         
         var cropEntity = world.BlockAccessor.GetBlockEntity(pos) as BlockEntityCropV2;
-        int gen = cropEntity?.Generation ?? 1;
-        gen = GameMath.Clamp(gen, 1, 10);
+        int gen = cropEntity?.Generation ?? 0;
 
         float yieldMultiplier = GetYieldMultiplier(gen);
         foreach (var drop in drops)
