@@ -8,8 +8,6 @@ namespace Ehm93.VintageStory.CropsV2;
 
 public class BlockCropV2 : BlockCrop
 {
-    public int LastStage { get { return Attributes["lastStage"].AsInt(); } }
-
     public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1f)
     {
         var drops = base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier);
@@ -32,7 +30,7 @@ public class BlockCropV2 : BlockCrop
         }
 
         var nextGen = gen;
-        if (Code.EndVariant().Equals(LastStage.ToString()))
+        if (IsRipe())
         {
             // add 1 if the crop completed growth
             nextGen++;
@@ -79,5 +77,16 @@ public class BlockCropV2 : BlockCrop
     protected virtual float GetYieldMultiplier(int generation)
     {
         return -1.695f * (float)Math.Exp(-0.1221f * generation) + 2f;
+    }
+
+    protected int GetCropStage()
+    {
+        int.TryParse(LastCodePart(), out var result);
+        return result;
+    }
+
+    protected bool IsRipe()
+    {
+        return GetCropStage() >= CropProps.GrowthStages;
     }
 }

@@ -10,11 +10,5 @@
     "op": "add",
     "path": "/entityClass",
     "value": "BECropV2"
-  },
-  {
-    "file": "blocktypes/plant/crop/spelt.json",
-    "op": "add",
-    "path": "/attributes/lastStage",
-    "value": 9
   }
 ]
