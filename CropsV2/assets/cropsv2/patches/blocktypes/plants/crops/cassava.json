@@ -1,12 +1,14 @@
 [
   {
-    "file": "blocktypes/plant/crop/onion.json",
+    "file": "game:blocktypes/plant/crop/cassava.json",
+    "side": "Server",
     "op": "replace",
     "path": "/class",
     "value": "BlockCropV2"
   },
   {
-    "file": "blocktypes/plant/crop/onion.json",
+    "file": "game:blocktypes/plant/crop/cassava.json",
+    "side": "Server",
     "op": "add",
     "path": "/entityClass",
     "value": "BECropV2"

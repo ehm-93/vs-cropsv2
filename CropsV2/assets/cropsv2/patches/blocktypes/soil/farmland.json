@@ -1,12 +1,14 @@
 [
   {
-    "file": "blocktypes/soil/farmland.json",
+    "file": "game:blocktypes/soil/farmland.json",
+    "side": "Server",
     "op": "replace",
     "path": "/class",
     "value": "BlockFarmlandV2"
   },
   {
-    "file": "blocktypes/soil/farmland.json",
+    "file": "game:blocktypes/soil/farmland.json",
+    "side": "Server",
     "op": "replace",
     "path": "/entityClass",
     "value": "BEFarmlandV2"

@@ -1,12 +1,14 @@
 [
   {
-    "file": "blocktypes/plant/crop/carrot.json",
+    "file": "game:blocktypes/plant/crop/carrot.json",
+    "side": "Server",
     "op": "replace",
     "path": "/class",
     "value": "BlockCropV2"
   },
   {
-    "file": "blocktypes/plant/crop/carrot.json",
+    "file": "game:blocktypes/plant/crop/carrot.json",
+    "side": "Server",
     "op": "add",
     "path": "/entityClass",
     "value": "BECropV2"

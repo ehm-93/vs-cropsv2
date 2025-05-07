@@ -1,6 +1,7 @@
 [
   {
-    "file": "itemtypes/resource/seeds.json",
+    "file": "game:itemtypes/resource/seeds.json",
+    "side": "Server",
     "op": "add",
     "path": "/class",
     "value": "ItemPlantableSeedV2"
