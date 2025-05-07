@@ -11,7 +11,7 @@ namespace Ehm93.VintageStory.CropsV2;
 
 class BlockEntityFarmlandV2 : BlockEntityFarmland
 {
-    protected MeshData mulchQuad;
+    protected volatile MeshData mulchQuad;
     protected TextureAtlasPosition mulchTexturePos;
     private int _mulchLevel = 0;
 
@@ -67,27 +67,25 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
 
     protected virtual bool OnBlockInteractWithDryGrass(IPlayer byPlayer, ItemSlot slot)
     {
-        if (MulchLevel < 3)
+        if (MulchLevel >= 3) return false;
+
+        MulchLevel += 1;
+        if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
         {
-            MulchLevel += 1;
-            if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
-            {
-                slot.TakeOut(1);
-                slot.MarkDirty();
-            }
-
-            Api.World.PlaySoundAt(
-                new AssetLocation("game:sounds/block/grass1"),
-                Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5,
-                byPlayer,
-                randomizePitch: true,
-                range: 8
-            );
-
-            MarkDirty();
-            return true;
+            slot.TakeOut(1);
+            slot.MarkDirty();
         }
-        return false;
+
+        Api.World.PlaySoundAt(
+            new AssetLocation("game:sounds/block/grass1"),
+            Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5,
+            byPlayer,
+            randomizePitch: true,
+            range: 8
+        );
+
+        MarkDirty();
+        return true;
     }
 
     protected virtual AssetLocation MulchTextureLocation()
@@ -110,6 +108,19 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
     private bool GenMulchQuad()
     {
         if (Api is not ICoreClientAPI capi) return false;
+
+        if (MulchLevel == 0)
+        {
+            if (mulchQuad != null)
+            {
+                mulchQuad = null;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         Shape shape = capi.Assets.Get(MulchShapeLocation()).ToObject<Shape>();
 
