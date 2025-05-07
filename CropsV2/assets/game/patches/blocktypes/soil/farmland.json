@@ -1,13 +1,13 @@
 [
   {
     "file": "blocktypes/soil/farmland.json",
-    "op": "add",
+    "op": "replace",
     "path": "/class",
     "value": "BlockFarmlandV2"
   },
   {
     "file": "blocktypes/soil/farmland.json",
-    "op": "add",
+    "op": "replace",
     "path": "/entityClass",
     "value": "BEFarmlandV2"
   }
