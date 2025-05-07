@@ -1,25 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using HarmonyLib;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
+using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
+using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
 class BlockEntityFarmlandV2 : BlockEntityFarmland
 {
-    protected volatile MeshData mulchQuad;
+    protected MeshData mulchQuad;
     protected TextureAtlasPosition mulchTexturePos;
-    private int _mulchLevel = 0;
+    protected double lastMulchTotalHours = 0;
+    protected double lastMulchTickTotalHours = 0;
+    private double _mulchLevel = 0;
 
-    public int MulchLevel {
+    public double MulchLevel {
         get => _mulchLevel;
         protected set 
         {
-            int clamped = Math.Clamp(value, 0, 100);
+            double clamped = Math.Clamp(value, 0, 100);
             if (_mulchLevel != clamped)
             {
                 _mulchLevel = clamped;
@@ -28,32 +33,33 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         }
     }
 
-    public MulchTierEnum MulchTier {
-        get
-        {
-            if (_mulchLevel == 0) return MulchTierEnum.None;
-            if (_mulchLevel <= 33) return MulchTierEnum.Low;
-            if (_mulchLevel <= 66) return MulchTierEnum.Medium;
-            return MulchTierEnum.High;
-        }
-     }
-
     public override void Initialize(ICoreAPI api)
     {
         base.Initialize(api);
         if (GenMulchQuad()) MarkDirty(redrawOnClient: true);
+        if (api is ICoreServerAPI)
+        {
+            if (Api.World.Config.GetBool("processCrops", defaultValue: true))
+            {
+                RegisterGameTickListener(Tick, 3900 + rand.Next(200));
+            }
+        }
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
     {
         base.ToTreeAttributes(tree);
-        tree.SetInt("_mulchLevel", _mulchLevel);
+        tree.SetDouble("lastMulchTotalHours", lastMulchTotalHours);
+        tree.SetDouble("lastMulchTickTotalHours", lastMulchTickTotalHours);
+        tree.SetDouble("_mulchLevel", _mulchLevel);
     }
 
     public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldForResolving)
     {
         base.FromTreeAttributes(tree, worldForResolving);
-        MulchLevel = tree.TryGetInt("_mulchLevel") ?? 0;
+        lastMulchTotalHours = tree.TryGetDouble("lastMulchTotalHours") ?? 0;
+        lastMulchTickTotalHours = tree.TryGetDouble("lastMulchTickTotalHours") ?? 0;
+        MulchLevel = tree.TryGetDouble("_mulchLevel") ?? 0;
     }
 
     public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tesselator)
@@ -75,11 +81,56 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         return base.OnBlockInteract(byPlayer);
     }
 
+    public virtual void Tick(float df)
+    {
+        TickMulch();
+    }
+
+    public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
+    {
+        base.GetBlockInfo(forPlayer, dsc);
+        dsc.AppendLine(Lang.Get("Mulch: {0}%", (int) MulchLevel));
+    }
+
+    protected virtual void TickMulch()
+    {
+        if (MulchLevel == 0 || lastMulchTickTotalHours == 0)
+        {
+            lastMulchTickTotalHours = Api.World.Calendar.TotalHours;
+            return;
+        }
+
+        var diffTotalDays = (Api.World.Calendar.TotalHours - lastMulchTotalHours) / 24.0;
+        var diffLastTickTotalDays = (Api.World.Calendar.TotalHours - lastMulchTickTotalHours) / 24.0;
+
+        var decayConst = 5;
+        var decayCoef = diffTotalDays switch
+        {
+            < 1 => 0,
+            < 6 => 1,
+            < 12 => 1.5,
+            _ => 2
+        };
+
+        // increase decay if raining
+        if (Api.World.BlockAccessor.GetClimateAt(Pos).Rainfall > 0.1)
+        {
+            decayCoef *= 1.5;
+        }
+
+        // aim to decay about 1 tier per 6 days, accelerating as the mulch gets older
+        var decay = decayCoef * decayConst * diffLastTickTotalDays;
+        MulchLevel -= decay;
+        lastMulchTickTotalHours = Api.World.Calendar.TotalHours;
+    }
+
     protected virtual bool OnBlockInteractWithDryGrass(IPlayer byPlayer, ItemSlot slot)
     {
-        if (MulchLevel >= 100) return false;
+        if (Math.Round(MulchLevel) >= 100) return false;
 
-        MulchLevel += 33;
+        MulchLevel += 33.3333;
+
+        lastMulchTotalHours = Api.World.Calendar.TotalHours;
         if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
         {
             slot.TakeOut(1);
@@ -100,11 +151,11 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
 
     protected virtual AssetLocation MulchTextureLocation()
     {
-        string mulchTexture = MulchTier switch
+        string mulchTexture = MulchLevel switch
         {
-            MulchTierEnum.Low => "low",
-            MulchTierEnum.Medium => "med",
-            MulchTierEnum.High => "high",
+            <= 33 => "low",
+            <= 66 => "med",
+            <= 100 => "high",
             _ => "low"
         };
         return new AssetLocation($"cropsv2:block/soil/farmland/mulch-{mulchTexture}");
@@ -119,7 +170,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
     {
         if (Api is not ICoreClientAPI capi) return false;
 
-        if (MulchTier == MulchTierEnum.None)
+        if (MulchLevel == 0)
         {
             if (mulchQuad != null)
             {
@@ -154,11 +205,6 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         return true;
     }
 
-    public enum MulchTierEnum
-    {
-        None, Low, Medium, High
-    }
-
     [HarmonyPatchCategory("cropsv2")]
     [HarmonyPatch(typeof(BlockEntityFarmland), "updateMoistureLevel", new Type[] {
         typeof(double), typeof(float), typeof(bool), typeof(ClimateCondition)
@@ -182,7 +228,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             // slow down moisture loss depending on mulch level
             var diff = __state - self.moistureLevel;
             var mulchCoef = 0.0075f * self.MulchLevel;
-            if (diff > 0) self.moistureLevel += mulchCoef * diff;
+            if (diff > 0) self.moistureLevel += (float) mulchCoef * diff;
         }
     }
 
