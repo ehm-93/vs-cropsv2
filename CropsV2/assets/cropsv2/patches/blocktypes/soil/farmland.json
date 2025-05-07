@@ -2,15 +2,8 @@
   {
     "file": "game:blocktypes/soil/farmland.json",
     "side": "Server",
-    "op": "replace",
-    "path": "/class",
-    "value": "BlockFarmlandV2"
-  },
-  {
-    "file": "game:blocktypes/soil/farmland.json",
-    "side": "Server",
-    "op": "replace",
-    "path": "/entityClass",
-    "value": "BEFarmlandV2"
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [{ "name": "FarmlandMulch" }]
   }
 ]

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using HarmonyLib;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -12,8 +11,9 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BlockEntityFarmlandV2 : BlockEntityFarmland
+class BEBehaviorFarmlandMulch : BlockEntityBehavior
 {
+    readonly private Random rand = new Random();
     protected MeshData mulchQuad;
     protected TextureAtlasPosition mulchTexturePos;
     protected double lastMulchTotalHours = 0;
@@ -28,20 +28,33 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             if (_mulchLevel != clamped)
             {
                 _mulchLevel = clamped;
-                if (GenMulchQuad()) MarkDirty(redrawOnClient: true);
+                if (GenMulchQuad()) FarmlandEntity.MarkDirty(redrawOnClient: true);
             }
         }
     }
 
-    public override void Initialize(ICoreAPI api)
+    public BlockEntityFarmland FarmlandEntity {
+        get { return (BlockEntityFarmland) Blockentity; } 
+    }
+
+    public BEBehaviorFarmlandMulch(BlockEntity blockEntity) 
+        : base(blockEntity)
     {
-        base.Initialize(api);
-        if (GenMulchQuad()) MarkDirty(redrawOnClient: true);
+        if (blockEntity is not BlockEntityFarmland)
+        {
+            throw new ArgumentException("Configuration error! FarmlandMulch behavior may only be used on farmland.");
+        }
+    }
+
+    public override void Initialize(ICoreAPI api, JsonObject properties)
+    {
+        base.Initialize(api, properties);
+        if (GenMulchQuad()) FarmlandEntity.MarkDirty(redrawOnClient: true);
         if (api is ICoreServerAPI)
         {
             if (Api.World.Config.GetBool("processCrops", defaultValue: true))
             {
-                RegisterGameTickListener(Tick, 3900 + rand.Next(200));
+                FarmlandEntity.RegisterGameTickListener(Tick, 3900 + rand.Next(200));
             }
         }
     }
@@ -68,7 +81,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         return base.OnTesselation(mesher, tesselator);
     }
 
-    public virtual bool OnBlockInteractV2(IPlayer byPlayer)
+    public virtual bool OnBlockInteract(IPlayer byPlayer)
     {
         var slot = byPlayer.InventoryManager.ActiveHotbarSlot;
         if (slot?.Itemstack == null) return false;
@@ -77,8 +90,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         {
             return OnBlockInteractWithDryGrass(byPlayer, slot);
         }
-
-        return base.OnBlockInteract(byPlayer);
+        return false;
     }
 
     public virtual void Tick(float df)
@@ -145,7 +157,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             range: 8
         );
 
-        MarkDirty();
+        FarmlandEntity.MarkDirty();
         return true;
     }
 
@@ -203,33 +215,6 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         );
 
         return true;
-    }
-
-    [HarmonyPatchCategory("cropsv2")]
-    [HarmonyPatch(typeof(BlockEntityFarmland), "updateMoistureLevel", new Type[] {
-        typeof(double), typeof(float), typeof(bool), typeof(ClimateCondition)
-    })]
-    internal static class UpdateMoistureLevelPatch
-    {
-        [HarmonyPrefix]
-        public static void Before(BlockEntityFarmland __instance, ref float __state)
-        {
-            if (__instance is not BlockEntityFarmlandV2 self) return;
-
-            // remmber moisture level before mutated by base class
-            __state = self.moistureLevel;
-        }
-
-        [HarmonyPostfix]
-        public static void After(BlockEntityFarmland __instance, ref float __state)
-        {
-            if (__instance is not BlockEntityFarmlandV2 self) return;
-            
-            // slow down moisture loss depending on mulch level
-            var diff = __state - self.moistureLevel;
-            var mulchCoef = 0.0075f * self.MulchLevel;
-            if (diff > 0) self.moistureLevel += (float) mulchCoef * diff;
-        }
     }
 
     private class DictTexSource : ITexPositionSource

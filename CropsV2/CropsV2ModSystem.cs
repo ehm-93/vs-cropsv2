@@ -11,10 +11,10 @@ public class CropsV2ModSystem : ModSystem
   {
     base.Start(api);
     api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
-    api.RegisterBlockClass("BlockFarmlandV2", typeof(BlockFarmlandV2));
 
     api.RegisterBlockEntityClass("BECropV2", typeof(BlockEntityCropV2));
-    api.RegisterBlockEntityClass("BEFarmlandV2", typeof(BlockEntityFarmlandV2));
+
+    api.RegisterBlockEntityBehaviorClass("FarmlandMulch", typeof(BEBehaviorFarmlandMulch));
 
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
     
