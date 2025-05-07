@@ -23,10 +23,15 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             if (_mulchLevel != clamped)
             {
                 _mulchLevel = clamped;
-                GenMulchQuad();
-                MarkDirty(redrawOnClient: true);
+                if (GenMulchQuad()) MarkDirty(redrawOnClient: true);
             }
         }
+    }
+
+    public override void Initialize(ICoreAPI api)
+    {
+        base.Initialize(api);
+        if (GenMulchQuad()) MarkDirty(redrawOnClient: true);
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -102,9 +107,9 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         return new AssetLocation("cropsv2:shapes/block/soil/farmland/mulch.json");
     }
 
-    private void GenMulchQuad()
+    private bool GenMulchQuad()
     {
-        if (Api is not ICoreClientAPI capi) return;
+        if (Api is not ICoreClientAPI capi) return false;
 
         Shape shape = capi.Assets.Get(MulchShapeLocation()).ToObject<Shape>();
 
@@ -124,6 +129,8 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             shape,
             out mulchQuad
         );
+
+        return true;
     }
 
     [HarmonyPatchCategory("cropsv2")]
