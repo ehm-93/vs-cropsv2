@@ -19,7 +19,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         get => _mulchLevel;
         protected set 
         {
-            int clamped = Math.Clamp(value, 0, 3);
+            int clamped = Math.Clamp(value, 0, 100);
             if (_mulchLevel != clamped)
             {
                 _mulchLevel = clamped;
@@ -27,6 +27,16 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             }
         }
     }
+
+    public MulchTierEnum MulchTier {
+        get
+        {
+            if (_mulchLevel == 0) return MulchTierEnum.None;
+            if (_mulchLevel <= 33) return MulchTierEnum.Low;
+            if (_mulchLevel <= 66) return MulchTierEnum.Medium;
+            return MulchTierEnum.High;
+        }
+     }
 
     public override void Initialize(ICoreAPI api)
     {
@@ -67,9 +77,9 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
 
     protected virtual bool OnBlockInteractWithDryGrass(IPlayer byPlayer, ItemSlot slot)
     {
-        if (MulchLevel >= 3) return false;
+        if (MulchLevel >= 100) return false;
 
-        MulchLevel += 1;
+        MulchLevel += 33;
         if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
         {
             slot.TakeOut(1);
@@ -90,11 +100,11 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
 
     protected virtual AssetLocation MulchTextureLocation()
     {
-        string mulchTexture = _mulchLevel switch
+        string mulchTexture = MulchTier switch
         {
-            1 => "low",
-            2 => "med",
-            3 => "high",
+            MulchTierEnum.Low => "low",
+            MulchTierEnum.Medium => "med",
+            MulchTierEnum.High => "high",
             _ => "low"
         };
         return new AssetLocation($"cropsv2:block/soil/farmland/mulch-{mulchTexture}");
@@ -109,7 +119,7 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
     {
         if (Api is not ICoreClientAPI capi) return false;
 
-        if (MulchLevel == 0)
+        if (MulchTier == MulchTierEnum.None)
         {
             if (mulchQuad != null)
             {
@@ -144,6 +154,11 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
         return true;
     }
 
+    public enum MulchTierEnum
+    {
+        None, Low, Medium, High
+    }
+
     [HarmonyPatchCategory("cropsv2")]
     [HarmonyPatch(typeof(BlockEntityFarmland), "updateMoistureLevel", new Type[] {
         typeof(double), typeof(float), typeof(bool), typeof(ClimateCondition)
@@ -165,8 +180,9 @@ class BlockEntityFarmlandV2 : BlockEntityFarmland
             if (__instance is not BlockEntityFarmlandV2 self) return;
             
             // slow down moisture loss depending on mulch level
-            float diff = __state - self.moistureLevel;
-            if (diff > 0) self.moistureLevel += 0.25f * self.MulchLevel * diff;
+            var diff = __state - self.moistureLevel;
+            var mulchCoef = 0.0075f * self.MulchLevel;
+            if (diff > 0) self.moistureLevel += mulchCoef * diff;
         }
     }
 
