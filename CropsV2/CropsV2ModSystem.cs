@@ -10,20 +10,29 @@ public class CropsV2ModSystem : ModSystem
   public override void Start(ICoreAPI api)
   {
     base.Start(api);
-    api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
-
-    api.RegisterBlockEntityClass("BECropV2", typeof(BlockEntityCropV2));
-
-    api.RegisterBlockEntityBehaviorClass("FarmlandMulch", typeof(BEBehaviorFarmlandMulch));
-
-    api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
-    
+    OverrideDefaultRecoverySpeed(api);
+    RegisterTypes(api);
     HarmonyPatch();
   }
   
   public override void Dispose()
   {
     HarmonyUnpatch();
+  }
+
+  private void RegisterTypes(ICoreAPI api) {
+    api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
+    api.RegisterBlockEntityClass("BECropV2", typeof(BlockEntityCropV2));
+    api.RegisterBlockEntityBehaviorClass("FarmlandMulch", typeof(BEBehaviorFarmlandMulch));
+    api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
+  }
+
+  private void OverrideDefaultRecoverySpeed(ICoreAPI api)
+  {
+    if (api.World.Config.TryGetFloat("fertilityRecoverySpeed") == null)
+    {
+      api.World.Config.SetFloat("fertilityRecoverySpeed", 0.05f);
+    }
   }
 
   private void HarmonyPatch()
