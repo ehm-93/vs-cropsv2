@@ -1,8 +1,0 @@
-[
-  {
-    "file": "itemtypes/resource/seeds.json",
-    "op": "add",
-    "path": "/class",
-    "value": "ItemPlantableSeedV2"
-  }
-]

@@ -1,5 +1,7 @@
 {
   "recommendations": [
+    "ms-dotnettools.csdevkit",
+    "ms-dotnettools.csharp"
     "bierner.json5", // JSON5 Syntax
     "esbenp.prettier-vscode", // Prettier formatter
     "aaron-bond.better-comments" // Better Comments (optional)
