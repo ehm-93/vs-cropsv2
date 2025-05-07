@@ -101,7 +101,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        dsc.AppendLine(Lang.Get("Mulch: {0}%", (int) MulchLevel));
+        if (0 < Math.Round(MulchLevel)) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int) MulchLevel));
     }
 
     protected virtual void TickMulch()
