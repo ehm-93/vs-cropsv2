@@ -165,8 +165,8 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
     {
         string mulchTexture = MulchLevel switch
         {
-            <= 33 => "low",
-            <= 66 => "med",
+            <= 34 => "low",
+            <= 67 => "med",
             <= 100 => "high",
             _ => "low"
         };
