@@ -16,26 +16,21 @@ namespace Ehm93.VintageStory.CropsV2;
 // TODO: weeds slow crop growth, later generations more impacted, earlier growth stages more affected
 // TODO: mature crops slow weed growth
 // TODO: render weed level
-// TODO: more moisture more weeds
-// TODO: adjacent weeds exert more growth pressure if more mature
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
-    readonly private Random rand = new Random();
-    readonly private double baseWeedSproutChance = 0.05;
-    readonly private double weedGrowChance = 0.25;
+    readonly private double minSproutChance = 0.001;
+    readonly private double maxSproutChance = 0.5;
+    readonly private double maxGrowChance = 1;
+    readonly private double minGrowChance = 0.01;
     readonly private double growth = 10;
+    readonly private double neighborWeight = 4;
+    readonly private double moistureWeight = 1;
+    readonly private double nutritionWeight = 2;
     protected double weedLevel;
     protected double lastCheckTotalHours = 0;
     protected MeshData weedMesh;
-    protected BlockPos northPos;
-    protected BlockPos northEastPos;
-    protected BlockPos eastPos;
-    protected BlockPos southEastPos;
-    protected BlockPos southPos;
-    protected BlockPos southWestPos;
-    protected BlockPos westPos;
-    protected BlockPos northWestPos;
+    IEnumerable<BlockPos> neighborPositions;
 
     public double WeedLevel {
         get { return weedLevel; }
@@ -73,18 +68,21 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         {
             if (Api.World.Config.GetBool("processCrops", defaultValue: true))
             {
-                CropEntity.RegisterGameTickListener(Tick, 3900 + rand.Next(200));
+                CropEntity.RegisterGameTickListener(Tick, 3900 + api.World.Rand.Next(200));
             }
         }
         
-        northPos = Pos.NorthCopy();
-        northEastPos = Pos.NorthCopy().EastCopy();
-        eastPos = Pos.EastCopy();
-        southEastPos = Pos.SouthCopy().EastCopy();
-        southPos = Pos.SouthCopy();
-        southWestPos = Pos.SouthCopy().WestCopy();
-        westPos = Pos.WestCopy();
-        northWestPos = Pos.NorthCopy().WestCopy();
+        neighborPositions = new BlockPos[]
+        {
+            Pos.NorthCopy(),
+            Pos.NorthCopy().EastCopy(),
+            Pos.EastCopy(),
+            Pos.SouthCopy().EastCopy(),
+            Pos.SouthCopy(),
+            Pos.SouthCopy().WestCopy(),
+            Pos.WestCopy(),
+            Pos.NorthCopy().WestCopy(),
+        };
 
         GenWeedMesh();
     }
@@ -173,16 +171,6 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         return new DictTexSource(texMap, capi.BlockTextureAtlas.Size);
     }
 
-    private AssetLocation WeedNorthTextureLocation()
-    {
-        return new AssetLocation("cropsv2:block/plant/weeds/veryshort-north");
-    }
-
-    private AssetLocation WeedSouthTextureLocation()
-    {
-        return new AssetLocation("cropsv2:block/plant/weeds/veryshort-south");
-    }
-
     protected virtual void Tick(float df)
     {
         CheckGrowWeeds();
@@ -194,7 +182,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
         double now = Api.World.Calendar.TotalHours;
 
-        if (HasMulch(Pos) || lastCheckTotalHours == 0)
+        if (HasMulch() || lastCheckTotalHours == 0)
         {
             lastCheckTotalHours = now;
             return;
@@ -203,7 +191,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         double deltaDays = (now - lastCheckTotalHours) / 24.0;
         lastCheckTotalHours = now;
 
-        double roll = rand.NextDouble();
+        double roll = Api.World.Rand.NextDouble();
         if (weedLevel == 0)
         {
             double sproutProb = 1 - Math.Pow(1 - WeedSproutChance(), deltaDays);
@@ -211,53 +199,79 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         }
         else
         {
-            double growProb = 1 - Math.Pow(1 - weedGrowChance, deltaDays);
+            double growProb = 1 - Math.Pow(1 - WeedGrowthChance(), deltaDays);
             if (roll < growProb) WeedLevel += growth;
         }
     }
 
-    protected virtual double WeedSproutChance()
+    protected double WeedSproutChance()
     {
-        var weedy = new List<bool>
-        {
-            HasWeeds(northPos),
-            HasWeeds(northEastPos),
-            HasWeeds(eastPos),
-            HasWeeds(southEastPos),
-            HasWeeds(southPos),
-            HasWeeds(southWestPos),
-            HasWeeds(westPos),
-            HasWeeds(northWestPos),
-        };
-
-        int count = weedy.Sum(i => i ? 1 : 0);
-        return NutritionCoef() * (1 - Math.Pow(1 - baseWeedSproutChance, count) + 0.001);
+        double totalPressure = MoisturePressure() + NutritionPressure() + NeighborPressure();
+        const double a = 1.3;
+        const double b = 3.5;
+        var sproutChance = 1.0 / (1.0 + Math.Exp(-a * (totalPressure - b)));
+        return Math.Min(1, maxSproutChance * sproutChance + minSproutChance);
     }
 
-    private double NutritionCoef()
+    protected virtual double WeedGrowthChance()
     {
-        return FarmlandEntity.Nutrients.Sum() switch
-        {
-            < 40 => 0.25,
-            < 65 => 0.5,
-            < 100 => 0.75,
-            < 150 => 1,
-            _ => 2,
-        };
+        double total = MoisturePressure() + NutritionPressure();
+        const double a = 1.0;
+        const double b = 2.0;
+        var growthChance = 1.0 / (1.0 + Math.Exp(-a * (total - b)));
+        return Math.Min(1, maxGrowChance * growthChance + minGrowChance);
     }
 
-    private bool HasWeeds(BlockPos pos)
+    private AssetLocation WeedNorthTextureLocation()
     {
-        var entity = Api.World.BlockAccessor.GetBlockEntity(pos);
-        if (entity is not BlockEntityCropV2 crop) return false;
-        
-        var behavior = crop.GetBehavior<BEBehaviorCropWeeds>();
-        if (behavior == null) return false;
-
-        return 0 < behavior.WeedLevel;
+        return new AssetLocation("cropsv2:block/plant/weeds/veryshort-north");
     }
 
-    private bool HasMulch(BlockPos pos)
+    private AssetLocation WeedSouthTextureLocation()
+    {
+        return new AssetLocation("cropsv2:block/plant/weeds/veryshort-south");
+    }
+
+    private double NutritionPressure()
+    {
+        double nutrientSum = FarmlandEntity?.Nutrients.Sum() ?? 0;
+
+        // Normalize to [0, 1] based on a soft cap of 200 total nutrients
+        double x = GameMath.Clamp(nutrientSum / 200.0, 0, 1);
+
+        // Gentle sigmoid centered around 120 nutrients (x = 0.6)
+        const double a = 8.0;   // steepness
+        const double b = 0.6;   // midpoint
+
+        return nutritionWeight * 1.0 / (1.0 + Math.Exp(-a * (x - b)));
+    }
+
+    private double NeighborPressure()
+    {
+        var weediness = neighborPositions.Sum(GetWeedLevel);
+
+        var x = Math.Clamp(weediness / 800, 0, 1);
+
+        // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
+        const double a = 12;  // steepness
+        const double b = 0.33; // midpoint
+        return neighborWeight * 1.0 / (1.0 + Math.Exp(-a * (x - b)));
+    }
+
+    private double MoisturePressure()
+    {
+        double? moisture = FarmlandEntity?.MoistureLevel;
+        if (moisture == null) return 0;
+
+        double x = Math.Clamp(moisture.Value, 0, 1);
+
+        // Tuned so that at 15% moisture, pressure = 50%
+        const double k = 4.62;
+
+        return moistureWeight * Math.Clamp(1 - Math.Exp(-k * x), 0, 1);
+    }
+
+    private bool HasMulch()
     {
         var farmland = FarmlandEntity;
         if (farmland == null) return false;
@@ -266,5 +280,15 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         if (behavior == null) return false;
 
         return 0 < behavior.MulchLevel;
+    }
+
+    private double GetWeedLevel(BlockPos pos)
+    {
+        if (Api.World.BlockAccessor.GetBlockEntity(pos) is not BlockEntityCropV2 entity) return 0;
+
+        var weeds = entity.GetBehavior<BEBehaviorCropWeeds>();
+        if (weeds == null) return 0;
+
+        return weeds.WeedLevel;
     }
 }
