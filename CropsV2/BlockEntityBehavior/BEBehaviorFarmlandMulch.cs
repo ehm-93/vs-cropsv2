@@ -149,7 +149,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         }
 
         Api.World.PlaySoundAt(
-            new AssetLocation("game:sounds/block/grass1"),
+            new AssetLocation("game:sounds/block/dirt1"),
             Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5,
             byPlayer,
             randomizePitch: true,

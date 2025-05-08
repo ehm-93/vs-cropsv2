@@ -12,6 +12,13 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
+// TODO: hoe to remove weeds
+// TODO: weeds slow crop growth, later generations more impacted, earlier growth stages more affected
+// TODO: mature crops slow weed growth
+// TODO: render weed level
+// TODO: more moisture more weeds
+// TODO: adjacent weeds exert more growth pressure if more mature
+
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
     readonly private Random rand = new Random();
@@ -196,18 +203,15 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         double deltaDays = (now - lastCheckTotalHours) / 24.0;
         lastCheckTotalHours = now;
 
-        // Bernoulli-style scaled probability
-        double sproutProb = 1 - Math.Pow(1 - WeedSproutChance(), deltaDays);
-        double growProb = 1 - Math.Pow(1 - weedGrowChance, deltaDays);
-
         double roll = rand.NextDouble();
-
         if (weedLevel == 0)
         {
+            double sproutProb = 1 - Math.Pow(1 - WeedSproutChance(), deltaDays);
             if (roll < sproutProb) WeedLevel += growth;
         }
         else
         {
+            double growProb = 1 - Math.Pow(1 - weedGrowChance, deltaDays);
             if (roll < growProb) WeedLevel += growth;
         }
     }
