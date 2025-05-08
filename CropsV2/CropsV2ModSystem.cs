@@ -24,6 +24,8 @@ public class CropsV2ModSystem : ModSystem
     api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
     api.RegisterBlockEntityClass("BECropV2", typeof(BlockEntityCropV2));
     api.RegisterBlockEntityBehaviorClass("FarmlandMulch", typeof(BEBehaviorFarmlandMulch));
+    api.RegisterBlockEntityBehaviorClass("FarmlandWeeds", typeof(BEBehaviorFarmlandWeeds));
+    api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
   }
 

@@ -12,5 +12,12 @@
     "op": "add",
     "path": "/entityClass",
     "value": "BECropV2"
+  },
+  {
+    "file": "game:blocktypes/plant/crop/cassava.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [{ "name": "CropWeeds" }]
   }
 ]
