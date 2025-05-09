@@ -12,7 +12,8 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// TODO: weeds slow crop growth, later generations and earlier growth stages more affected
+// TODO: first tick has oddly high chance for weeds
+// TODO: color of weeds seems wrong?
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
@@ -148,8 +149,8 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         );
 
 
-        var rotateY = GetJitterOffset(Pos, 0);
-        weedMesh.Rotate(new Vec3f(), 0, rotateY, 0);
+        var rotateY = Math.PI * GetJitterOffset(Pos, 0);
+        weedMesh.Rotate(new Vec3f(), 0, (float) rotateY, 0);
 
         var offsetX = GetJitterOffset(Pos, 1);
         var offsetZ = GetJitterOffset(Pos, 2);
