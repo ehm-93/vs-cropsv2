@@ -27,11 +27,11 @@ class BEBehaviorFarmlandWeeds : BlockEntityBehavior
         if (0 < weedLevel) 
         {
             dsc.AppendLine(Lang.Get("Weeds: {0}%", weedLevel));
-            dsc.AppendLine(Lang.Get("Weed growth chance: {0}%", Math.Round(behavior.WeedGrowthChance(), 2)));
+            dsc.AppendLine(Lang.Get("Weed growth chance: {0}%", Math.Round(behavior.WeedGrowthChance() * 100)));
         }
         else 
         {
-            dsc.AppendLine(Lang.Get("Weed sprout chance: {0}%", Math.Round(behavior.WeedSproutChance(), 2)));
+            dsc.AppendLine(Lang.Get("Weed sprout chance: {0}%", Math.Round(behavior.WeedSproutChance() * 100)));
         }
     }
 }
