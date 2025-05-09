@@ -12,7 +12,7 @@ public class CropsV2ModSystem : ModSystem
     base.Start(api);
     OverrideDefaultRecoverySpeed(api);
     RegisterTypes(api);
-    HarmonyPatch();
+    HarmonyPatch(api);
   }
   
   public override void Dispose()
@@ -27,6 +27,7 @@ public class CropsV2ModSystem : ModSystem
     api.RegisterBlockEntityBehaviorClass("FarmlandWeeds", typeof(BEBehaviorFarmlandWeeds));
     api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
+    api.RegisterCollectibleBehaviorClass("HoeWeeds", typeof(CBehaviorHoeWeeds));
   }
 
   private void OverrideDefaultRecoverySpeed(ICoreAPI api)
@@ -37,13 +38,14 @@ public class CropsV2ModSystem : ModSystem
     }
   }
 
-  private void HarmonyPatch()
+  private void HarmonyPatch(ICoreAPI api)
   { 
     // may duplicate if client and server share an instance
     if (!Harmony.HasAnyPatches(Mod.Info.ModID))
     {
       patcher = new Harmony(Mod.Info.ModID);
       patcher.PatchCategory(Mod.Info.ModID);
+      HoePatches.Patch(patcher, api.Logger);
     }
   }
 

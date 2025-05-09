@@ -33,7 +33,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
     public double WeedLevel {
         get { return weedLevel; }
-        protected set { 
+        set {
             var clamped = Math.Clamp(value, 0, 100);
             if (weedLevel != clamped) {
                 weedLevel = clamped;
