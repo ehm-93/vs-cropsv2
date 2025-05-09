@@ -224,12 +224,24 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
     private AssetLocation WeedNorthTextureLocation()
     {
-        return new AssetLocation("cropsv2:block/plant/weeds/veryshort-north");
+        return new AssetLocation($"cropsv2:block/plant/weeds/{WeedLevelString()}-north");
     }
 
     private AssetLocation WeedSouthTextureLocation()
     {
-        return new AssetLocation("cropsv2:block/plant/weeds/veryshort-south");
+        return new AssetLocation($"cropsv2:block/plant/weeds/{WeedLevelString()}-south");
+    }
+
+    private string WeedLevelString()
+    {
+        return WeedLevel switch {
+            0 => "none",
+            <20 => "veryshort",
+            <40 => "short",
+            <60 => "medium",
+            <80 => "tall",
+            _ => "verytall"
+        };
     }
 
     private double NutritionPressure()
