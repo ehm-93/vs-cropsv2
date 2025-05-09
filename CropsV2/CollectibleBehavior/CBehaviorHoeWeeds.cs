@@ -4,6 +4,8 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
+// TODO: support weed clearing when interact with both farmland or crop
+
 class CBehaviorHoeWeeds : CollectibleBehavior
 {
     protected ICoreAPI Api;

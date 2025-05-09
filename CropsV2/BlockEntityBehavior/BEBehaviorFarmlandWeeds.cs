@@ -30,6 +30,6 @@ class BEBehaviorFarmlandWeeds : BlockEntityBehavior
         if (behavior == null) return;
 
         var weedLevel = Math.Round(behavior.WeedLevel);
-        if (weedLevel != 0) dsc.AppendLine(Lang.Get("Weeds: {0}%", weedLevel));
+        if (0 < weedLevel) dsc.AppendLine(Lang.Get("Weeds: {0}%", weedLevel));
     }
 }

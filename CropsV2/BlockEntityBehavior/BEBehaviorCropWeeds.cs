@@ -12,7 +12,8 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// TODO: weeds slow crop growth, later generations more impacted, earlier growth stages more affected
+// TODO: weeds slow crop growth, later generations and earlier growth stages more affected
+// TODO: weeds slowly die if crops are mature
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
@@ -24,6 +25,8 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     readonly private double neighborWeight = 4;
     readonly private double moistureWeight = 1;
     readonly private double nutritionWeight = 2;
+    readonly private double tempWeight = 1;
+    readonly private double minCropMaturityAntiPressure = 0.5;
     readonly private double cropMaturityWeight = 2;
     protected double weedLevel;
     protected double lastCheckTotalHours = 0;
@@ -210,23 +213,25 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         }
     }
 
-    protected double WeedSproutChance()
+    public double WeedSproutChance()
     {
-        double totalPressure = MoisturePressure() + NutritionPressure() + NeighborPressure();
-        double antiPressure = CropMaturityAntiPressure();
+        var maxPressure = (tempWeight + moistureWeight + nutritionWeight + neighborWeight) / minCropMaturityAntiPressure;
+        var totalPressure = TemperaturePressure() + MoisturePressure() + NutritionPressure() + NeighborPressure();
+        var antiPressure = CropMaturityAntiPressure();
         const double a = 1.3;
-        const double b = 3.5;
-        var sproutChance = 1.0 / (1.0 + Math.Exp(-a * (totalPressure - b))) / antiPressure;
+        var b = maxPressure / 2;
+        var sproutChance = Sigmoid(totalPressure / antiPressure, b, a);;
         return Math.Min(1, maxSproutChance * sproutChance + minSproutChance);
     }
 
-    protected virtual double WeedGrowthChance()
+    public virtual double WeedGrowthChance()
     {
-        double totalPressure = MoisturePressure() + NutritionPressure();
-        double antiPressure = CropMaturityAntiPressure();
+        var maxPressure = (tempWeight + moistureWeight + nutritionWeight) / minCropMaturityAntiPressure;
+        var totalPressure = TemperaturePressure() + MoisturePressure() + NutritionPressure();
+        var antiPressure = CropMaturityAntiPressure();
         const double a = 1.0;
-        const double b = 2.0;
-        var growthChance = 1.0 / (1.0 + Math.Exp(-a * (totalPressure - b))) / antiPressure;
+        var b = maxPressure / 2;
+        var growthChance = Sigmoid(totalPressure / antiPressure, b, a);
         return Math.Min(1, maxGrowChance * growthChance + minGrowChance);
     }
 
@@ -263,7 +268,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         const double a = 8.0;   // steepness
         const double b = 0.6;   // midpoint
 
-        return nutritionWeight * 1.0 / (1.0 + Math.Exp(-a * (x - b)));
+        return nutritionWeight * Sigmoid(x, b, a);
     }
 
     private double NeighborPressure()
@@ -275,7 +280,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
         const double a = 12;  // steepness
         const double b = 0.33; // midpoint
-        return neighborWeight * 1.0 / (1.0 + Math.Exp(-a * (x - b)));
+        return neighborWeight * Sigmoid(weediness, b, a);
     }
 
     private double MoisturePressure()
@@ -291,12 +296,30 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         return moistureWeight * Math.Clamp(1 - Math.Exp(-k * x), 0, 1);
     }
 
+    private double TemperaturePressure()
+    {
+        float temp = Api.World.BlockAccessor.GetClimateAt(Pos, EnumGetClimateMode.NowValues).Temperature;
+
+        if (temp <= 0) return 0;
+
+        // Tunable parameters
+        const double lowThreshold = 10.0;    // Start of weed pressure
+        const double highThreshold = 40.0;   // End of weed pressure
+        const double kLow  = 0.2;            // Steepness of rise
+        const double kHigh = 0.6;            // Steepness of fall
+
+        // Apply windowed sigmoid curve
+        double pressure = Sigmoid(temp, lowThreshold, kLow) * (1.0 - Sigmoid(temp, highThreshold, kHigh));
+
+        return tempWeight * Math.Clamp(pressure, 0.0, 1.0);
+    }
+
     private double CropMaturityAntiPressure()
     {
         var maturity = CropStage() / CropFinalStage();
         const double a = 12;  // steepness
         const double b = 0.33; // midpoint
-        return Math.Max(0.5, cropMaturityWeight * 1.0 / (1.0 + Math.Exp(-a * (maturity - b))));
+        return Math.Max(0.5, cropMaturityWeight * Sigmoid(maturity, b, a));
     }
 
     private bool HasMulch()
@@ -339,4 +362,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         Random rand = new Random(hash);
         return (float) (rand.NextDouble() - 0.5f) * 0.5f;
     }
+
+    private double Sigmoid(double x, double center, double k) =>
+        1.0 / (1.0 + Math.Exp(-k * (x - center)));
 }
