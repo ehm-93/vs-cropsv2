@@ -1,10 +1,9 @@
 using System;
 using Vintagestory.API.Common;
+using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
-
-// TODO: support weed clearing when interact with both farmland or crop
 
 class CBehaviorHoeWeeds : CollectibleBehavior
 {
@@ -31,12 +30,7 @@ class CBehaviorHoeWeeds : CollectibleBehavior
 
         if (blockSel == null) return;
 
-        var entity = Api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(blockSel.Position);
-        if (entity == null) return;
-
-        var behavior = entity.GetBehavior<BEBehaviorCropWeeds>();
-        if (behavior == null) return;
-
+        var behavior = FindCropWeedBehavior(blockSel.Position);
         var lvlBefore = behavior.WeedLevel;
         behavior.WeedLevel -= 25;
         if (lvlBefore != behavior.WeedLevel)
@@ -67,5 +61,14 @@ class CBehaviorHoeWeeds : CollectibleBehavior
     public override void OnHeldInteractStop(float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling)
     {
         base.OnHeldInteractStop(secondsUsed, slot, byEntity, blockSel, entitySel, ref handling);
+    }
+
+    private BEBehaviorCropWeeds FindCropWeedBehavior(BlockPos pos)
+    {
+        var entity = Api.World.BlockAccessor.GetBlockEntity(pos);
+        if (entity == null) return null;
+        if (entity is BlockEntityFarmland) entity = Api.World.BlockAccessor.GetBlockEntity(pos.UpCopy());
+        if (entity is not BlockEntityCropV2) return null;
+        return entity.GetBehavior<BEBehaviorCropWeeds>();
     }
 }
