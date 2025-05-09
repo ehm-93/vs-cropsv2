@@ -12,7 +12,6 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// TODO: hoe to remove weeds
 // TODO: weeds slow crop growth, later generations more impacted, earlier growth stages more affected
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
@@ -146,8 +145,12 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
             out weedMesh
         );
 
-        var offsetX = GetJitterOffset(Pos, 0);
-        var offsetZ = GetJitterOffset(Pos, 1);
+
+        var rotateY = GetJitterOffset(Pos, 0);
+        weedMesh.Rotate(new Vec3f(), 0, rotateY, 0);
+
+        var offsetX = GetJitterOffset(Pos, 1);
+        var offsetZ = GetJitterOffset(Pos, 2);
         weedMesh.Translate(new Vec3f(offsetX, 0, offsetZ));
 
         return true;
