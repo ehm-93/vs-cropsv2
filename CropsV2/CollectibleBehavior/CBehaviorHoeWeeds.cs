@@ -31,6 +31,8 @@ class CBehaviorHoeWeeds : CollectibleBehavior
         if (blockSel == null) return;
 
         var behavior = FindCropWeedBehavior(blockSel.Position);
+        if (behavior == null) return;
+        
         var lvlBefore = behavior.WeedLevel;
         behavior.WeedLevel -= 25;
         if (lvlBefore != behavior.WeedLevel)
