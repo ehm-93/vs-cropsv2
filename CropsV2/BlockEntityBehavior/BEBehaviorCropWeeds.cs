@@ -14,7 +14,6 @@ namespace Ehm93.VintageStory.CropsV2;
 
 // TODO: hoe to remove weeds
 // TODO: weeds slow crop growth, later generations more impacted, earlier growth stages more affected
-// TODO: mature crops slow weed growth
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
@@ -146,6 +145,10 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
             shape,
             out weedMesh
         );
+
+        var offsetX = GetJitterOffset(Pos, 0);
+        var offsetZ = GetJitterOffset(Pos, 1);
+        weedMesh.Translate(new Vec3f(offsetX, 0, offsetZ));
 
         return true;
     }
@@ -325,5 +328,12 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     {
         if (CropEntity?.Block is not BlockCrop crop) return 1;
         return crop.CropProps.GrowthStages;
+    }
+
+    private float GetJitterOffset(BlockPos pos, int seed)
+    {
+        int hash = (pos.X * 73856093) ^ (pos.Y * 19349663) ^ (pos.Z * 83492791) ^ seed;
+        Random rand = new Random(hash);
+        return (float) (rand.NextDouble() - 0.5f) * 0.5f;
     }
 }
