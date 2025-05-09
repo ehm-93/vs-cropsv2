@@ -15,7 +15,6 @@ namespace Ehm93.VintageStory.CropsV2;
 // TODO: hoe to remove weeds
 // TODO: weeds slow crop growth, later generations more impacted, earlier growth stages more affected
 // TODO: mature crops slow weed growth
-// TODO: render weed level
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
@@ -27,6 +26,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     readonly private double neighborWeight = 4;
     readonly private double moistureWeight = 1;
     readonly private double nutritionWeight = 2;
+    readonly private double cropMaturityWeight = 2;
     protected double weedLevel;
     protected double lastCheckTotalHours = 0;
     protected MeshData weedMesh;
@@ -207,18 +207,20 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     protected double WeedSproutChance()
     {
         double totalPressure = MoisturePressure() + NutritionPressure() + NeighborPressure();
+        double antiPressure = CropMaturityAntiPressure();
         const double a = 1.3;
         const double b = 3.5;
-        var sproutChance = 1.0 / (1.0 + Math.Exp(-a * (totalPressure - b)));
+        var sproutChance = 1.0 / (1.0 + Math.Exp(-a * (totalPressure - b))) / antiPressure;
         return Math.Min(1, maxSproutChance * sproutChance + minSproutChance);
     }
 
     protected virtual double WeedGrowthChance()
     {
-        double total = MoisturePressure() + NutritionPressure();
+        double totalPressure = MoisturePressure() + NutritionPressure();
+        double antiPressure = CropMaturityAntiPressure();
         const double a = 1.0;
         const double b = 2.0;
-        var growthChance = 1.0 / (1.0 + Math.Exp(-a * (total - b)));
+        var growthChance = 1.0 / (1.0 + Math.Exp(-a * (totalPressure - b))) / antiPressure;
         return Math.Min(1, maxGrowChance * growthChance + minGrowChance);
     }
 
@@ -283,6 +285,14 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         return moistureWeight * Math.Clamp(1 - Math.Exp(-k * x), 0, 1);
     }
 
+    private double CropMaturityAntiPressure()
+    {
+        var maturity = CropStage() / CropFinalStage();
+        const double a = 12;  // steepness
+        const double b = 0.33; // midpoint
+        return Math.Max(0.5, cropMaturityWeight * 1.0 / (1.0 + Math.Exp(-a * (maturity - b))));
+    }
+
     private bool HasMulch()
     {
         var farmland = FarmlandEntity;
@@ -302,5 +312,18 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         if (weeds == null) return 0;
 
         return weeds.WeedLevel;
+    }
+
+    private int CropStage()
+    {
+        if (CropEntity?.Block is not BlockCrop crop) return 1;
+        int.TryParse(crop.LastCodePart(), out var result);
+        return result;
+    }
+
+    private int CropFinalStage()
+    {
+        if (CropEntity?.Block is not BlockCrop crop) return 1;
+        return crop.CropProps.GrowthStages;
     }
 }
