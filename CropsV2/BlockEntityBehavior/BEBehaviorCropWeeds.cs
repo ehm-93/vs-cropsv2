@@ -13,7 +13,6 @@ using Vintagestory.GameContent;
 namespace Ehm93.VintageStory.CropsV2;
 
 // TODO: weeds slow crop growth, later generations and earlier growth stages more affected
-// TODO: weeds slowly die if crops are mature
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
 {
@@ -188,19 +187,32 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     protected virtual void CheckGrowWeeds()
     {
         if (!(Api as ICoreServerAPI).World.IsFullyLoadedChunk(Pos)) return;
-
         double now = Api.World.Calendar.TotalHours;
-
-        if (HasMulch() || lastCheckTotalHours == 0)
-        {
-            lastCheckTotalHours = now;
-            return;
-        }
-
+        double roll = Api.World.Rand.NextDouble();
         double deltaDays = (now - lastCheckTotalHours) / 24.0;
         lastCheckTotalHours = now;
 
-        double roll = Api.World.Rand.NextDouble();
+        if (lastCheckTotalHours == 0)
+        {
+            // first check, just record timestamp and exit
+            return;
+        }
+        else if (0.66 < CropMaturity())
+        {
+            // if crops are mature they outcompete weeds and the weeds slowly die back
+            if (0 < weedLevel)
+            {
+                double witherProb = 1 - Math.Pow(1 - 0.5, deltaDays);
+                if (roll < witherProb) WeedLevel -= growth;
+            }
+            return;
+        }
+        else if (HasMulch())
+        {
+            // if crops are immature but the farmland is mulched then weeds will not grow
+            return;
+        }
+
         if (weedLevel == 0)
         {
             double sproutProb = 1 - Math.Pow(1 - WeedSproutChance(), deltaDays);
@@ -316,10 +328,9 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
     private double CropMaturityAntiPressure()
     {
-        var maturity = CropStage() / CropFinalStage();
         const double a = 12;  // steepness
         const double b = 0.33; // midpoint
-        return Math.Max(0.5, cropMaturityWeight * Sigmoid(maturity, b, a));
+        return Math.Max(0.5, cropMaturityWeight * Sigmoid(CropMaturity(), b, a));
     }
 
     private bool HasMulch()
@@ -341,6 +352,11 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         if (weeds == null) return 0;
 
         return weeds.WeedLevel;
+    }
+
+    private double CropMaturity()
+    {
+        return (double)CropStage() / CropFinalStage();
     }
 
     private int CropStage()
