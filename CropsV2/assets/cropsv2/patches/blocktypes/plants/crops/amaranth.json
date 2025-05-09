@@ -19,5 +19,12 @@
     "op": "add",
     "path": "/entityBehaviors",
     "value": [{ "name": "CropWeeds" }]
+  },
+  {
+    "file": "game:blocktypes/plant/crop/amaranth.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/cropProps/behaviors",
+    "value": [{ "name": "CropWeeds" }]
   }
 ]

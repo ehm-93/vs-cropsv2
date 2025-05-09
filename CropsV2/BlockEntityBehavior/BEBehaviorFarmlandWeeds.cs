@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
-using Vintagestory.API.Datastructures;
-using Vintagestory.API.MathTools;
-using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
@@ -30,6 +24,14 @@ class BEBehaviorFarmlandWeeds : BlockEntityBehavior
         if (behavior == null) return;
 
         var weedLevel = Math.Round(behavior.WeedLevel);
-        if (0 < weedLevel) dsc.AppendLine(Lang.Get("Weeds: {0}%", weedLevel));
+        if (0 < weedLevel) 
+        {
+            dsc.AppendLine(Lang.Get("Weeds: {0}%", weedLevel));
+            dsc.AppendLine(Lang.Get("Weed growth chance: {0}%", Math.Round(behavior.WeedGrowthChance(), 2)));
+        }
+        else 
+        {
+            dsc.AppendLine(Lang.Get("Weed sprout chance: {0}%", Math.Round(behavior.WeedSproutChance(), 2)));
+        }
     }
 }
