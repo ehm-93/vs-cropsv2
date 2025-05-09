@@ -191,14 +191,16 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         double now = Api.World.Calendar.TotalHours;
         double roll = Api.World.Rand.NextDouble();
         double deltaDays = (now - lastCheckTotalHours) / 24.0;
-        lastCheckTotalHours = now;
 
         if (lastCheckTotalHours == 0)
         {
             // first check, just record timestamp and exit
+            lastCheckTotalHours = now;
             return;
         }
-        else if (0.66 < CropMaturity())
+
+        lastCheckTotalHours = now;
+        if (0.66 < CropMaturity())
         {
             // if crops are mature they outcompete weeds and the weeds slowly die back
             if (0 < weedLevel)
