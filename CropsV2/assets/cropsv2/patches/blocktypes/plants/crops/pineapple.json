@@ -12,5 +12,19 @@
     "op": "add",
     "path": "/entityClass",
     "value": "BECropV2"
+  },
+  {
+    "file": "game:blocktypes/plant/crop/pineapple.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [{ "name": "CropWeeds" }]
+  },
+  {
+    "file": "game:blocktypes/plant/crop/pineapple.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/cropProps/behaviors",
+    "value": [{ "name": "CropWeeds" }]
   }
 ]

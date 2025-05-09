@@ -5,7 +5,6 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
-using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
@@ -150,7 +149,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         }
 
         Api.World.PlaySoundAt(
-            new AssetLocation("game:sounds/block/grass1"),
+            new AssetLocation("game:sounds/block/dirt1"),
             Pos.X + 0.5, Pos.Y + 0.5, Pos.Z + 0.5,
             byPlayer,
             randomizePitch: true,
@@ -215,22 +214,5 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         );
 
         return true;
-    }
-
-    private class DictTexSource : ITexPositionSource
-    {
-        private readonly Dictionary<string, TextureAtlasPosition> texMap;
-        private readonly Size2i atlasSize;
-
-        public DictTexSource(Dictionary<string, TextureAtlasPosition> texMap, Size2i atlasSize)
-        {
-            this.texMap = texMap;
-            this.atlasSize = atlasSize;
-        }
-
-        public Size2i AtlasSize => atlasSize;
-
-        public TextureAtlasPosition this[string textureCode] =>
-                texMap.TryGetValue(textureCode, out var pos) ? pos : null;
     }
 }
