@@ -8,7 +8,10 @@ class BlockEntityCropV2 : BlockEntity {
 
     public int Generation { 
         get { return generation; }
-        set { generation = value; }
+        set {
+            generation = value;
+            MarkDirty();
+        }
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)

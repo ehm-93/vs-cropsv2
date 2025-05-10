@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
@@ -34,7 +35,7 @@ class CBehaviorHoeWeeds : CollectibleBehavior
         if (behavior == null) return;
         
         var lvlBefore = behavior.WeedLevel;
-        behavior.WeedLevel -= 25;
+        behavior.WeedLevel -= HoeImpact();
         if (lvlBefore != behavior.WeedLevel)
         {
             Api.World.PlaySoundAt(
@@ -72,5 +73,22 @@ class CBehaviorHoeWeeds : CollectibleBehavior
         if (entity is BlockEntityFarmland) entity = Api.World.BlockAccessor.GetBlockEntity(pos.UpCopy());
         if (entity is not BlockEntityCropV2) return null;
         return entity.GetBehavior<BEBehaviorCropWeeds>();
+    }
+
+    private double HoeImpact()
+    {
+        return Hoe.Code.EndVariant() switch
+        {
+            "flint" => 15,
+            "obsidian" => 15,
+            "copper" => 20,
+            "tinbronze" => 25,
+            "bismuthbronze" => 25,
+            "blackbronze" => 25,
+            "iron" => 35,
+            "meteoriciron" => 35,
+            "steel" => 50,
+            _ => 10
+        };
     }
 }

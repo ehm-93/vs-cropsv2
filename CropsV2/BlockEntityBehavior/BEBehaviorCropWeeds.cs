@@ -12,7 +12,6 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// TODO: first tick has oddly high chance for weeds
 // TODO: color of weeds seems wrong?
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
@@ -22,16 +21,12 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     readonly private double maxGrowChance = 1;
     readonly private double minGrowChance = 0.01;
     readonly private double growth = 10;
-    readonly private double neighborWeight = 4;
-    readonly private double moistureWeight = 1;
-    readonly private double nutritionWeight = 2;
-    readonly private double tempWeight = 1;
-    readonly private double minCropMaturityAntiPressure = 0.5;
-    readonly private double cropMaturityWeight = 2;
+    private PressureProvider[] primaryPressure;
+    private NeighborPressureProvider neighborPressure;
+    private PressureProvider antiPressure;
     protected double weedLevel;
     protected double lastCheckTotalHours = 0;
     protected MeshData weedMesh;
-    IEnumerable<BlockPos> neighborPositions;
 
     public double WeedLevel {
         get { return weedLevel; }
@@ -72,18 +67,14 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
                 CropEntity.RegisterGameTickListener(Tick, 3900 + api.World.Rand.Next(200));
             }
         }
-        
-        neighborPositions = new BlockPos[]
-        {
-            Pos.NorthCopy(),
-            Pos.NorthCopy().EastCopy(),
-            Pos.EastCopy(),
-            Pos.SouthCopy().EastCopy(),
-            Pos.SouthCopy(),
-            Pos.SouthCopy().WestCopy(),
-            Pos.WestCopy(),
-            Pos.NorthCopy().WestCopy(),
+
+        primaryPressure = new PressureProvider[] {
+            new TemperaturePressureProvider(api, () => FarmlandEntity),
+            new MoisturePressureProvider(() => FarmlandEntity),
+            new NutrientPressureProvider(() => FarmlandEntity),
         };
+        neighborPressure = new NeighborPressureProvider(api, Blockentity.Pos);
+        antiPressure = new MaturityPressureProvider(FunctionUtils.MemoizeFor(TimeSpan.FromMinutes(1), CropMaturity));
 
         GenWeedMesh();
     }
@@ -150,7 +141,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
 
         var rotateY = Math.PI * GetJitterOffset(Pos, 0);
-        weedMesh.Rotate(new Vec3f(), 0, (float) rotateY, 0);
+        weedMesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, (float) rotateY, 0);
 
         var offsetX = GetJitterOffset(Pos, 1);
         var offsetZ = GetJitterOffset(Pos, 2);
@@ -230,23 +221,22 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
     public double WeedSproutChance()
     {
-        var maxPressure = (tempWeight + moistureWeight + nutritionWeight + neighborWeight) / minCropMaturityAntiPressure;
-        var totalPressure = TemperaturePressure() + MoisturePressure() + NutritionPressure() + NeighborPressure();
-        var antiPressure = CropMaturityAntiPressure();
-        const double a = 1.3;
-        var b = maxPressure / 2;
-        var sproutChance = Sigmoid(totalPressure / antiPressure, b, a);;
-        return Math.Min(1, maxSproutChance * sproutChance + minSproutChance);
+        if (HasMulch()) return 0;
+        var growChance = WeedGrowthChance();
+        if (FarmlandEntity.roomness > 0) growChance /= 2; // greenhouse
+        var spreadChance = neighborPressure.Value;
+        return Math.Clamp(1 - (1 - growChance) * (1 - spreadChance), minSproutChance, maxSproutChance);
     }
 
     public virtual double WeedGrowthChance()
     {
-        var maxPressure = (tempWeight + moistureWeight + nutritionWeight) / minCropMaturityAntiPressure;
-        var totalPressure = TemperaturePressure() + MoisturePressure() + NutritionPressure();
-        var antiPressure = CropMaturityAntiPressure();
+        if (HasMulch()) return 0;
+        var max = primaryPressure.Sum(i => i.Range.Max) / antiPressure.Range.Min;
+        var pro = primaryPressure.Sum(i => i.Value);
+        var anti = antiPressure.Value;
         const double a = 1.0;
-        var b = maxPressure / 2;
-        var growthChance = Sigmoid(totalPressure / antiPressure, b, a);
+        var b = max / 2;
+        var growthChance = FunctionUtils.Sigmoid(pro / anti, b, a);
         return Math.Min(1, maxGrowChance * growthChance + minGrowChance);
     }
 
@@ -272,70 +262,6 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         };
     }
 
-    private double NutritionPressure()
-    {
-        double nutrientSum = FarmlandEntity?.Nutrients.Sum() ?? 0;
-
-        // Normalize to [0, 1] based on a soft cap of 200 total nutrients
-        double x = GameMath.Clamp(nutrientSum / 200.0, 0, 1);
-
-        // Gentle sigmoid centered around 120 nutrients (x = 0.6)
-        const double a = 8.0;   // steepness
-        const double b = 0.6;   // midpoint
-
-        return nutritionWeight * Sigmoid(x, b, a);
-    }
-
-    private double NeighborPressure()
-    {
-        var weediness = neighborPositions.Sum(GetWeedLevel);
-
-        var x = Math.Clamp(weediness / 800, 0, 1);
-
-        // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
-        const double a = 12;  // steepness
-        const double b = 0.33; // midpoint
-        return neighborWeight * Sigmoid(weediness, b, a);
-    }
-
-    private double MoisturePressure()
-    {
-        double? moisture = FarmlandEntity?.MoistureLevel;
-        if (moisture == null) return 0;
-
-        double x = Math.Clamp(moisture.Value, 0, 1);
-
-        // Tuned so that at 15% moisture, pressure = 50%
-        const double k = 4.62;
-
-        return moistureWeight * Math.Clamp(1 - Math.Exp(-k * x), 0, 1);
-    }
-
-    private double TemperaturePressure()
-    {
-        float temp = Api.World.BlockAccessor.GetClimateAt(Pos, EnumGetClimateMode.NowValues).Temperature;
-
-        if (temp <= 0) return 0;
-
-        // Tunable parameters
-        const double lowThreshold = 10.0;    // Start of weed pressure
-        const double highThreshold = 40.0;   // End of weed pressure
-        const double kLow  = 0.2;            // Steepness of rise
-        const double kHigh = 0.6;            // Steepness of fall
-
-        // Apply windowed sigmoid curve
-        double pressure = Sigmoid(temp, lowThreshold, kLow) * (1.0 - Sigmoid(temp, highThreshold, kHigh));
-
-        return tempWeight * Math.Clamp(pressure, 0.0, 1.0);
-    }
-
-    private double CropMaturityAntiPressure()
-    {
-        const double a = 12;  // steepness
-        const double b = 0.33; // midpoint
-        return Math.Max(0.5, cropMaturityWeight * Sigmoid(CropMaturity(), b, a));
-    }
-
     private bool HasMulch()
     {
         var farmland = FarmlandEntity;
@@ -347,16 +273,6 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         return 0 < behavior.MulchLevel;
     }
 
-    private double GetWeedLevel(BlockPos pos)
-    {
-        if (Api.World.BlockAccessor.GetBlockEntity(pos) is not BlockEntityCropV2 entity) return 0;
-
-        var weeds = entity.GetBehavior<BEBehaviorCropWeeds>();
-        if (weeds == null) return 0;
-
-        return weeds.WeedLevel;
-    }
-
     private double CropMaturity()
     {
         return (double)CropStage() / CropFinalStage();
@@ -365,8 +281,8 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     private int CropStage()
     {
         if (CropEntity?.Block is not BlockCrop crop) return 1;
-        int.TryParse(crop.LastCodePart(), out var result);
-        return result;
+        if (int.TryParse(crop.LastCodePart(), out var result)) return result;
+        return 1;
     }
 
     private int CropFinalStage()
@@ -382,6 +298,186 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         return (float) (rand.NextDouble() - 0.5f) * 0.5f;
     }
 
-    private double Sigmoid(double x, double center, double k) =>
-        1.0 / (1.0 + Math.Exp(-k * (x - center)));
+    private interface PressureProvider
+    {
+        public double Value { get; }
+        public Range Range { get;}
+    }
+
+    private class TemperaturePressureProvider : PressureProvider
+    {
+        private readonly ICoreAPI api;
+        private readonly Func<BlockEntityFarmland> FarmlandEntity;
+
+        // Tunable parameters
+        private const double tempWeight = 1;
+        private const double LowThreshold = 12.0;
+        private const double HighThreshold = 30.0;
+        private const double KLow = 0.35;
+        private const double KHigh = 0.6;
+
+        private static readonly System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(1, -40, 60, x =>
+                tempWeight * FunctionUtils.Sigmoid(x, LowThreshold, KLow) * (1.0 - FunctionUtils.Sigmoid(x, HighThreshold, KHigh)));
+
+        public TemperaturePressureProvider(ICoreAPI api, Func<BlockEntityFarmland> FarmlandEntity)
+        {
+            this.api = api;
+            this.FarmlandEntity = FarmlandEntity;
+        }
+
+        public double Value
+        {
+            get
+            {
+                var farmland = FarmlandEntity();
+                if (farmland == null) return 0;
+                var temp = api.World.BlockAccessor.GetClimateAt(farmland.Pos, EnumGetClimateMode.NowValues).Temperature;
+                if (farmland.roomness > 0) temp += 5; // greenhouse
+                return CalculatePressure(temp);
+            }
+        }
+
+        public Range Range => new Range(0, tempWeight);
+    }
+
+    private class MoisturePressureProvider : PressureProvider
+    {
+        private const double moistureWeight = 1;
+
+        // Tuned so that at 15% moisture, pressure = 50%
+        private const double a = 0.25;
+        private const double b = 0.3;
+        
+        private readonly static System.Func<double, double> CalculatePressure =
+            FunctionUtils.MemoizeStepBounded(0.05, 0, 1, x => moistureWeight * FunctionUtils.Sigmoid(x, b, a));
+        
+        private readonly Func<BlockEntityFarmland> FarmlandEntity;
+
+        public MoisturePressureProvider(Func<BlockEntityFarmland> FarmlandEntity)
+        {
+            this.FarmlandEntity = FarmlandEntity;
+        }
+
+        public double Value
+        {
+            get
+            {
+                double? moisture = FarmlandEntity()?.MoistureLevel;
+                if (moisture == null) return 0;
+                return CalculatePressure((double)moisture);
+            }
+        }
+
+        public Range Range => new Range(0, moistureWeight);
+    }
+
+    private class NutrientPressureProvider : PressureProvider
+    {
+        private const double nutrientWeight = 2;
+
+        // Gentle sigmoid centered around 120 nutrients (x = 0.6)
+        private const double a = 8.0;   // steepness
+        private const double b = 0.5;   // midpoint
+
+        private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(1, 0, 240, x =>
+            nutrientWeight * FunctionUtils.Sigmoid(Math.Clamp(x / 240.0, 0, 1), b, a)
+        );
+
+        private Func<BlockEntityFarmland> FarmlandEntity;
+
+        public NutrientPressureProvider(Func<BlockEntityFarmland> FarmlandEntity)
+        {
+            this.FarmlandEntity = FarmlandEntity;
+        }
+
+        public double Value
+        {
+            get
+            {
+                double nutrientSum = FarmlandEntity()?.Nutrients?.Sum() ?? 0;
+                return CalculatePressure(Math.Clamp(nutrientSum, 0, 240));
+            }
+        }
+
+        public Range Range => new Range(0, nutrientWeight);
+    }
+
+    private class NeighborPressureProvider : PressureProvider
+    {
+        // weight should stay 1 while this is used as a probability (see WeedSproutChance)
+        private const double neighborWeight = 1;
+        // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
+        private const double a = 8;  // steepness
+        private const double b = 0.33; // midpoint
+        private readonly ICoreAPI Api;
+        private readonly IEnumerable<BlockPos> neighborPositions;
+        private readonly Func<double> Weediness;
+        
+        private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.05, 0, 1, x =>
+            x == 0 ? 0 : neighborWeight * FunctionUtils.Sigmoid(x, b, a)
+        );
+
+        public NeighborPressureProvider(ICoreAPI Api, BlockPos Pos)
+        {
+            this.Api = Api;
+            neighborPositions = new BlockPos[]
+            {
+                Pos.NorthCopy(),
+                Pos.NorthCopy().EastCopy(),
+                Pos.EastCopy(),
+                Pos.SouthCopy().EastCopy(),
+                Pos.SouthCopy(),
+                Pos.SouthCopy().WestCopy(),
+                Pos.WestCopy(),
+                Pos.NorthCopy().WestCopy(),
+            };
+            Weediness = FunctionUtils.MemoizeFor(TimeSpan.FromSeconds(10),
+                () => Math.Clamp(neighborPositions.Sum(GetWeedLevel) / 800, 0, 1));
+        }
+
+        public double Value
+        {
+            get
+            {
+                return CalculatePressure(Weediness());
+            }
+        }
+
+        public Range Range => new Range(0, neighborWeight);
+
+        private double GetWeedLevel(BlockPos pos)
+        {
+            if (Api.World.BlockAccessor.GetBlockEntity(pos) is not BlockEntityCropV2 entity) return 0;
+
+            var weeds = entity.GetBehavior<BEBehaviorCropWeeds>();
+            if (weeds == null) return 0;
+
+            return weeds.WeedLevel;
+        }
+    }
+
+    private class MaturityPressureProvider : PressureProvider
+    {
+        private const double minCropMaturityPressure = 0.25;
+        private const double cropMaturityWeight = 2;
+        private const double a = 6;  // steepness
+        private const double b = 0.66; // midpoint
+
+        private readonly Func<double> CropMaturity;
+        
+        private static readonly System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.05, 0, 1, x =>
+            Math.Max(0.5, cropMaturityWeight * FunctionUtils.Sigmoid(x, b, a))
+        );
+
+        public MaturityPressureProvider(Func<double> CropMaturity)
+        {
+            this.CropMaturity = CropMaturity;
+        }
+
+        public double Value => CalculatePressure(CropMaturity());
+
+        public Range Range => new Range(minCropMaturityPressure, cropMaturityWeight);
+    }
+
+    private readonly record struct Range(double Min, double Max);
 }
