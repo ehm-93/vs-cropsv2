@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
+
+// TODO: better hoe -> reduce weeds by more
 
 class CBehaviorHoeWeeds : CollectibleBehavior
 {
