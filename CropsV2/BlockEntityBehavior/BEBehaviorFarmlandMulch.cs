@@ -18,6 +18,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
     protected double lastMulchTotalHours = 0;
     protected double lastMulchTickTotalHours = 0;
     private double _mulchLevel = 0;
+    private readonly Func<bool> IsExposedToRain;
 
     public double MulchLevel {
         get => _mulchLevel;
@@ -43,6 +44,8 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         {
             throw new ArgumentException("Configuration error! FarmlandMulch behavior may only be used on farmland.");
         }
+
+        IsExposedToRain = FunctionUtils.MemoizeFor<bool>(TimeSpan.FromSeconds(60), DoIsExposedToRain);
     }
 
     public override void Initialize(ICoreAPI api, JsonObject properties)
@@ -124,7 +127,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         };
 
         // increase decay if raining
-        if (Api.World.BlockAccessor.GetClimateAt(Pos).Rainfall > 0.1)
+        if (IsExposedToRain() && Api.World.BlockAccessor.GetClimateAt(Pos).Rainfall > 0.1)
         {
             decayCoef *= 1.5;
         }
@@ -214,5 +217,11 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         );
 
         return true;
+    }
+
+    private bool DoIsExposedToRain()
+    {
+        int rainHeight = Api.World.BlockAccessor.GetRainMapHeightAt(Pos.X, Pos.Z);
+        return rainHeight <= Pos.Y;
     }
 }
