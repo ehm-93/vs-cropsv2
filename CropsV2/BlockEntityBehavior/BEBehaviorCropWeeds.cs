@@ -12,7 +12,6 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// TODO: first tick has oddly high chance for weeds
 // TODO: color of weeds seems wrong?
 
 class BEBehaviorCropWeeds : BlockEntityBehavior
@@ -150,7 +149,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
 
         var rotateY = Math.PI * GetJitterOffset(Pos, 0);
-        weedMesh.Rotate(new Vec3f(), 0, (float) rotateY, 0);
+        weedMesh.Rotate(new Vec3f(0.5f, 0, 0.5f), 0, (float) rotateY, 0);
 
         var offsetX = GetJitterOffset(Pos, 1);
         var offsetZ = GetJitterOffset(Pos, 2);
