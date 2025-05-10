@@ -69,7 +69,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         }
 
         primaryPressure = new PressureProvider[] {
-            new TemperaturePressureProvider(api, Blockentity.Pos),
+            new TemperaturePressureProvider(api, () => FarmlandEntity),
             new MoisturePressureProvider(() => FarmlandEntity),
             new NutrientPressureProvider(() => FarmlandEntity),
         };
@@ -222,6 +222,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     public double WeedSproutChance()
     {
         var growChance = WeedGrowthChance();
+        if (FarmlandEntity.roomness > 0) growChance /= 2; // greenhouse
         var spreadChance = neighborPressure.Value;
         return Math.Clamp(1 - (1 - growChance) * (1 - spreadChance), minSproutChance, maxSproutChance);
     }
@@ -278,8 +279,8 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     private int CropStage()
     {
         if (CropEntity?.Block is not BlockCrop crop) return 1;
-        int.TryParse(crop.LastCodePart(), out var result);
-        return result;
+        if (int.TryParse(crop.LastCodePart(), out var result)) return result;
+        return 1;
     }
 
     private int CropFinalStage()
@@ -304,7 +305,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     private class TemperaturePressureProvider : PressureProvider
     {
         private readonly ICoreAPI api;
-        private readonly BlockPos pos;
+        private readonly Func<BlockEntityFarmland> FarmlandEntity;
 
         // Tunable parameters
         private const double tempWeight = 1;
@@ -316,17 +317,20 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
         private static readonly System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(1, -40, 60, x =>
                 tempWeight * FunctionUtils.Sigmoid(x, LowThreshold, KLow) * (1.0 - FunctionUtils.Sigmoid(x, HighThreshold, KHigh)));
 
-        public TemperaturePressureProvider(ICoreAPI api, BlockPos pos)
+        public TemperaturePressureProvider(ICoreAPI api, Func<BlockEntityFarmland> FarmlandEntity)
         {
             this.api = api;
-            this.pos = pos;
+            this.FarmlandEntity = FarmlandEntity;
         }
 
         public double Value
         {
             get
             {
-                float temp = api.World.BlockAccessor.GetClimateAt(pos, EnumGetClimateMode.NowValues).Temperature;
+                var farmland = FarmlandEntity();
+                if (farmland == null) return 0;
+                var temp = api.World.BlockAccessor.GetClimateAt(farmland.Pos, EnumGetClimateMode.NowValues).Temperature;
+                if (farmland.roomness > 0) temp += 5; // greenhouse
                 return CalculatePressure(temp);
             }
         }
