@@ -6,8 +6,6 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// TODO: better hoe -> reduce weeds by more
-
 class CBehaviorHoeWeeds : CollectibleBehavior
 {
     protected ICoreAPI Api;
@@ -37,7 +35,7 @@ class CBehaviorHoeWeeds : CollectibleBehavior
         if (behavior == null) return;
         
         var lvlBefore = behavior.WeedLevel;
-        behavior.WeedLevel -= 25;
+        behavior.WeedLevel -= HoeImpact();
         if (lvlBefore != behavior.WeedLevel)
         {
             Api.World.PlaySoundAt(
@@ -75,5 +73,22 @@ class CBehaviorHoeWeeds : CollectibleBehavior
         if (entity is BlockEntityFarmland) entity = Api.World.BlockAccessor.GetBlockEntity(pos.UpCopy());
         if (entity is not BlockEntityCropV2) return null;
         return entity.GetBehavior<BEBehaviorCropWeeds>();
+    }
+
+    private double HoeImpact()
+    {
+        return Hoe.Code.EndVariant() switch
+        {
+            "flint" => 15,
+            "obsidian" => 15,
+            "copper" => 20,
+            "tinbronze" => 25,
+            "bismuthbronze" => 25,
+            "blackbronze" => 25,
+            "iron" => 35,
+            "meteoriciron" => 35,
+            "steel" => 50,
+            _ => 10
+        };
     }
 }
