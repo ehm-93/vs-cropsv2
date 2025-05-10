@@ -10,7 +10,7 @@ public class CropsV2ModSystem : ModSystem
   public override void Start(ICoreAPI api)
   {
     base.Start(api);
-    OverrideDefaultRecoverySpeed(api);
+    CropsV2Commands.Register(api);
     RegisterTypes(api);
     HarmonyPatch(api);
   }
@@ -29,14 +29,6 @@ public class CropsV2ModSystem : ModSystem
     api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
     api.RegisterCollectibleBehaviorClass("HoeWeeds", typeof(CBehaviorHoeWeeds));
-  }
-
-  private void OverrideDefaultRecoverySpeed(ICoreAPI api)
-  {
-    if (api.World.Config.TryGetFloat("fertilityRecoverySpeed") == null)
-    {
-      api.World.Config.SetFloat("fertilityRecoverySpeed", 0.05f);
-    }
   }
 
   private void HarmonyPatch(ICoreAPI api)
