@@ -221,6 +221,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
     public double WeedSproutChance()
     {
+        if (HasMulch()) return 0;
         var growChance = WeedGrowthChance();
         if (FarmlandEntity.roomness > 0) growChance /= 2; // greenhouse
         var spreadChance = neighborPressure.Value;
@@ -229,6 +230,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
 
     public virtual double WeedGrowthChance()
     {
+        if (HasMulch()) return 0;
         var max = primaryPressure.Sum(i => i.Range.Max) / antiPressure.Range.Min;
         var pro = primaryPressure.Sum(i => i.Value);
         var anti = antiPressure.Value;
