@@ -18,15 +18,21 @@ public class BlockCropV2 : BlockCrop
         float yieldMultiplier = GetYieldMultiplier(gen);
         foreach (var drop in drops)
         {
-            // don't reduce count for seeds
-            if (drop.Item is ItemPlantableSeed)
+            // Use a clamped multiplier for seeds to avoid yield loss
+            float effectiveMultiplier = (drop.Item is ItemPlantableSeed)
+                ? Math.Max(yieldMultiplier, 1f)
+                : yieldMultiplier;
+
+            double scaled = effectiveMultiplier * drop.StackSize;
+            int baseAmount = (int)Math.Floor(scaled);
+            double fractional = scaled - baseAmount;
+
+            if (world.Rand.NextDouble() < fractional)
             {
-                drop.StackSize = (int) (Math.Max(yieldMultiplier, 1) * drop.StackSize);
+                baseAmount += 1;
             }
-            else
-            {
-                drop.StackSize = (int) (yieldMultiplier * drop.StackSize);
-            }
+
+            drop.StackSize = baseAmount;
         }
 
         var nextGen = gen;
