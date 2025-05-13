@@ -20,6 +20,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     protected double lastCheckTotalHours = 0;
     protected MeshData mesh;
     protected Dictionary<int, Dictionary<string, string>> texturePrefixByStage;
+    protected SimpleParticleProperties blightParticles;
 
     public double BlightLevel
     {
@@ -51,15 +52,22 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
+
+        InitParticles();
+
         if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
-            CropEntity.RegisterGameTickListener(Tick, 3900 + api.World.Rand.Next(200));
+            CropEntity.RegisterGameTickListener(ServerTick, 3900 + api.World.Rand.Next(200));
+        }
+        if (api is ICoreClientAPI)
+        {
+            CropEntity.RegisterGameTickListener(ClientTick, 400 + api.World.Rand.Next(200));
         }
 
         texturePrefixByStage = properties["texturePrefixByStage"]
             ?.AsObject<Dictionary<string, Dictionary<string, string>>>()
             ?.ToDictionary(kvp => int.Parse(kvp.Key), kvp => kvp.Value);
-        
+  
         GenMesh();
     }
 
@@ -154,9 +162,22 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         return new DictTexSource(texMap, capi.BlockTextureAtlas.Size);
     }
 
-    protected virtual void Tick(float df)
+    protected virtual void ServerTick(float df)
     {
         CheckBlight();
+    }
+
+    protected virtual void ClientTick(float df)
+    {
+        if (blightLevel > 0)
+        {
+            blightParticles.MinPos = Blockentity.Pos.ToVec3d();
+            blightParticles.AddPos.Set(1, 0.0, 1); // spread around
+            blightParticles.MinQuantity = (float) Math.Ceiling(blightLevel / 20);
+            blightParticles.AddQuantity = (float) Math.Ceiling(blightLevel / 50);
+
+            Api.World.SpawnParticles(blightParticles);
+        }
     }
 
     protected virtual void CheckBlight()
@@ -194,5 +215,32 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         if (CropEntity?.Block is not BlockCrop crop) return 1;
         if (int.TryParse(crop.LastCodePart(), out var result)) return result;
         return 1;
+    }
+
+    private void InitParticles()
+    {
+        if (Api is not ICoreClientAPI capi) return;
+        var pos = Pos.ToVec3d();
+        blightParticles = new SimpleParticleProperties(
+            1f, 1f,
+            ColorUtil.ToRgba(90, 120, 40, 20),
+            new Vec3d(), new Vec3d(), // real position set per tick
+            new Vec3f(-0.03f, 0.05f, -0.03f),
+            new Vec3f(0.03f, 1f, 0.03f),
+            1.5f, 0.01f, 0.1f, 0.25f
+        )
+        {
+            MinSize = 0.3f,
+            MaxSize = 0.5f,
+            GravityEffect = 0.01f,
+            WindAffected = true,
+            WindAffectednes = 0.6f,
+            ShouldDieInAir = false,
+            ShouldDieInLiquid = true,
+            SelfPropelled = false,
+            SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.LINEAR, -0.05f),
+            OpacityEvolve = EvolvingNatFloat.create(EnumTransformFunction.LINEAR, -0.2f),
+            ParticleModel = EnumParticleModel.Cube
+        };
     }
 }
