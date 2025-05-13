@@ -4,6 +4,10 @@
     "side": "Server",
     "op": "add",
     "path": "/entityBehaviors",
-    "value": [{ "name": "FarmlandMulch" }, { "name": "FarmlandWeeds" }]
+    "value": [
+      { "name": "FarmlandMulch" },
+      { "name": "FarmlandWeeds" },
+      { "name": "FarmlandBlight" }
+    ]
   }
 ]

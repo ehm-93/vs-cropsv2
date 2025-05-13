@@ -1,0 +1,198 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Vintagestory.API.Client;
+using Vintagestory.API.Common;
+using Vintagestory.API.Config;
+using Vintagestory.API.Datastructures;
+using Vintagestory.API.MathTools;
+using Vintagestory.API.Server;
+using Vintagestory.API.Util;
+using Vintagestory.GameContent;
+
+namespace Ehm93.VintageStory.CropsV2;
+
+class BEBehaviorCropBlight : BlockEntityBehavior
+{
+    protected double blightLevel = 0;
+    protected double lastCheckTotalHours = 0;
+    protected MeshData mesh;
+    protected Dictionary<int, Dictionary<string, string>> texturePrefixByStage;
+
+    public double BlightLevel
+    {
+        get { return blightLevel; }
+        set
+        {
+            var clamped = Math.Clamp(value, 0, 100);
+            if (blightLevel == clamped) return;
+            blightLevel = clamped;
+            GenMesh();
+            CropEntity.MarkDirty(redrawOnClient: true);
+            FarmlandEntity.MarkDirty(redrawOnClient: true);
+        }
+    }
+
+    public int BlightTier => (int)Math.Clamp(Math.Ceiling(BlightLevel / 20), 0, 5); // 0–5 tier scale
+
+    public BlockEntityFarmland FarmlandEntity => Api.World.BlockAccessor
+        .GetBlockEntity(Pos.DownCopy()) as BlockEntityFarmland;
+
+    public BlockEntityCropV2 CropEntity => (BlockEntityCropV2)Blockentity;
+
+    public BEBehaviorCropBlight(BlockEntity blockentity) : base(blockentity)
+    {
+        if (blockentity is not BlockEntityCropV2)
+            throw new ArgumentException("Configuration error! CropBlight behavior may only be used on crops.");
+    }
+
+    public override void Initialize(ICoreAPI api, JsonObject properties)
+    {
+        base.Initialize(api, properties);
+        if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
+        {
+            CropEntity.RegisterGameTickListener(Tick, 3900 + api.World.Rand.Next(200));
+        }
+
+        texturePrefixByStage = properties["texturePrefixByStage"]
+            ?.AsObject<Dictionary<string, Dictionary<string, string>>>()
+            ?.ToDictionary(kvp => int.Parse(kvp.Key), kvp => kvp.Value);
+        
+        GenMesh();
+    }
+
+    public override void ToTreeAttributes(ITreeAttribute tree)
+    {
+        base.ToTreeAttributes(tree);
+        tree.SetDouble("blightLevel", blightLevel);
+        tree.SetDouble("lastCheckTotalHours", lastCheckTotalHours);
+    }
+
+    public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
+    {
+        base.FromTreeAttributes(tree, worldAccessForResolve);
+        blightLevel = tree.TryGetDouble("blightLevel") ?? 0;
+        lastCheckTotalHours = tree.TryGetDouble("lastCheckTotalHours") ?? 0;
+        GenMesh();
+    }
+
+    public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
+    {
+        base.GetBlockInfo(forPlayer, dsc);
+        var rounded = Math.Round(blightLevel);
+        if (rounded > 0) dsc.AppendLine(Lang.Get("Blight: {0}%", rounded));
+    }
+
+    public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
+    {
+        // copy on read to avoid concurrent mutation
+        var currentMesh = mesh;
+        if (currentMesh == null) return false;
+        mesher.AddMeshData(currentMesh);
+        return true;
+    }
+
+    public virtual void OnExchange()
+    {
+        GenMesh();
+    }
+
+    protected virtual void GenMesh()
+    {
+        if (Api is not ICoreClientAPI capi) return;
+
+        if (BlightTier == 0)
+        {
+            mesh = null;
+            return;
+        }
+
+        // Get the block this crop currently represents
+        Block block = CropEntity.Block;
+        if (block == null || block.Shape == null) return;
+
+        // Load the shape asset dynamically
+        var shapeAsset = capi.Assets.TryGet(block.Shape.Base)?.ToObject<Shape>();
+        if (shapeAsset == null)
+            shapeAsset = capi.Assets.TryGet(new AssetLocation($"{block.Shape.Base.Domain}:shapes/{block.Shape.Base.Path}.json"))?.ToObject<Shape>();
+        if (shapeAsset == null) return;
+
+        // Clone and strip texture assignments (they come from texSource)
+        var shape = shapeAsset.Clone();
+
+        var texLocations = InferTextureLocations(shape);
+
+        shape.Textures = null;
+
+        ITexPositionSource texSource = BlightTextureSource(capi, texLocations);
+
+        capi.Tesselator.TesselateShape(
+            new TesselationMetaData
+            {
+                TexSource = texSource,
+                TypeForLogging = "blighted crop",
+                ClimateColorMapId = 1,
+                SeasonColorMapId = 1
+            },
+            shape,
+            out mesh
+        );
+    }
+
+    protected virtual ITexPositionSource BlightTextureSource(ICoreClientAPI capi, Dictionary<string, AssetLocation> texLocations)
+    {
+        var texMap = new Dictionary<string, TextureAtlasPosition>();
+
+        foreach (var pair in texLocations)
+        {
+            capi.BlockTextureAtlas.GetOrInsertTexture(pair.Value, out _, out TextureAtlasPosition texPos);
+            texMap[pair.Key] = texPos;
+        }
+
+        return new DictTexSource(texMap, capi.BlockTextureAtlas.Size);
+    }
+
+    protected virtual void Tick(float df)
+    {
+        CheckBlight();
+    }
+
+    protected virtual void CheckBlight()
+    {
+        // TODO: Infection logic
+    }
+
+    private Dictionary<string, AssetLocation> InferTextureLocations(Shape shape)
+    {
+        var texLocations = new Dictionary<string, AssetLocation>();
+
+        // Step 1: Pull all texture codes used in shape
+        if (shape.Textures != null)
+        {
+            foreach (var pair in shape.Textures)
+            {
+                texLocations[pair.Key] = new AssetLocation($"cropsv2:{pair.Value.Path}-blight{BlightTier}");
+            }
+        }
+
+        // Step 2: Allow override from patch file
+        if (texturePrefixByStage != null && texturePrefixByStage.TryGetValue(CropStage(), out var texturePrefix))
+        {
+            foreach (var pair in texturePrefix)
+            {
+                texLocations[pair.Key] = new AssetLocation($"{pair.Value}-blight{BlightTier}");
+            }
+        }
+
+        return texLocations;
+    }
+
+    private int CropStage()
+    {
+        if (CropEntity?.Block is not BlockCrop crop) return 1;
+        if (int.TryParse(crop.LastCodePart(), out var result)) return result;
+        return 1;
+    }
+}

@@ -3,7 +3,7 @@ using Vintagestory.API.Datastructures;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BlockEntityCropV2 : BlockEntity {
+public class BlockEntityCropV2 : BlockEntity {
     private int generation = 0;
 
     public int Generation { 
@@ -24,5 +24,11 @@ class BlockEntityCropV2 : BlockEntity {
     {
         base.FromTreeAttributes(tree, worldAccessForResolve);
         generation = tree.GetInt("generation", 0);
+    }
+
+    public override void OnExchanged(Block block)
+    {
+        base.OnExchanged(block);
+        GetBehavior<BEBehaviorCropBlight>()?.OnExchange();
     }
 }
