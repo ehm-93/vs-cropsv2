@@ -113,13 +113,13 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         var inoculumWeight = inoculumPressure.Select(i => i.Weight).Sum();
         var inoculumRisk = inoculumPressure.Sum(i => i.Weight * i.Pressure.Value) / inoculumWeight;
 
-        var susceptibilityRisk = susceptibilityPressure.Select(i => Math.Pow(1 - i.Pressure.Value, i.Weight)).Aggregate((a, b) => a * b);
+        var susceptibilityRisk = susceptibilityPressure.Select(i => Math.Pow(i.Pressure.Value, i.Weight)).Aggregate((a, b) => a * b);
 
         var totalRisk = Math.Pow(inoculumRisk, 0.9) * Math.Pow(susceptibilityRisk, 0.1);
 
         var coef = InGreenhouse() ? 2 : 1;
 
-        return FunctionUtils.Sigmoid(coef * totalRisk, 0.66, 8);
+        return totalRisk == 0 ? 0 : FunctionUtils.Sigmoid(coef * totalRisk, 0.33, 12);
     }
 
     protected virtual void GenMesh()
@@ -197,9 +197,15 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     protected virtual void CheckBlight()
     {
+        if (lastCheckTotalHours == 0)
+        {
+            lastCheckTotalHours = Api.World.Calendar.TotalHours;
+            return;
+        }
+
         var now = Api.World.Calendar.TotalHours;
         var deltaDays = (now - lastCheckTotalHours) / Api.World.Calendar.HoursPerDay;
-        lastCheckTotalHours = now;
+        lastCheckTotalHours = Api.World.Calendar.TotalHours;
         
         var chance =  1 - Math.Pow(1 - OutbreakChance(), deltaDays);
         var roll = Api.World.Rand.NextDouble();
@@ -213,17 +219,17 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     {
         inoculumPressure = new (double, IPressureProvider)[]
         {
-            (1.0, new NeighborPressureProvider(Api, Pos)),
-            (1.0, new HistoryPressureProvider()),
-            (1.0, new SporePressureProvider()),
+            (0.4, new NeighborPressureProvider(Api, Pos)),
+            (0.4, new HistoryPressureProvider()),
+            (0.2, new SporePressureProvider()),
         };
         susceptibilityPressure = new (double, IPressureProvider)[]
         {
-            (1.0, new TemperaturePressureProvider(Api.World, Pos)),
-            (1.0, new MoisturePressureProvider(FarmlandEntity)),
-            (1.0, new MulchPresureProvider(Api, Pos)),
-            (1.0, new GenerationPressureProvider(CropEntity)),
-            (1.0, new WeedPressureProvider(Api, Pos)),
+            (0.15, new TemperaturePressureProvider(Api.World, Pos)),
+            (0.15, new MoisturePressureProvider(FarmlandEntity)),
+            (0.05, new MulchPresureProvider(Api, Pos)),
+            (0.6, new GenerationPressureProvider(CropEntity)),
+            (0.05, new WeedPressureProvider(Api, Pos)),
         };
     }
 
@@ -306,12 +312,12 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     {
         // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
         private const double a = 16;  // steepness
-        private const double b = 0.15; // midpoint
+        private const double b = 0.08; // midpoint
         private readonly ICoreAPI Api;
         private readonly IEnumerable<BlockPos> neighborPositions;
         private readonly Func<double> Blightness;
         
-        private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.05, 0, 1, x =>
+        private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.01, 0, 1, x =>
             x == 0 ? 0 : FunctionUtils.Sigmoid(x, b, a)
         );
 
@@ -482,13 +488,13 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         {
             get
             {
-                var blockEntity = Api.World.BlockAccessor.GetBlockEntity(Pos) as BlockEntityFarmland;
+                var blockEntity = Api.World.BlockAccessor.GetBlockEntity(Pos.DownCopy()) as BlockEntityFarmland;
                 if (blockEntity == null) return 0;
 
                 var mulchBehavior = blockEntity.GetBehavior<BEBehaviorFarmlandMulch>();
                 if (mulchBehavior == null) return 0;
 
-                double mulchLevel = mulchBehavior.MulchLevel;
+                double mulchLevel = Math.Max(0.1, mulchBehavior.MulchLevel);
 
                 // Normalize to 0–1, apply quadratic ramp
                 double norm = Math.Clamp(mulchLevel / 100.0, 0, 1);
@@ -506,7 +512,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
                 step: 0.05,
                 minInclusive: 0,
                 maxInclusive: 1,
-                fn: x => FunctionUtils.Sigmoid(x, 0.5, 8)
+                fn: x => FunctionUtils.Sigmoid(x, 0.6, 12)
             );
 
         public GenerationPressureProvider(BlockEntityCropV2 cropEntity)

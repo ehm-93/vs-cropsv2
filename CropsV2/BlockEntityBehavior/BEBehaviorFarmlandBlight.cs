@@ -30,7 +30,7 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
         }
         else 
         {
-            var chance = Math.Round(behavior.OutbreakChance());
+            var chance = Math.Round(behavior.OutbreakChance() * 100);
             if (0 < chance) dsc.AppendLine(Lang.Get("Blight risk: {0}%", chance));
         }
     }
