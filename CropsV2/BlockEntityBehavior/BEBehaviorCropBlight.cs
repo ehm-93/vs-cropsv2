@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
@@ -220,7 +221,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         inoculumPressure = new (double, IPressureProvider)[]
         {
             (0.4, new NeighborPressureProvider(Api, Pos)),
-            (0.4, new HistoryPressureProvider()),
+            (0.4, new HistoryPressureProvider(this)),
             (0.2, new SporePressureProvider()),
         };
         susceptibilityPressure = new (double, IPressureProvider)[]
@@ -304,8 +305,44 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private class HistoryPressureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private const double MaxExposureYears = 3.0;
+        private const double SigmoidDeadZone = 0.33;
+        private const double SigmoidMidpoint = 0.66;
+        private const double SigmoidSharpness = 16;
+
+        private readonly BEBehaviorCropBlight blight;
+
+        private static readonly System.Func<double, double> PressureCurve = FunctionUtils.MemoizeStepBounded(
+            0.01, 0, 1,
+            x => x < SigmoidDeadZone ? 0 : FunctionUtils.Sigmoid(x, SigmoidMidpoint, SigmoidSharpness)
+        );
+
+        public HistoryPressureProvider(BEBehaviorCropBlight cropBlight)
+        {
+            this.blight = cropBlight;
+        }
+
+        public double Value
+        {
+            get
+            {
+                var farmland = blight.FarmlandEntity;
+                if (farmland == null) return 0;
+
+                var behavior = farmland.GetBehavior<BEBehaviorFarmlandBlight>();
+                if (behavior == null) return 0;
+
+                var crop = blight.CropEntity?.Block;
+                if (crop == null) return 0;
+
+                double exposure = behavior.ExposureHours(crop);
+                double maxExposure = MaxExposureYears * blight.Api.World.Calendar.DaysPerYear * blight.Api.World.Calendar.HoursPerDay;
+
+                double normalized = GameMath.Clamp(exposure / maxExposure, 0, 1);
+
+                return PressureCurve(normalized);
+            }
+        }
     }
 
     private class NeighborPressureProvider : IPressureProvider
