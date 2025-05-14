@@ -223,7 +223,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
             (1.0, new MoisturePressureProvider()),
             (1.0, new MulchPresureProvider()),
             (1.0, new GenerationPressureProvider()),
-            (1.0, new WeedPressureProvider()),
+            (1.0, new WeedPressureProvider(Api, Pos)),
         };
     }
 
@@ -303,7 +303,8 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     }
 
     private class NeighborPressureProvider : IPressureProvider
-    {// Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
+    {
+        // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
         private const double a = 8;  // steepness
         private const double b = 0.33; // midpoint
         private readonly ICoreAPI Api;
@@ -377,9 +378,38 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private class WeedPressureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private readonly ICoreAPI Api;
+        private readonly BlockPos Pos;
+
+        // Tunables
+        private const double maxWeedLevel = 100.0;
+        private const double midpoint = 0.5;   // 50% weed level
+        private const double steepness = 8;    // Sigmoid steepness
+
+        private static readonly System.Func<double, double> WeedToPressure = FunctionUtils.MemoizeStepBounded(
+            1, 0, maxWeedLevel,
+            x => FunctionUtils.Sigmoid(x / maxWeedLevel, midpoint, steepness)
+        );
+
+        public WeedPressureProvider(ICoreAPI api, BlockPos pos)
+        {
+            Api = api;
+            Pos = pos;
+        }
+
+        public double Value
+        {
+            get
+            {
+                var be = Api.World.BlockAccessor.GetBlockEntity(Pos) as BlockEntityCropV2;
+                var weedBehavior = be?.GetBehavior<BEBehaviorCropWeeds>();
+                if (weedBehavior == null) return 0;
+
+                return WeedToPressure(weedBehavior.WeedLevel);
+            }
+        }
     }
+
 
     private class MoisturePressureProvider : IPressureProvider
     {
