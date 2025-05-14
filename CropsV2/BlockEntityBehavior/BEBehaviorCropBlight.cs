@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +8,6 @@ using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
-using Vintagestory.API.Util;
 using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
@@ -21,6 +19,8 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     protected MeshData mesh;
     protected Dictionary<int, Dictionary<string, string>> texturePrefixByStage;
     protected SimpleParticleProperties blightParticles;
+    protected (double Weight, IPressureProvider Pressure)[] inoculumPressure;
+    protected (double Weight, IPressureProvider Pressure)[] susceptibilityPressure;
 
     public double BlightLevel
     {
@@ -53,7 +53,8 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     {
         base.Initialize(api, properties);
 
-        InitParticles();
+        InitParticles();;
+        InitPressureProviders();
 
         if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
@@ -105,6 +106,20 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     public virtual void OnExchange()
     {
         GenMesh();
+    }
+
+    public virtual double OutbreakChance()
+    {
+        var inoculumWeight = inoculumPressure.Select(i => i.Weight).Sum();
+        var inoculumRisk = inoculumPressure.Sum(i => i.Weight * i.Pressure.Value) / inoculumWeight;
+
+        var susceptibilityRisk = susceptibilityPressure.Select(i => Math.Pow(1 - i.Pressure.Value, i.Weight)).Aggregate((a, b) => a * b);
+
+        var totalRisk = 1 - (1 - inoculumRisk) * (1 - susceptibilityRisk);
+
+        var coef = InGreenhouse() ? 2 : 1;
+
+        return FunctionUtils.Sigmoid(coef * totalRisk, 0.66, 8);
     }
 
     protected virtual void GenMesh()
@@ -182,7 +197,39 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     protected virtual void CheckBlight()
     {
-        // TODO: Infection logic
+        var now = Api.World.Calendar.TotalHours;
+        var deltaDays = (now - lastCheckTotalHours) / Api.World.Calendar.HoursPerDay;
+        lastCheckTotalHours = now;
+        
+        var chance =  1 - Math.Pow(1 - OutbreakChance(), deltaDays);
+        var roll = Api.World.Rand.NextDouble();
+        if (roll < chance)
+        {
+            BlightLevel += 10 + BlightLevel / 2;
+        }
+    }
+
+    protected virtual void InitPressureProviders()
+    {
+        inoculumPressure = new (double, IPressureProvider)[]
+        {
+            (1.0, new NeighborPressureProvider()),
+            (1.0, new HistoryPressureProvider()),
+            (1.0, new SporePressureProvider()),
+        };
+        susceptibilityPressure = new (double, IPressureProvider)[]
+        {
+            (1.0, new TemperaturePressreProvider()),
+            (1.0, new MoisturePressureProvider()),
+            (1.0, new MulchPresureProvider()),
+            (1.0, new GenerationPressureProvider()),
+            (1.0, new WeedPressureProvider()),
+        };
+    }
+
+    private bool InGreenhouse()
+    {
+        return FarmlandEntity.roomness > 0;
     }
 
     private Dictionary<string, AssetLocation> InferTextureLocations(Shape shape)
@@ -242,5 +289,58 @@ class BEBehaviorCropBlight : BlockEntityBehavior
             OpacityEvolve = EvolvingNatFloat.create(EnumTransformFunction.LINEAR, -0.2f),
             ParticleModel = EnumParticleModel.Cube
         };
+    }
+
+    protected interface IPressureProvider
+    {
+        public double Value { get; }
+    }
+
+    private class HistoryPressureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class NeighborPressureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class SporePressureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class WeedPressureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class MoisturePressureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class TemperaturePressreProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class MulchPresureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
+    }
+
+    private class GenerationPressureProvider : IPressureProvider
+    {
+        // todo
+        public double Value => 0;
     }
 }
