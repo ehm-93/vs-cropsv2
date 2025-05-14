@@ -219,7 +219,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         };
         susceptibilityPressure = new (double, IPressureProvider)[]
         {
-            (1.0, new TemperaturePressreProvider()),
+            (1.0, new TemperaturePressureProvider(Api.World, Pos)),
             (1.0, new MoisturePressureProvider(FarmlandEntity)),
             (1.0, new MulchPresureProvider()),
             (1.0, new GenerationPressureProvider()),
@@ -435,10 +435,36 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         }
     }
 
-    private class TemperaturePressreProvider : IPressureProvider
+    private class TemperaturePressureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private readonly IWorldAccessor world;
+        private readonly BlockPos pos;
+
+        public TemperaturePressureProvider(IWorldAccessor world, BlockPos pos)
+        {
+            this.world = world;
+            this.pos = pos;
+        }
+
+        public double Value
+        {
+            get
+            {
+                double temp = world.BlockAccessor.GetClimateAt(pos, EnumGetClimateMode.NowValues).Temperature;
+
+                // Ideal blight temperature = 20°C ± 5°C
+                double ideal = 25.0;
+                double spread = 10.0;
+
+                // Normalize deviation from ideal
+                double deviation = (temp - ideal) / spread;
+
+                // Gaussian-shaped curve: max at ideal, drops off with distance
+                double pressure = Math.Exp(-deviation * deviation);
+
+                return Math.Clamp(pressure, 0, 1);
+            }
+        }
     }
 
     private class MulchPresureProvider : IPressureProvider
