@@ -53,7 +53,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     {
         base.Initialize(api, properties);
 
-        InitParticles();;
+        InitParticles();
         InitPressureProviders();
 
         if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
@@ -115,7 +115,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
         var susceptibilityRisk = susceptibilityPressure.Select(i => Math.Pow(1 - i.Pressure.Value, i.Weight)).Aggregate((a, b) => a * b);
 
-        var totalRisk = 1 - (1 - inoculumRisk) * (1 - susceptibilityRisk);
+        var totalRisk = Math.Pow(inoculumRisk, 0.9) * Math.Pow(susceptibilityRisk, 0.1);
 
         var coef = InGreenhouse() ? 2 : 1;
 
@@ -213,7 +213,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     {
         inoculumPressure = new (double, IPressureProvider)[]
         {
-            (1.0, new NeighborPressureProvider()),
+            (1.0, new NeighborPressureProvider(Api, Pos)),
             (1.0, new HistoryPressureProvider()),
             (1.0, new SporePressureProvider()),
         };
@@ -303,9 +303,70 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     }
 
     private class NeighborPressureProvider : IPressureProvider
-    {
-        // todo
-        public double Value => 0;
+    {// Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
+        private const double a = 8;  // steepness
+        private const double b = 0.33; // midpoint
+        private readonly ICoreAPI Api;
+        private readonly IEnumerable<BlockPos> neighborPositions;
+        private readonly Func<double> Blightness;
+        
+        private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.05, 0, 1, x =>
+            x == 0 ? 0 : FunctionUtils.Sigmoid(x, b, a)
+        );
+
+        public NeighborPressureProvider(ICoreAPI Api, BlockPos Pos, int d = 2)
+        {
+            this.Api = Api;
+
+            // Build a 2D square of positions around the crop
+            var offsets = new List<BlockPos>();
+            for (int dx = -1 * d; dx <= d; dx++)
+            {
+                for (int dz = -1 * d; dz <= d; dz++)
+                {
+                    if (dx == 0 && dz == 0) continue; // Skip self
+                    offsets.Add(Pos.AddCopy(dx, 0, dz));
+                }
+            }
+
+            neighborPositions = offsets;
+
+            Blightness = FunctionUtils.MemoizeFor(TimeSpan.FromSeconds(30),
+                () =>
+                {
+                    double totalBlight = 0;
+                    double totalWeight = 0;
+
+                    foreach (var pos in neighborPositions)
+                    {
+                        double dist = pos.DistanceTo(Pos); // Euclidean distance
+                        double weight = 1 / Math.Max(dist, 1); // Avoid division by 0
+                        totalBlight += GetBlightLevel(pos) * weight;
+                        totalWeight += weight;
+                    }
+
+                    return totalBlight / (totalWeight * 100);
+                }
+            );
+        }
+
+        public double Value
+        {
+            get
+            {
+                return CalculatePressure(Blightness());
+            }
+        }
+
+        private double GetBlightLevel(BlockPos pos)
+        {
+            if (Api.World.BlockAccessor.GetBlockEntity(pos) is not BlockEntityCropV2 entity) return 0;
+
+            var weeds = entity.GetBehavior<BEBehaviorCropBlight>();
+            if (weeds == null) return 0;
+
+            return weeds.BlightLevel;
+        }
     }
 
     private class SporePressureProvider : IPressureProvider
