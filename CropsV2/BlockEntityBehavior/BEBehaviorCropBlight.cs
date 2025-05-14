@@ -220,7 +220,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         susceptibilityPressure = new (double, IPressureProvider)[]
         {
             (1.0, new TemperaturePressreProvider()),
-            (1.0, new MoisturePressureProvider()),
+            (1.0, new MoisturePressureProvider(FarmlandEntity)),
             (1.0, new MulchPresureProvider()),
             (1.0, new GenerationPressureProvider()),
             (1.0, new WeedPressureProvider(Api, Pos)),
@@ -413,8 +413,26 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private class MoisturePressureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private readonly BlockEntityFarmland farmland;
+
+        public MoisturePressureProvider(BlockEntityFarmland farmland)
+        {
+            this.farmland = farmland;
+        }
+
+        public double Value
+        {
+            get
+            {
+                double moisture = farmland.MoistureLevel;
+                double ideal = 0.4; // Ideal midpoint
+                double range = 0.3; // Spread around the midpoint
+                double deviation = (moisture - ideal) / range;
+
+                // U-shaped curve: 0 at ideal, 1 at extremes
+                return Math.Clamp(deviation * deviation, 0, 1);
+            }
+        }
     }
 
     private class TemperaturePressreProvider : IPressureProvider
