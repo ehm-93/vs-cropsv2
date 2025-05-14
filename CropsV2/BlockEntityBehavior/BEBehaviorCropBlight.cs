@@ -305,8 +305,8 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     private class NeighborPressureProvider : IPressureProvider
     {
         // Sigmoid: center at 0.5 (50%), steepness tuned for ramping between 0.25–0.50
-        private const double a = 8;  // steepness
-        private const double b = 0.33; // midpoint
+        private const double a = 16;  // steepness
+        private const double b = 0.15; // midpoint
         private readonly ICoreAPI Api;
         private readonly IEnumerable<BlockPos> neighborPositions;
         private readonly Func<double> Blightness;
