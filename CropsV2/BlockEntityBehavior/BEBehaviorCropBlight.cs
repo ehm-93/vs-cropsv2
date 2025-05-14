@@ -222,7 +222,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
             (1.0, new TemperaturePressureProvider(Api.World, Pos)),
             (1.0, new MoisturePressureProvider(FarmlandEntity)),
             (1.0, new MulchPresureProvider(Api, Pos)),
-            (1.0, new GenerationPressureProvider()),
+            (1.0, new GenerationPressureProvider(CropEntity)),
             (1.0, new WeedPressureProvider(Api, Pos)),
         };
     }
@@ -499,7 +499,37 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private class GenerationPressureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private readonly BlockEntityCropV2 cropEntity;
+
+        private static readonly System.Func<double, double> PressureCurve = 
+            FunctionUtils.MemoizeStepBounded(
+                step: 0.05,
+                minInclusive: 0,
+                maxInclusive: 1,
+                fn: x => FunctionUtils.Sigmoid(x, 0.5, 8)
+            );
+
+        public GenerationPressureProvider(BlockEntityCropV2 cropEntity)
+        {
+            this.cropEntity = cropEntity;
+        }
+
+        public double Value
+        {
+            get
+            {
+                int generation = cropEntity?.Generation ?? 0;
+
+                if (generation <= 0)
+                {
+                    return 0; // Wild or uncultivated crop
+                }
+
+                // Normalize gen 1–10 → 0–1
+                double norm = Math.Clamp(generation / 10.0, 0, 1);
+
+                return PressureCurve(norm);
+            }
+        }
     }
 }
