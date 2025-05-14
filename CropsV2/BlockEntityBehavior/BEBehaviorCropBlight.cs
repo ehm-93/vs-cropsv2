@@ -221,7 +221,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         {
             (1.0, new TemperaturePressureProvider(Api.World, Pos)),
             (1.0, new MoisturePressureProvider(FarmlandEntity)),
-            (1.0, new MulchPresureProvider()),
+            (1.0, new MulchPresureProvider(Api, Pos)),
             (1.0, new GenerationPressureProvider()),
             (1.0, new WeedPressureProvider(Api, Pos)),
         };
@@ -469,8 +469,32 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private class MulchPresureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private readonly ICoreAPI Api;
+        private readonly BlockPos Pos;
+
+        public MulchPresureProvider(ICoreAPI api, BlockPos pos)
+        {
+            Api = api;
+            Pos = pos;
+        }
+
+        public double Value
+        {
+            get
+            {
+                var blockEntity = Api.World.BlockAccessor.GetBlockEntity(Pos) as BlockEntityFarmland;
+                if (blockEntity == null) return 0;
+
+                var mulchBehavior = blockEntity.GetBehavior<BEBehaviorFarmlandMulch>();
+                if (mulchBehavior == null) return 0;
+
+                double mulchLevel = mulchBehavior.MulchLevel;
+
+                // Normalize to 0–1, apply quadratic ramp
+                double norm = Math.Clamp(mulchLevel / 100.0, 0, 1);
+                return norm * norm * 0.35; // Max pressure = 0.35
+            }
+        }
     }
 
     private class GenerationPressureProvider : IPressureProvider
