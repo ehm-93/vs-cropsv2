@@ -99,6 +99,12 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         GenMesh();
     }
 
+    public virtual double DeathChance()
+    {
+        if (BlightLevel < 33) return 0;
+        return FunctionUtils.Sigmoid((BlightLevel - 33) / 67, 0.50, 12);
+    }
+
     public virtual double OutbreakChance()
     {
         var inoculumWeight = inoculumPressure.Select(i => i.Weight).Sum();
@@ -170,7 +176,8 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     protected virtual void ServerTick(float df)
     {
-        CheckBlight();
+        CheckBlightDeath();
+        CheckOutbreak();
         DropSpores();
     }
 
@@ -196,7 +203,52 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         }
     }
 
-    protected virtual void CheckBlight()
+    protected virtual void CheckBlightDeath()
+    {
+        var roll = Api.World.Rand.NextDouble();
+        var chance = DeathChance();
+        if (roll < chance)
+        {
+            if (BlightLevel >= 100)
+            {
+                Die();
+            }
+        }
+    }
+
+    protected virtual void Die()
+    {
+        if (Api?.World == null) return;
+        var crop = CropEntity?.Block;
+        if (crop == null) return;
+
+        var deadCropBlock = Api.World.GetBlock(new AssetLocation("game:deadcrop"));
+        if (deadCropBlock == null) return;
+
+        Api.World.BlockAccessor.SetBlock(deadCropBlock.Id, CropEntity.Pos);
+        Api.World.SpawnParticles(new SimpleParticleProperties(
+            20, 30,
+            ColorUtil.ToRgba(150, 30, 20, 10),
+            CropEntity.Pos.ToVec3d().Add(0.5, 0.5, 0.5),
+            new Vec3d(0.5, 0.5, 0.5),
+            new Vec3f(-0.1f, 0.2f, -0.1f),
+            new Vec3f(0.1f, 0.6f, 0.1f),
+            1.2f, 0.3f, 0.4f, 0.8f
+        )
+        {
+            GravityEffect = 0,
+            WindAffected = true,
+            SizeEvolve = EvolvingNatFloat.create(EnumTransformFunction.LINEAR, -0.05f),
+            OpacityEvolve = EvolvingNatFloat.create(EnumTransformFunction.LINEAR, -0.2f),
+            ParticleModel = EnumParticleModel.Cube
+        });
+        Api.World.PlaySoundAt(
+            new AssetLocation("sounds/block/plant"),
+            CropEntity.Pos.X + 0.5, CropEntity.Pos.Y + 0.5, CropEntity.Pos.Z + 0.5
+        );
+    }
+
+    protected virtual void CheckOutbreak()
     {
         if (lastCheckTotalHours == 0)
         {
@@ -207,8 +259,8 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         var now = Api.World.Calendar.TotalHours;
         var deltaDays = (now - lastCheckTotalHours) / Api.World.Calendar.HoursPerDay;
         lastCheckTotalHours = Api.World.Calendar.TotalHours;
-        
-        var chance =  1 - Math.Pow(1 - OutbreakChance(), deltaDays);
+
+        var chance = 1 - Math.Pow(1 - OutbreakChance(), deltaDays);
         var roll = Api.World.Rand.NextDouble();
         if (roll < chance)
         {
