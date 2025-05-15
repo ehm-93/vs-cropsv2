@@ -25,6 +25,6 @@
     "side": "Server",
     "op": "add",
     "path": "/cropProps/behaviors",
-    "value": [{ "name": "CropWeeds" }]
+    "value": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   }
 ]
