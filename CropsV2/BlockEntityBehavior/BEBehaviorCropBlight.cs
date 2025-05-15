@@ -353,6 +353,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         private readonly ICoreAPI Api;
         private readonly IEnumerable<BlockPos> neighborPositions;
         private readonly Func<double> Blightness;
+        private readonly string targetCrop;
         
         private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.01, 0, 1, x =>
             x == 0 ? 0 : FunctionUtils.Sigmoid(x, b, a)
@@ -361,6 +362,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         public NeighborPressureProvider(ICoreAPI Api, BlockPos Pos, int d = 2)
         {
             this.Api = Api;
+            targetCrop = Api.World.BlockAccessor.GetBlock(Pos).CodeWithoutParts(1);
 
             // Build a 2D square of positions around the crop
             var offsets = new List<BlockPos>();
@@ -385,7 +387,9 @@ class BEBehaviorCropBlight : BlockEntityBehavior
                     {
                         double dist = pos.DistanceTo(Pos); // Euclidean distance
                         double weight = 1 / Math.Max(dist, 1); // Avoid division by 0
-                        totalBlight += GetBlightLevel(pos) * weight;
+                        var block = GetBlightLevel(pos);
+                        var coef = block.code == targetCrop ? 1 : 0.1;
+                        totalBlight += coef * block.blightLevel * weight;
                         totalWeight += weight;
                     }
 
@@ -402,14 +406,14 @@ class BEBehaviorCropBlight : BlockEntityBehavior
             }
         }
 
-        private double GetBlightLevel(BlockPos pos)
+        private (string code, double blightLevel) GetBlightLevel(BlockPos pos)
         {
-            if (Api.World.BlockAccessor.GetBlockEntity(pos) is not BlockEntityCropV2 entity) return 0;
+            if (Api.World.BlockAccessor.GetBlockEntity(pos) is not BlockEntityCropV2 entity) return ("", 0);
 
             var weeds = entity.GetBehavior<BEBehaviorCropBlight>();
-            if (weeds == null) return 0;
+            if (weeds == null) return ("", 0);
 
-            return weeds.BlightLevel;
+            return (entity.Block.CodeWithoutParts(1),  weeds.BlightLevel);
         }
     }
 
