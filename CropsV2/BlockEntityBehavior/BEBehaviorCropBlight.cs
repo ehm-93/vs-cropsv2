@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.Config;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
@@ -86,13 +83,6 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         blightLevel = tree.TryGetDouble("blightLevel") ?? 0;
         lastCheckTotalHours = tree.TryGetDouble("lastCheckTotalHours") ?? 0;
         GenMesh();
-    }
-
-    public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
-    {
-        base.GetBlockInfo(forPlayer, dsc);
-        var rounded = Math.Round(blightLevel);
-        if (rounded > 0) dsc.AppendLine(Lang.Get("Blight: {0}%", rounded));
     }
 
     public override bool OnTesselation(ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
@@ -181,6 +171,16 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     protected virtual void ServerTick(float df)
     {
         CheckBlight();
+        DropSpores();
+    }
+
+    protected virtual void DropSpores()
+    {
+        var behavior = FarmlandEntity?.GetBehavior<BEBehaviorFarmlandBlight>();
+        if (behavior != null)
+        {
+            behavior.SporeLevel = Math.Max(blightLevel, behavior.SporeLevel);
+        }
     }
 
     protected virtual void ClientTick(float df)
@@ -222,7 +222,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         {
             (0.4, new NeighborPressureProvider(Api, Pos)),
             (0.4, new HistoryPressureProvider(this)),
-            (0.2, new SporePressureProvider()),
+            (0.2, new SporePressureProvider(Api, Pos)),
         };
         susceptibilityPressure = new (double, IPressureProvider)[]
         {
@@ -273,7 +273,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private void InitParticles()
     {
-        if (Api is not ICoreClientAPI capi) return;
+        if (Api is not ICoreClientAPI) return;
         var pos = Pos.ToVec3d();
         blightParticles = new SimpleParticleProperties(
             1f, 1f,
@@ -415,8 +415,36 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private class SporePressureProvider : IPressureProvider
     {
-        // todo
-        public double Value => 0;
+        private const double SporeDeadzone = 0.5;
+        private const double MaxSpores = 100.0;
+        private const double Midpoint = 0.33;   // ~33% spore level
+        private const double Steepness = 10;    // Controls how quickly pressure ramps
+
+        private readonly ICoreAPI Api;
+        private readonly BlockPos Pos;
+
+        private static readonly System.Func<double, double> SporeToPressure = FunctionUtils.MemoizeStepBounded(
+            1, 0, MaxSpores,
+            spores => spores <= SporeDeadzone ? 0 : FunctionUtils.Sigmoid(spores / MaxSpores, Midpoint, Steepness)
+        );
+
+        public SporePressureProvider(ICoreAPI api, BlockPos pos)
+        {
+            Api = api;
+            Pos = pos;
+        }
+
+        public double Value
+        {
+            get
+            {
+                var farmland = Api.World.BlockAccessor.GetBlockEntity(Pos.DownCopy()) as BlockEntityFarmland;
+                var behavior = farmland?.GetBehavior<BEBehaviorFarmlandBlight>();
+                if (behavior == null) return 0;
+
+                return SporeToPressure(behavior.SporeLevel);
+            }
+        }
     }
 
     private class WeedPressureProvider : IPressureProvider
