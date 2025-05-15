@@ -104,7 +104,8 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        if (weedLevel > 0) dsc.AppendLine(Lang.Get("Weeds: {0}%", Math.Round(weedLevel)));
+        var rounded = Math.Round(weedLevel);
+        if (rounded > 0) dsc.AppendLine(Lang.Get("Weeds: {0}%", rounded));
     }
     
     protected virtual bool GenWeedMesh()

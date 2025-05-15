@@ -18,13 +18,13 @@
     "side": "Server",
     "op": "add",
     "path": "/entityBehaviors",
-    "value": [{ "name": "CropWeeds" }]
+    "value": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   {
     "file": "game:blocktypes/plant/crop/flax.json",
     "side": "Server",
     "op": "add",
     "path": "/cropProps/behaviors",
-    "value": [{ "name": "CropWeeds" }]
+    "value": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   }
 ]

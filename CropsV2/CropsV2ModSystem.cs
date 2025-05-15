@@ -23,10 +23,13 @@ public class CropsV2ModSystem : ModSystem
   private void RegisterTypes(ICoreAPI api) {
     api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
     api.RegisterCropBehavior("CropWeeds", typeof(CropBehaviorWeeds));
+    api.RegisterCropBehavior("CropBlight", typeof(CropBehaviorBlight));
     api.RegisterBlockEntityClass("BECropV2", typeof(BlockEntityCropV2));
     api.RegisterBlockEntityBehaviorClass("FarmlandMulch", typeof(BEBehaviorFarmlandMulch));
     api.RegisterBlockEntityBehaviorClass("FarmlandWeeds", typeof(BEBehaviorFarmlandWeeds));
+    api.RegisterBlockEntityBehaviorClass("FarmlandBlight", typeof(BEBehaviorFarmlandBlight));
     api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
+    api.RegisterBlockEntityBehaviorClass("CropBlight", typeof(BEBehaviorCropBlight));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
     api.RegisterCollectibleBehaviorClass("HoeWeeds", typeof(CBehaviorHoeWeeds));
   }
