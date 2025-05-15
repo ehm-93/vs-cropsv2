@@ -124,7 +124,7 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
             SporeLevel = 0;
             return;
         }
-        const double decayRate = 0.0513; // 5.13% per day, ~100 days from 100 -> 0.5
+        const double decayRate = 0.02;
         var now = Api.World.Calendar.TotalHours;
         if (lastCheckTotalHours == 0)
         {

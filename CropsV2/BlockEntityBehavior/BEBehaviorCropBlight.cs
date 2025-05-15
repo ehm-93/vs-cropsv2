@@ -30,7 +30,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
             blightLevel = clamped;
             GenMesh();
             CropEntity.MarkDirty(redrawOnClient: true);
-            FarmlandEntity.MarkDirty(redrawOnClient: true);
+            FarmlandEntity?.MarkDirty(redrawOnClient: true);
         }
     }
 
@@ -106,7 +106,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
         var susceptibilityRisk = susceptibilityPressure.Select(i => Math.Pow(i.Pressure.Value, i.Weight)).Aggregate((a, b) => a * b);
 
-        var totalRisk = Math.Pow(inoculumRisk, 0.9) * Math.Pow(susceptibilityRisk, 0.1);
+        var totalRisk = Math.Pow(inoculumRisk, 0.8) * Math.Pow(susceptibilityRisk, 0.2);
 
         var coef = InGreenhouse() ? 2 : 1;
 
@@ -228,7 +228,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         {
             (0.15, new TemperaturePressureProvider(Api.World, Pos)),
             (0.15, new MoisturePressureProvider(FarmlandEntity)),
-            (0.05, new MulchPresureProvider(Api, Pos)),
+            (0.05, new MulchPressureProvider(Api, Pos)),
             (0.6, new GenerationPressureProvider(CropEntity)),
             (0.05, new WeedPressureProvider(Api, Pos)),
         };
@@ -236,7 +236,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
 
     private bool InGreenhouse()
     {
-        return FarmlandEntity.roomness > 0;
+        return FarmlandEntity?.roomness > 0;
     }
 
     private Dictionary<string, AssetLocation> InferTextureLocations(Shape shape)
@@ -306,9 +306,9 @@ class BEBehaviorCropBlight : BlockEntityBehavior
     private class HistoryPressureProvider : IPressureProvider
     {
         private const double MaxExposureYears = 3.0;
-        private const double SigmoidDeadZone = 0.33;
-        private const double SigmoidMidpoint = 0.66;
-        private const double SigmoidSharpness = 16;
+        private const double SigmoidDeadZone = 0.25;
+        private const double SigmoidMidpoint = 0.5;
+        private const double SigmoidSharpness = 12;
 
         private readonly BEBehaviorCropBlight blight;
 
@@ -538,12 +538,12 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         }
     }
 
-    private class MulchPresureProvider : IPressureProvider
+    private class MulchPressureProvider : IPressureProvider
     {
         private readonly ICoreAPI Api;
         private readonly BlockPos Pos;
 
-        public MulchPresureProvider(ICoreAPI api, BlockPos pos)
+        public MulchPressureProvider(ICoreAPI api, BlockPos pos)
         {
             Api = api;
             Pos = pos;
