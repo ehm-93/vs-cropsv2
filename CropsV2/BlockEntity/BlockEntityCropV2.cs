@@ -29,6 +29,6 @@ public class BlockEntityCropV2 : BlockEntity {
     public override void OnExchanged(Block block)
     {
         base.OnExchanged(block);
-        GetBehavior<BEBehaviorCropBlight>()?.OnExchange();
+        GetBehavior<OnExchanged>()?.OnExchanged(block);
     }
 }

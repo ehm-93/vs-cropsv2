@@ -1,0 +1,84 @@
+[
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyshortbush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType",
+    "value": {}
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyshortbush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-bushlawyer-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 11,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyshortbush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-caper-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 11,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyshortbush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-numnum-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 17,
+          "chilledDaysRequired": 13
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyshortbush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-pricklyheath-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 11,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyshortbush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  }
+]

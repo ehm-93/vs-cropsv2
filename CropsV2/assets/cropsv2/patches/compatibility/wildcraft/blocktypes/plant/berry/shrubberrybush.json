@@ -1,0 +1,159 @@
+[
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType",
+    "value": {}
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-bitternightshade-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 9,
+          "chilledDaysRequired": 12
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-blacknightshade-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 3,
+          "chilledDaysRequired": 15
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-elderberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 3,
+          "chilledDaysRequired": 15
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-fractureberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 15,
+          "chilledDaysRequired": 20
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-husktomato-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 13
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-naranjilla-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 13,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-oldmansaltbush-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 15,
+          "chilledDaysRequired": 12
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-pokeberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 9,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-turkscap-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 11,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shrubberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  }
+]
