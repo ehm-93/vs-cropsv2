@@ -30,18 +30,21 @@ public class CropsV2ModSystem : ModSystem
     api.RegisterBlockEntityBehaviorClass("FarmlandBlight", typeof(BEBehaviorFarmlandBlight));
     api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
     api.RegisterBlockEntityBehaviorClass("CropBlight", typeof(BEBehaviorCropBlight));
+    if (Herbarium.IsLoaded()) api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(Herbarium.BEBehaviorBerryChilling));
+    else api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(BEBehaviorBerryChilling));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
     api.RegisterCollectibleBehaviorClass("HoeWeeds", typeof(CBehaviorHoeWeeds));
   }
 
   private void HarmonyPatch(ICoreAPI api)
-  { 
+  {
     // may duplicate if client and server share an instance
     if (!Harmony.HasAnyPatches(Mod.Info.ModID))
     {
       patcher = new Harmony(Mod.Info.ModID);
       patcher.PatchCategory(Mod.Info.ModID);
       HoePatches.Patch(patcher, api.Logger);
+      BEBerryBushPatches.Patch(patcher, api.Logger);
     }
   }
 

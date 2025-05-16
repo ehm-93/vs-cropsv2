@@ -1,0 +1,17 @@
+[
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/bottomberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviors",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  }
+]

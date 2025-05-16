@@ -10,7 +10,7 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BEBehaviorCropBlight : BlockEntityBehavior
+class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
 {
     protected double blightLevel = 0;
     protected double lastCheckTotalHours = 0;
@@ -94,7 +94,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         return true;
     }
 
-    public virtual void OnExchange()
+    public void OnExchanged(Block block)
     {
         GenMesh();
     }
@@ -551,7 +551,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior
         {
             get
             {
-                double moisture = farmland.MoistureLevel;
+                double moisture = farmland?.MoistureLevel ?? 0;
                 double ideal = 0.4; // Ideal midpoint
                 double range = 0.3; // Spread around the midpoint
                 double deviation = (moisture - ideal) / range;

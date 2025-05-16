@@ -1,0 +1,43 @@
+[
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-huckleberry-*/-",
+    "value": {
+      "name": "BerryChilling",
+      "properties": {
+        "chillTemp": 7,
+        "chilledDaysRequired": 10
+      }
+    }
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-mingimingi-*/-",
+    "value": {
+      "name": "BerryChilling",
+      "properties": {
+        "chillTemp": 7,
+        "chilledDaysRequired": 10
+      }
+    }
+  }
+]

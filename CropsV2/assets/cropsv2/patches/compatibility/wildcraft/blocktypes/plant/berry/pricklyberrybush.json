@@ -1,0 +1,69 @@
+[
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 15
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-dogrose-*/-",
+    "value": {
+      "name": "BerryChilling",
+      "properties": {
+        "chillTemp": 7,
+        "chilledDaysRequired": 15
+      }
+    }
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-brambleberry-*/-",
+    "value": {
+      "name": "BerryChilling",
+      "properties": {
+        "chillTemp": 7,
+        "chilledDaysRequired": 15
+      }
+    }
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-raspberry-*/-",
+    "value": {
+      "name": "BerryChilling",
+      "properties": {
+        "chillTemp": 7,
+        "chilledDaysRequired": 15
+      }
+    }
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/pricklyberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-blueraspberry-*/-",
+    "value": {
+      "name": "BerryChilling",
+      "properties": {
+        "chillTemp": 7,
+        "chilledDaysRequired": 10
+      }
+    }
+  }
+]
