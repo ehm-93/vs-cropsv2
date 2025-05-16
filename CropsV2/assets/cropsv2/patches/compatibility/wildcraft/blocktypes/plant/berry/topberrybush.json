@@ -3,7 +3,74 @@
     "file": "wildcraftfruit:blocktypes/plant/berry/topberrybush.json",
     "side": "Server",
     "op": "add",
-    "path": "/entityBehaviors",
+    "path": "/entityBehaviorsbyType",
+    "value": {}
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/topberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-kumquat-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 19,
+          "chilledDaysRequired": 14
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/topberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-mingimingi-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 13,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/topberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-huckleberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 1,
+          "chilledDaysRequired": 16
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/topberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-sumac-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 11,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/topberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
     "value": [
       {
         "name": "BerryChilling",

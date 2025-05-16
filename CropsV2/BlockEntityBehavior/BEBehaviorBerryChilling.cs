@@ -79,7 +79,12 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        if (Chilling && ChillProgress < 1) dsc.AppendLine(Lang.Get("Dormant"));
+        if (Chilling && ChillProgress < 1)
+        {
+            dsc.AppendLine(Lang.Get("Dormant"));
+            dsc.AppendLine(Lang.Get("Vernalized below: {0}°C", chillTemp));
+            dsc.AppendLine(Lang.Get("Vernalization progress: {0}%", Math.Round(ChillProgress * 100)));
+        }
     }
 
     protected virtual void ServerTick(float df)
