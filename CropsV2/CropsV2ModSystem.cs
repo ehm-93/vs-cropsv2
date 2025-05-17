@@ -30,8 +30,7 @@ public class CropsV2ModSystem : ModSystem
     api.RegisterBlockEntityBehaviorClass("FarmlandBlight", typeof(BEBehaviorFarmlandBlight));
     api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
     api.RegisterBlockEntityBehaviorClass("CropBlight", typeof(BEBehaviorCropBlight));
-    if (Herbarium.IsLoaded()) api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(Herbarium.BEBehaviorBerryChilling));
-    else api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(BEBehaviorBerryChilling));
+    api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(BEBehaviorBerryChilling));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
     api.RegisterCollectibleBehaviorClass("HoeWeeds", typeof(CBehaviorHoeWeeds));
   }

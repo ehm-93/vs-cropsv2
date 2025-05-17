@@ -18,7 +18,8 @@ internal static class BEBerryBushPatches
 
     private static void PatchBerryBushOnExchanged(Harmony harmony, ILogger logger)
     {
-        var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
+        // var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
+        var berryBushType = typeof(BlockEntityBerryBush);
         var target = TryGetMethod(berryBushType, "OnExchanged", logger);
         var postfix = typeof(OnExchangedPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public);
         if (target != null && postfix != null)
@@ -30,7 +31,8 @@ internal static class BEBerryBushPatches
 
     private static void PatchBerryBushCheckGrow(Harmony harmony, ILogger logger)
     {
-        var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEBerryPlantType() : typeof(BlockEntityBerryBush);
+        // var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEBerryPlantType() : typeof(BlockEntityBerryBush);
+        var berryBushType = typeof(BlockEntityBerryBush);
         var target = TryGetMethod(berryBushType, "CheckGrow", logger);
         var prefix = typeof(CheckGrowPatch).GetMethod("Prefix", BindingFlags.Static | BindingFlags.Public);
         if (target != null && prefix != null)
@@ -42,7 +44,8 @@ internal static class BEBerryBushPatches
 
     private static void PatchBerryBushGetBlockInfo(Harmony harmony, ILogger logger)
     {
-        var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
+        // var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
+        var berryBushType = typeof(BlockEntityBerryBush);
         var target = TryGetMethod(berryBushType, "GetBlockInfo", logger);
         var postfix = typeof(GetBlockInfoPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public);
         if (target != null && postfix != null)
