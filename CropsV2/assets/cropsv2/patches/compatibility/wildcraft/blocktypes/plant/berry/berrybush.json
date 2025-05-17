@@ -1,343 +1,343 @@
 [
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-beautyberry-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 11,
-          "chilledDaysRequired": 11
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-blackelder-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 3,
-          "chilledDaysRequired": 15
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-dwarfpine-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": -11,
-          "chilledDaysRequired": 20
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-feijoa-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 17,
-          "chilledDaysRequired": 13
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-honeysuckle-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 5,
-          "chilledDaysRequired": 14
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-huckleberry-*/-",
-    "value": {
-      "name": "BerryChilling",
-      "properties": {
-        "chillTemp": 1,
-        "chilledDaysRequired": 16
-      }
-    }
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-juniper-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": -5,
-          "chilledDaysRequired": 20
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-kawakawa-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 13,
-          "chilledDaysRequired": 11
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-kumquat-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 19,
-          "chilledDaysRequired": 14
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-lillypillyblue-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 15,
-          "chilledDaysRequired": 12
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-lillypillypink-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 11,
-          "chilledDaysRequired": 11
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-lillypillywhite-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 8,
-          "chilledDaysRequired": 11
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-marita-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 11,
-          "chilledDaysRequired": 11
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-midyimberry-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 15,
-          "chilledDaysRequired": 12
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-mingimingi-*/-",
-    "value": {
-      "name": "BerryChilling",
-      "properties": {
-        "chillTemp": 13,
-        "chilledDaysRequired": 11
-      }
-    }
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-pilo-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 15,
-          "chilledDaysRequired": 12
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-pistachio-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 3,
-          "chilledDaysRequired": 15
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-seamango-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 19,
-          "chilledDaysRequired": 14
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-snowberry-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": -1,
-          "chilledDaysRequired": 18
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-spindle-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 3,
-          "chilledDaysRequired": 15
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-sumac-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 11,
-          "chilledDaysRequired": 11
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*-wolfberry-*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": -3,
-          "chilledDaysRequired": 18
-        }
-      }
-    ]
-  },
-  {
-    "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
-    "side": "Server",
-    "op": "add",
-    "path": "/entityBehaviorsbyType/*",
-    "value": [
-      {
-        "name": "BerryChilling",
-        "properties": {
-          "chillTemp": 7,
-          "chilledDaysRequired": 10
-        }
-      }
-    ]
-  }
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-beautyberry-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 11,
+  //         "chilledDaysRequired": 11
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-blackelder-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 3,
+  //         "chilledDaysRequired": 15
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-dwarfpine-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": -11,
+  //         "chilledDaysRequired": 20
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-feijoa-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 17,
+  //         "chilledDaysRequired": 13
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-honeysuckle-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 5,
+  //         "chilledDaysRequired": 14
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-huckleberry-*/-",
+  //   "value": {
+  //     "name": "BerryChilling",
+  //     "properties": {
+  //       "chillTemp": 1,
+  //       "chilledDaysRequired": 16
+  //     }
+  //   }
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-juniper-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": -5,
+  //         "chilledDaysRequired": 20
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-kawakawa-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 13,
+  //         "chilledDaysRequired": 11
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-kumquat-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 19,
+  //         "chilledDaysRequired": 14
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-lillypillyblue-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 15,
+  //         "chilledDaysRequired": 12
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-lillypillypink-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 11,
+  //         "chilledDaysRequired": 11
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-lillypillywhite-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 8,
+  //         "chilledDaysRequired": 11
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-marita-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 11,
+  //         "chilledDaysRequired": 11
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-midyimberry-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 15,
+  //         "chilledDaysRequired": 12
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-mingimingi-*/-",
+  //   "value": {
+  //     "name": "BerryChilling",
+  //     "properties": {
+  //       "chillTemp": 13,
+  //       "chilledDaysRequired": 11
+  //     }
+  //   }
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-pilo-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 15,
+  //         "chilledDaysRequired": 12
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-pistachio-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 3,
+  //         "chilledDaysRequired": 15
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-seamango-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 19,
+  //         "chilledDaysRequired": 14
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-snowberry-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": -1,
+  //         "chilledDaysRequired": 18
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-spindle-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 3,
+  //         "chilledDaysRequired": 15
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-sumac-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 11,
+  //         "chilledDaysRequired": 11
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*-wolfberry-*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": -3,
+  //         "chilledDaysRequired": 18
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   "file": "wildcraftfruit:blocktypes/plant/berry/berrybush.json",
+  //   "side": "Server",
+  //   "op": "add",
+  //   "path": "/entityBehaviorsbyType/*",
+  //   "value": [
+  //     {
+  //       "name": "BerryChilling",
+  //       "properties": {
+  //         "chillTemp": 7,
+  //         "chilledDaysRequired": 10
+  //       }
+  //     }
+  //   ]
+  // }
 ]

@@ -27,10 +27,6 @@
       <HintPath>$(VINTAGE_STORY)/Lib/0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Herbarium">
-      <HintPath>../Lib/herbarium_1.4.0/Herbarium.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
 
 <ItemGroup>
