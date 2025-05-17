@@ -1,84 +1,84 @@
 [
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType",
-  //   "value": {}
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-bluetongue-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 15,
-  //         "chilledDaysRequired": 12
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-flaxlily-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 15,
-  //         "chilledDaysRequired": 12
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-munthari-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 13,
-  //         "chilledDaysRequired": 11
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-ugni-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 13,
-  //         "chilledDaysRequired": 11
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 7,
-  //         "chilledDaysRequired": 10
-  //       }
-  //     }
-  //   ]
-  // }
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType",
+    "value": {}
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-bluetongue-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 15,
+          "chilledDaysRequired": 12
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-flaxlily-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 15,
+          "chilledDaysRequired": 12
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-munthari-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 13,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-ugni-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 13,
+          "chilledDaysRequired": 11
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/shortberrybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  }
 ]

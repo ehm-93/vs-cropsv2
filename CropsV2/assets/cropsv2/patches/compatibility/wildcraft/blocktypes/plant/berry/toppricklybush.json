@@ -1,99 +1,99 @@
 [
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType",
-  //   "value": {}
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-blueraspberry-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 1,
-  //         "chilledDaysRequired": 16
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-brambleberry-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 1,
-  //         "chilledDaysRequired": 16
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-dogrose-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 5,
-  //         "chilledDaysRequired": 14
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-gooseberry-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 3,
-  //         "chilledDaysRequired": 15
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*-raspberry-*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 1,
-  //         "chilledDaysRequired": 16
-  //       }
-  //     }
-  //   ]
-  // },
-  // {
-  //   "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
-  //   "side": "Server",
-  //   "op": "add",
-  //   "path": "/entityBehaviorsbyType/*",
-  //   "value": [
-  //     {
-  //       "name": "BerryChilling",
-  //       "properties": {
-  //         "chillTemp": 7,
-  //         "chilledDaysRequired": 10
-  //       }
-  //     }
-  //   ]
-  // }
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType",
+    "value": {}
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-blueraspberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 1,
+          "chilledDaysRequired": 16
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-brambleberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 1,
+          "chilledDaysRequired": 16
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-dogrose-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 5,
+          "chilledDaysRequired": 14
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-gooseberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 3,
+          "chilledDaysRequired": 15
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*-raspberry-*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 1,
+          "chilledDaysRequired": 16
+        }
+      }
+    ]
+  },
+  {
+    "file": "wildcraftfruit:blocktypes/plant/berry/toppricklybush.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/entityBehaviorsbyType/*",
+    "value": [
+      {
+        "name": "BerryChilling",
+        "properties": {
+          "chillTemp": 7,
+          "chilledDaysRequired": 10
+        }
+      }
+    ]
+  }
 ]

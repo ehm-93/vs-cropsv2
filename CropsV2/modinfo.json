@@ -4,7 +4,7 @@
   "name": "CropsV2",
   "authors": ["emmett_chef"],
   "description": "Farming evolves into a strategic, hands-on challenge with rising rewards across generations.",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "dependencies": {
     "game": ""
   }
