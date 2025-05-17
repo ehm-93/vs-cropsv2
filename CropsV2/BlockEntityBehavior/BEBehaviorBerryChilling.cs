@@ -8,9 +8,6 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-// todo: Wildcraft tall berry bush is busted for unknown reasons
-// todo: tune chillTemp and chilledHoursRequired for Wildcraft
-
 class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
 {
     protected readonly Func<bool> InGreenhouse;

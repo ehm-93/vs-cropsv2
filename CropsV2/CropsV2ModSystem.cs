@@ -28,6 +28,7 @@ public class CropsV2ModSystem : ModSystem
     api.RegisterBlockEntityBehaviorClass("FarmlandMulch", typeof(BEBehaviorFarmlandMulch));
     api.RegisterBlockEntityBehaviorClass("FarmlandWeeds", typeof(BEBehaviorFarmlandWeeds));
     api.RegisterBlockEntityBehaviorClass("FarmlandBlight", typeof(BEBehaviorFarmlandBlight));
+    api.RegisterBlockEntityBehaviorClass("FarmlandNutrients", typeof(BEBehaviorFarmlandNutrients));
     api.RegisterBlockEntityBehaviorClass("CropWeeds", typeof(BEBehaviorCropWeeds));
     api.RegisterBlockEntityBehaviorClass("CropBlight", typeof(BEBehaviorCropBlight));
     api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(BEBehaviorBerryChilling));
