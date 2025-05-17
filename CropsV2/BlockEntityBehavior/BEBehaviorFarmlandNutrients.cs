@@ -85,7 +85,7 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
     protected virtual double BoostCoef()
     {
         var moisture = MoistureCoef(FarmlandEntity.MoistureLevel);
-        var temp = TempCoef(Api.World.BlockAccessor.GetClimateAt(Pos).Temperature);
+        var temp = TempCoef(Api.World.BlockAccessor.GetClimateAt(Pos).Temperature + (InGreenhouse() ? 5 : 0));
         var mulch = MulchCoef((FarmlandEntity.GetBehavior<BEBehaviorFarmlandMulch>()?.MulchLevel ?? 0) / 100);
 
         return moisture * temp * mulch;
@@ -126,5 +126,10 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
     protected virtual double MulchCoef(double mulchiness)
     {
         return 1.0f + 0.5f * mulchiness; // up to +50%
+    }
+
+    protected virtual bool InGreenhouse()
+    {
+        return FarmlandEntity.roomness > 0;
     }
 }
