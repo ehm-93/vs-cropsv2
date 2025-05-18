@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
@@ -82,12 +83,19 @@ internal class BEFarmlandPatches
         [HarmonyPrefix]
         public static bool Before(BlockEntityFarmland __instance, ref bool __result, IPlayer byPlayer)
         {
-            var behavior = __instance.GetBehavior<BEBehaviorFarmlandMulch>();
-            if (behavior == null) return true;
+            var behaviors = __instance.Behaviors.Where(i => i is IOnBlockInteract);
+            if (behaviors == null) return true;
 
-            var handled = behavior.OnBlockInteract(byPlayer);
-            __result = handled;
-            return !handled;
+            foreach (IOnBlockInteract behavior in behaviors)
+            {
+                var handled = behavior.OnBlockInteract(byPlayer);
+                if (handled)
+                {
+                    __result = handled;
+                    return !handled;
+                }
+            }
+            return true;
         }
     }
 }

@@ -10,7 +10,7 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BEBehaviorFarmlandMulch : BlockEntityBehavior
+class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
 {
     readonly private Random rand = new Random();
     protected MeshData mulchQuad;
