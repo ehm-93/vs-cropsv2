@@ -12,12 +12,15 @@ namespace Ehm93.VintageStory.CropsV2;
 public class BlockCropV2 : BlockCrop
 {
     private readonly Func<WorldInteraction[]> WeedInteractions;
+    private readonly Func<WorldInteraction[]> MulchInteractions;
     private bool enabled = true;
 
     public BlockCropV2()
     {
         WeedInteractions = FunctionUtils.Memoize(() =>
             {
+                if (!WorldConfig.EnableWeeds) return new WorldInteraction[] { };
+
                 var itemStacks = new List<ItemStack>();
                 foreach (var item in api.World.Items)
                 {
@@ -33,6 +36,30 @@ public class BlockCropV2 : BlockCrop
                     {
                         Itemstacks = itemStacks.ToArray(),
                         ActionLangCode = "Weed",
+                        MouseButton = EnumMouseButton.Right,
+                    }
+                };
+            }
+        );
+        MulchInteractions = FunctionUtils.Memoize(() =>
+            {
+                if (!WorldConfig.EnableMulch) return new WorldInteraction[] { };
+
+                var itemStacks = new List<ItemStack>();
+                foreach (var item in api.World.Items)
+                {
+                    if (item is ItemDryGrass)
+                    {
+                        itemStacks.Add(new ItemStack(item));
+                    }
+                }
+
+                return new WorldInteraction[]
+                {
+                    new WorldInteraction()
+                    {
+                        Itemstacks = itemStacks.ToArray(),
+                        ActionLangCode = "Mulch",
                         MouseButton = EnumMouseButton.Right,
                     }
                 };
@@ -120,15 +147,23 @@ public class BlockCropV2 : BlockCrop
 
     public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
     {
-        var baseInteractions = base.GetPlacedBlockInteractionHelp(world, selection, forPlayer);
+        var result = base.GetPlacedBlockInteractionHelp(world, selection, forPlayer);
 
-        var entity = api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(selection.Position);
-        if (entity == null) return baseInteractions;
+        var cropEntity = api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(selection.Position);
+        if (cropEntity != null)
+        {
+            var weedBehavior = cropEntity.GetBehavior<BEBehaviorCropWeeds>();
+            if (weedBehavior != null) result = weedBehavior.WeedLevel > 0 ? result.Concat(WeedInteractions()).ToArray() : result;
+        }
 
-        var behavior = entity.GetBehavior<BEBehaviorCropWeeds>();
-        if (behavior == null) return baseInteractions;
+        var farmlandEntity = api.World.BlockAccessor.GetBlockEntity<BlockEntityFarmland>(selection.Position.DownCopy());
+        if (farmlandEntity != null)
+        {
+            var mulchBehavior = farmlandEntity.GetBehavior<BEBehaviorFarmlandMulch>();
+            if (mulchBehavior != null) result = mulchBehavior.MulchLevel < 100 ? result.Concat(MulchInteractions()).ToArray() : result;
+        }
 
-        return behavior.WeedLevel > 0 ? baseInteractions.Concat(WeedInteractions()).ToArray() : baseInteractions;
+        return result;
     }
 
     // Exponential yield scaling

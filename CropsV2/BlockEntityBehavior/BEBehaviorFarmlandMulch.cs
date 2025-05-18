@@ -30,7 +30,9 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
             if (_mulchLevel != clamped)
             {
                 _mulchLevel = clamped;
-                if (GenMulchQuad()) FarmlandEntity.MarkDirty(redrawOnClient: true);
+                GenMulchQuad();
+                FarmlandEntity.MarkDirty(redrawOnClient: true);
+                CropEntity?.MarkDirty(redrawOnClient: true);
             }
         }
     }
@@ -39,7 +41,9 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
         get { return (BlockEntityFarmland) Blockentity; } 
     }
 
-    public BEBehaviorFarmlandMulch(BlockEntity blockEntity) 
+    public BlockEntityCropV2 CropEntity => Api?.World?.BlockAccessor?.GetBlockEntity<BlockEntityCropV2>(Pos?.UpCopy());
+
+    public BEBehaviorFarmlandMulch(BlockEntity blockEntity)
         : base(blockEntity)
     {
         if (blockEntity is not BlockEntityFarmland)
@@ -108,7 +112,8 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
     {
         base.GetBlockInfo(forPlayer, dsc);
         if (!enabled) return;
-        if (0 < Math.Round(MulchLevel)) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int)MulchLevel));
+        var rounded = Math.Round(MulchLevel);
+        if (0 < rounded) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int)rounded));
     }
 
     protected virtual void TickMulch()
@@ -145,9 +150,9 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
 
     protected virtual bool OnBlockInteractWithDryGrass(IPlayer byPlayer, ItemSlot slot)
     {
-        if (Math.Round(MulchLevel) >= 100) return false;
+        if (MulchLevel >= 100) return false;
 
-        MulchLevel += 33.3333;
+        MulchLevel += 35;
 
         lastMulchTotalHours = Api.World.Calendar.TotalHours;
         if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
