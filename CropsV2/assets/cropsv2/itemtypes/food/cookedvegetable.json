@@ -1,0 +1,736 @@
+{
+  "code": "cookedvegetable",
+  "maxstacksize": 64,
+  "variantgroups": [
+    {
+      "code": "type",
+      "states": [
+        "potato",
+        "yam",
+        "cauliflower",
+        "corn",
+        "beet",
+        "eggplant",
+        "jalapeno",
+        "pickledpotato",
+        "pickledyam",
+        "pickledcauliflower",
+        "pickledbeet",
+        "pickledeggplant",
+        "pickledjalapeno"
+      ]
+    },
+    { "code": "state", "states": ["partbaked", "perfect", "charred"] }
+  ],
+  "shapeByType": {
+    "*-pickledpotato-*": {
+      "base": "cropsv2:item/food/pickledvegetable/pickledpotato"
+    },
+    "*-pickledyam-*": {
+      "base": "cropsv2:item/food/pickledvegetable/pickledyam"
+    },
+    "*-pickledbeet-*": {
+      "base": "cropsv2:item/food/pickledvegetable/pickledbeet"
+    },
+    "*-pickledcauliflower-*": {
+      "base": "cropsv2:item/food/pickledvegetable/pickledcauliflower"
+    },
+    "*-pickledeggplant-*": {
+      "base": "cropsv2:item/food/pickledvegetable/pickledeggplant"
+    },
+    "*-pickledjalapeno-*": {
+      "base": "cropsv2:item/food/pickledvegetable/pickledjalapeno"
+    },
+    "*-beet-*": { "base": "cropsv2:item/crop/vegetable/beet" },
+    "*-cauliflower-*": { "base": "cropsv2:item/crop/vegetable/cauliflower" },
+    "*-corn-*": { "base": "cropsv2:item/crop/vegetable/corn" },
+    "*-eggplant-*": { "base": "cropsv2:item/crop/vegetable/eggplant" },
+    "*-jalapeno-*": { "base": "cropsv2:item/crop/vegetable/jalapeno" },
+    "*-potato-*": { "base": "cropsv2:item/crop/vegetable/potato" },
+    "*-yam-*": { "base": "cropsv2:item/crop/vegetable/yam" },
+    "*": { "base": "cropsv2:item/food/vegetable/{type}" }
+  },
+  "texturesByType": {
+    "*-partbaked": {
+      "potato": { "base": "cropsv2:item/food/partbaked/potato" },
+      "bulb": { "base": "cropsv2:item/food/partbaked/yam" },
+      "top": { "base": "cropsv2:item/food/partbaked/cauliflower" },
+      "normal1": { "base": "cropsv2:item/food/partbaked/corn" },
+      "item": { "base": "cropsv2:item/food/partbaked/beet" },
+      "eggplant": { "base": "cropsv2:item/food/partbaked/eggplant" },
+      "largeleavesjalapenos": {
+        "base": "cropsv2:item/food/partbaked/jalapeno"
+      },
+      "pickledpotato": {
+        "base": "cropsv2:item/food/partbaked/pickledpotato"
+      },
+      "pickledyam": { "base": "cropsv2:item/food/partbaked/pickledyam" },
+      "top": { "base": "cropsv2:item/food/partbaked/pickledcauliflower" },
+      "item": { "base": "cropsv2:item/food/partbaked/pickledbeet" },
+      "eggplant": { "base": "cropsv2:item/food/partbaked/pickledeggplant" },
+      "jalapeno": { "base": "cropsv2:item/food/partbaked/pickledjalapeno" },
+      "e5": { "base": "game:block/transparent" },
+      "e1": { "base": "game:block/transparent" },
+      "s1": { "base": "game:block/transparent" },
+      "s5": { "base": "game:block/transparent" },
+      "e3": { "base": "game:block/transparent" }
+    },
+    "*-perfect": {
+      "potato": { "base": "cropsv2:item/food/perfect/potato" },
+      "bulb": { "base": "cropsv2:item/food/perfect/yam" },
+      "top": { "base": "cropsv2:item/food/perfect/cauliflower" },
+      "normal1": { "base": "cropsv2:item/food/perfect/corn" },
+      "item": { "base": "cropsv2:item/food/perfect/beet" },
+      "eggplant": { "base": "cropsv2:item/food/perfect/eggplant" },
+      "largeleavesjalapenos": {
+        "base": "cropsv2:item/food/perfect/jalapeno"
+      },
+      "pickledpotato": { "base": "cropsv2:item/food/perfect/pickledpotato" },
+      "pickledyam": { "base": "cropsv2:item/food/perfect/pickledyam" },
+      "top": { "base": "cropsv2:item/food/perfect/pickledcauliflower" },
+      "item": { "base": "cropsv2:item/food/perfect/pickledbeet" },
+      "eggplant": { "base": "cropsv2:item/food/perfect/pickledeggplant" },
+      "jalapeno": { "base": "cropsv2:item/food/perfect/pickledjalapeno" },
+      "e5": { "base": "game:block/transparent" },
+      "e1": { "base": "game:block/transparent" },
+      "s1": { "base": "game:block/transparent" },
+      "s5": { "base": "game:block/transparent" },
+      "e3": { "base": "game:block/transparent" }
+    },
+    "*-charred": {
+      "potato": { "base": "cropsv2:item/food/charred/potato" },
+      "bulb": { "base": "cropsv2:item/food/charred/yam" },
+      "top": { "base": "cropsv2:item/food/charred/cauliflower" },
+      "normal1": { "base": "cropsv2:item/food/charred/corn" },
+      "item": { "base": "cropsv2:item/food/charred/beet" },
+      "eggplant": { "base": "cropsv2:item/food/charred/eggplant" },
+      "largeleavesjalapenos": {
+        "base": "cropsv2:item/food/charred/jalapeno"
+      },
+      "pickledpotato": { "base": "cropsv2:item/food/charred/pickledpotato" },
+      "pickledyam": { "base": "cropsv2:item/food/charred/pickledyam" },
+      "top": { "base": "cropsv2:item/food/charred/pickledcauliflower" },
+      "item": { "base": "cropsv2:item/food/charred/pickledbeet" },
+      "eggplant": { "base": "cropsv2:item/food/charred/pickledeggplant" },
+      "jalapeno": { "base": "cropsv2:item/food/charred/pickledjalapeno" },
+      "e5": { "base": "game:block/transparent" },
+      "e1": { "base": "game:block/transparent" },
+      "s1": { "base": "game:block/transparent" },
+      "s5": { "base": "game:block/transparent" },
+      "e3": { "base": "game:block/transparent" }
+    }
+  },
+  "attributesByType": {
+    "cookedvegetable-beet-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.25,
+        "levelTo": 0.5,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-perfect",
+        "initialCode": "cropsv2:vegetable-{type}"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 160,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      }
+    },
+    "cookedvegetable-beet-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.5,
+        "levelTo": 0.75,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-charred",
+        "initialCode": "cropsv2:cookedvegetable-{type}-partbaked"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 170,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      }
+    },
+    "cookedvegetable-beet-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.75,
+        "levelTo": 1,
+        "startScaleY": 1.0,
+        "endScaleY": 1.0,
+        "initialCode": "cropsv2:cookedvegetable-{type}-perfect"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 50,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      }
+    },
+    "cookedvegetable-pickledbeet-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.25,
+        "levelTo": 0.5,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-perfect",
+        "initialCode": "cropsv2:vegetable-{type}"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 140,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      }
+    },
+    "cookedvegetable-pickledbeet-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.5,
+        "levelTo": 0.75,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-charred",
+        "initialCode": "cropsv2:cookedvegetable-{type}-partbaked"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 150,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      }
+    },
+    "cookedvegetable-pickledbeet-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.75,
+        "levelTo": 1,
+        "startScaleY": 1.0,
+        "endScaleY": 1.0,
+        "initialCode": "cropsv2:cookedvegetable-{type}-perfect"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 40,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      }
+    },
+    "cookedvegetable-cauliflower-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 460,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-cauliflower-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 470,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-cauliflower-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 150,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-pickledcauliflower-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 310,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-pickledcauliflower-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 320,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-pickledcauliflower-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 100,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-eggplant-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 160,
+        "foodcategory": "Fruit"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-eggplant-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 170,
+        "foodcategory": "Fruit"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-eggplant-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 50,
+        "foodcategory": "Fruit"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-pickledeggplant-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 140,
+        "foodcategory": "Fruit"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-pickledeggplant-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 150,
+        "foodcategory": "Fruit"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-pickledeggplant-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 40,
+        "foodcategory": "Fruit"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-*-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.25,
+        "levelTo": 0.5,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-perfect",
+        "initialCode": "cropsv2:vegetable-{type}"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 160,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-*-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.5,
+        "levelTo": 0.75,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-charred",
+        "initialCode": "cropsv2:cookedvegetable-{type}-partbaked"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 170,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-*-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 50,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-*pickled*-partbaked": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.25,
+        "levelTo": 0.5,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-perfect",
+        "initialCode": "cropsv2:vegetable-{type}"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 140,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-*pickled*-perfect": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "bakingProperties": {
+        "temp": 100,
+        "levelFrom": 0.5,
+        "levelTo": 0.75,
+        "startScaleY": 0.95,
+        "endScaleY": 1.0,
+        "resultCode": "cropsv2:cookedvegetable-{type}-charred",
+        "initialCode": "cropsv2:cookedvegetable-{type}-partbaked"
+      },
+      "nutritionPropsWhenInMeal": {
+        "satiety": 150,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    },
+    "cookedvegetable-*pickled*-charred": {
+      "handbook": { "groupBy": ["cookedvegetable-*"] },
+      "displaycaseable": true,
+      "shelvable": true,
+      "nutritionPropsWhenInMeal": {
+        "satiety": 40,
+        "foodcategory": "Vegetable"
+      },
+      "onDisplayTransform": {
+        "scale": 1
+      }
+    }
+  },
+  "combustiblePropsByType": {
+    "*-partbaked": {
+      "meltingPoint": 150,
+      "meltingDuration": 20,
+      "smeltedRatio": 1,
+      "smeltingType": "bake",
+      "smeltedStack": {
+        "type": "item",
+        "code": "cropsv2:cookedvegetable-{type}-charred"
+      },
+      "requiresContainer": false
+    },
+    "*-perfect": {
+      "meltingPoint": 150,
+      "meltingDuration": 20,
+      "smeltedRatio": 1,
+      "smeltingType": "bake",
+      "smeltedStack": {
+        "type": "item",
+        "code": "cropsv2:cookedvegetable-{type}-charred"
+      },
+      "requiresContainer": false
+    }
+  },
+  "materialDensity": 600,
+  "creativeinventory": { "general": ["*"], "items": ["*"] },
+  "nutritionPropsByType": {
+    "*-cauliflower-partbaked": { "satiety": 315, "foodcategory": "Vegetable" },
+    "*-eggplant-partbaked": { "satiety": 115, "foodcategory": "Fruit" },
+    "*-pickledcauliflower-partbaked": {
+      "satiety": 255,
+      "foodcategory": "Vegetable"
+    },
+    "*-pickledeggplant-partbaked": { "satiety": 95, "foodcategory": "Fruit" },
+    "*-pickled*-partbaked": { "satiety": 95, "foodcategory": "Vegetable" },
+    "*-partbaked": { "satiety": 115, "foodcategory": "Vegetable" },
+    "*-cauliflower-perfect": { "satiety": 330, "foodcategory": "Vegetable" },
+    "*-eggplant-perfect": { "satiety": 130, "foodcategory": "Fruit" },
+    "*-pickledcauliflower-perfect": {
+      "satiety": 270,
+      "foodcategory": "Vegetable"
+    },
+    "*-pickledeggplant-perfect": { "satiety": 110, "foodcategory": "Fruit" },
+    "*-pickled*-perfect": { "satiety": 110, "foodcategory": "Vegetable" },
+    "*-perfect": { "satiety": 110, "foodcategory": "Vegetable" },
+    "*-cauliflower-charred": { "satiety": 150, "foodcategory": "Vegetable" },
+    "*-eggplant-charred": { "satiety": 50, "foodcategory": "Fruit" },
+    "*-pickledcauliflower-charred": {
+      "satiety": 120,
+      "foodcategory": "Vegetable"
+    },
+    "*-pickledeggplant-charred": { "satiety": 40, "foodcategory": "Fruit" },
+    "*-pickled*-charred": { "satiety": 40, "foodcategory": "Vegetable" },
+    "*-charred": { "satiety": 40, "foodcategory": "Vegetable" }
+  },
+  "guiTransformByType": {
+    "@*-(yam-partbaked|yam-perfect|yam-charred|pickledyam-partbaked|pickledyam-perfect|pickledyam-charred)": {
+      "rotation": { "x": -37, "y": 135, "z": -155 },
+      "origin": { "x": 0.56, "y": 0.1, "z": 0.42 },
+      "scale": 5.35
+    },
+    "@*-(corn-partbaked|corn-perfect|corn-charred)": {
+      "rotation": { "x": -37, "y": 143, "z": 131 },
+      "origin": { "x": 0.45, "y": 0, "z": 0.53 },
+      "scale": 4.13
+    },
+    "@*-(potato-partbaked|potato-perfect|potato-charred|pickledpotato-partbaked|pickledpotato-perfect|pickledpotato-charred)": {
+      "rotation": { "x": -37, "y": 135, "z": -155 },
+      "origin": { "x": 0.5, "y": 0.1, "z": 0.5 },
+      "scale": 5.35
+    },
+    "@*-(cauliflower-partbaked|cauliflower-perfect|cauliflower-charred|pickledcauliflower-partbaked|pickledcauliflower-perfect|pickledcauliflower-charred)": {
+      "translation": { "x": 2.5, "y": 1, "z": 0 },
+      "rotation": { "x": 137, "y": 131, "z": 0 },
+      "origin": { "x": 0.5, "y": 0.2, "z": 0.5 },
+      "scale": 2.6
+    },
+    "@*-(beet-partbaked|beet-perfect|beet-charred|pickledbeet-partbaked|pickledbeet-perfect|pickledbeet-charred)": {
+      "rotation": { "x": -37, "y": 135, "z": -144 },
+      "origin": { "x": 0.5, "y": 0.32, "z": 0.5 },
+      "scale": 3.04
+    },
+    "@*-(jalapeno-partbaked|jalapeno-perfect|jalapeno-charred|pickledjalapeno-partbaked|pickledjalapeno-perfect|pickledjalapeno-charred)": {
+      "rotation": { "x": -57, "y": 125, "z": -195 },
+      "origin": { "x": 0.49, "y": 0.05, "z": 0.48 },
+      "scale": 4.85
+    },
+    "@*-(eggplant-partbaked|eggplant-perfect|eggplant-charred|pickledeggplant-partbaked|pickledeggplant-perfect|pickledeggplant-charred)": {
+      "rotation": { "x": -37, "y": 135, "z": -155 },
+      "origin": { "x": 0.56, "y": 0.1, "z": 0.42 },
+      "scale": 3.6
+    }
+  },
+  "fpHandTransformByType": {
+    "@*-(potato-partbaked|potato-perfect|potato-charred|pickledpotato-partbaked|pickledpotato-perfect|pickledpotato-charred)": {
+      "rotation": { "x": 45, "y": 47, "z": -30 },
+      "origin": { "x": 0.5, "y": 0.3, "z": 0.5 },
+      "scale": 1.9
+    },
+    "@*-(yam-partbaked|yam-perfect|yam-charred|pickledyam-partbaked|pickledyam-perfect|pickledyam-charred)": {
+      "rotation": { "x": 45, "y": 47, "z": -30 },
+      "origin": { "x": 0.5, "y": 0.3, "z": 0.5 },
+      "scale": 1.9
+    },
+    "@*-(corn-partbaked|corn-perfect|corn-charred)": {
+      "rotation": { "x": 40, "y": -71, "z": -8 },
+      "origin": { "x": 0.5, "y": 0.15, "z": 0.4 },
+      "scale": 3.03
+    },
+    "@*-(cauliflower-partbaked|cauliflower-perfect|cauliflower-charred|pickledcauliflower-partbaked|pickledcauliflower-perfect|pickledcauliflower-charred)": {
+      "rotation": { "x": 51, "y": 90, "z": -30 },
+      "scale": 1.9
+    },
+    "@*-(beet-partbaked|beet-perfect|beet-charred|pickledbeet-partbaked|pickledbeet-perfect|pickledbeet-charred)": {
+      "rotation": { "x": 45, "y": 47, "z": -30 },
+      "origin": { "x": 0.5, "y": 0.3, "z": 0.5 },
+      "scale": 1.9
+    },
+    "@*-(eggplant-partbaked|eggplant-perfect|eggplant-charred|pickledeggplant-partbaked|pickledeggplant-perfect|pickledeggplant-charred)": {
+      "rotation": { "x": 45, "y": 47, "z": -30 },
+      "origin": { "x": 0.5, "y": 0.3, "z": 0.5 },
+      "scale": 3
+    },
+    "@*-(jalapeno-partbaked|jalapeno-perfect|jalapeno-charred|pickledjalapeno-partbaked|pickledjalapeno-perfect|pickledjalapeno-charred)": {
+      "rotation": { "x": 45, "y": 47, "z": -30 },
+      "origin": { "x": 0.5, "y": 0.3, "z": 0.5 },
+      "scale": 1.9
+    }
+  },
+  "tpHandTransformByType": {
+    "@*-(corn-partbaked|corn-perfect|corn-charred)": {
+      "translation": { "x": -0.6, "y": -0.18, "z": -0.6 },
+      "rotation": { "x": 0, "y": 0, "z": -42 },
+      "origin": { "x": 0.5, "y": 0.1, "z": 0.5 },
+      "scale": 1.2
+    },
+    "@*-(cauliflower-partbaked|cauliflower-perfect|cauliflower-charred|pickledcauliflower-partbaked|pickledcauliflower-perfect|pickledcauliflower-charred)": {
+      "translation": { "x": -0.7, "y": -0.14, "z": -0.6 },
+      "rotation": { "x": 1, "y": -1, "z": -31 },
+      "origin": { "x": 0.5, "y": 0.1, "z": 0.5 },
+      "scale": 0.79
+    },
+    "*": {
+      "translation": { "x": -0.6, "y": -0.18, "z": -0.6 },
+      "rotation": { "x": 0, "y": 0, "z": -42 },
+      "origin": { "x": 0.5, "y": 0.1, "z": 0.5 },
+      "scale": 0.8
+    }
+  },
+  "groundTransformByType": {
+    "@*-(cauliflower-partbaked|cauliflower-perfect|cauliflower-charred|pickledcauliflower-partbaked|pickledcauliflower-perfect|pickledcauliflower-charred)": {
+      "origin": { "x": 0.5, "y": 0, "z": 0.5 },
+      "scale": 3.5
+    },
+    "@*-(beet-partbaked|beet-perfect|beet-charred|pickledbeet-partbaked|pickledbeet-perfect|pickledbeet-charred)": {
+      "rotation": { "x": 90, "y": 0, "z": 0 },
+      "origin": { "x": 0.47, "y": 0.5, "z": 0.7 },
+      "scale": 3
+    },
+    "*": {
+      "origin": { "x": 0.47, "y": 0, "z": 0.5 },
+      "scale": 4.3
+    }
+  },
+  "transitionablePropsByType": {
+    "pickled*-partbaked": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 900 },
+        "transitionHours": { "avg": 48 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ],
+    "pickled*-perfect": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 450 },
+        "transitionHours": { "avg": 48 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ],
+    "pickled*-charred": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 1350 },
+        "transitionHours": { "avg": 80 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ],
+    "*-partbaked": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 252 },
+        "transitionHours": { "avg": 48 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ],
+    "*-perfect": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 126 },
+        "transitionHours": { "avg": 48 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ],
+    "*-charred": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 378 },
+        "transitionHours": { "avg": 80 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ]
+  },
+  "grindingPropsByType": {
+    "*-corn-perfect": {
+      "grindedStack": {
+        "type": "item",
+        "code": "cropsv2:cornflour-corn",
+        "stacksize": 1
+      }
+    }
+  }
+}

@@ -73,7 +73,7 @@ class BlockBehaviorFarmlandInteractions : BlockBehavior
                 var itemStacks = new List<ItemStack>();
                 foreach (var item in Api.World.Items)
                 {
-                    if (item.Code.Path == "lime")
+                    if (item.Code?.Path == "lime")
                     {
                         itemStacks.Add(new ItemStack(item));
                     }

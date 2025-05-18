@@ -1,0 +1,15 @@
+{
+  "code": "sugar",
+  "maxstacksize": 64,
+  "attributes": {
+    "inContainerTexture": { "base": "cropsv2:block/barrel/sugar" },
+    "dissolveInWater": true
+  },
+  "nutritionProps": {
+    "satiety": 10,
+    "foodcategory": "Fruit"
+  },
+  "texture": { "base": "cropsv2:item/food/sugar" },
+  "creativeinventory": { "general": ["*"], "items": ["*"] },
+  "materialDensity": 600
+}

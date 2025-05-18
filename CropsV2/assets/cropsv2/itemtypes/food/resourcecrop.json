@@ -1,0 +1,78 @@
+{
+  "code": "resourcecrop",
+  "maxstacksize": 64,
+  "variantgroups": [{ "code": "crop", "states": ["sugarbeet"] }],
+  "attributesByType": {
+    "*-sugarbeet": {
+      "displaycaseable": true,
+      "shelvable": true,
+      "inContainerTexture": { "base": "cropsv2:block/barrel/raw-{crop}" },
+      "onDisplayTransform": {
+        "translation": { "x": 0.1, "y": -0.4, "z": 0.1 },
+        "rotation": { "x": 2, "y": -47, "z": -91 }
+      },
+      "juiceableProperties": {
+        "litresPerItem": 0.15625,
+        "liquidStack": {
+          "type": "item",
+          "code": "cropsv2:sugarbeetjuice",
+          "stacksize": 1
+        },
+        "pressedStack": {
+          "type": "item",
+          "code": "cropsv2:pressedmashbeet",
+          "stacksize": 1
+        }
+      }
+    },
+    "*": {
+      "displaycaseable": true,
+      "shelvable": true,
+      "inContainerTexture": { "base": "cropsv2:block/barrel/raw-{crop}" }
+    }
+  },
+
+  "shapeByType": {
+    "*-sugarbeet": {
+      "base": "cropsv2:item/crop/vegetable/sugarbeet"
+    }
+  },
+  "creativeinventory": { "general": ["*"], "items": ["*"] },
+  "nutritionPropsByType": {
+    "*": { "satiety": 100, "foodcategory": "Vegetable" }
+  },
+  "transitionablePropsByType": {
+    "*": [
+      {
+        "type": "Perish",
+        "freshHours": { "avg": 504 },
+        "transitionHours": { "avg": 96 },
+        "transitionedStack": { "type": "item", "code": "game:rot" },
+        "transitionRatio": 0.5
+      }
+    ]
+  },
+  "groundTransformByType": {
+    "*-sugarbeet": {
+      "translation": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 90, "y": 0, "z": 0 },
+      "origin": { "x": 0.5, "y": 0.5, "z": 0.5299 },
+      "scale": 4.42
+    }
+  },
+  "fpHandTransformByType": {
+    "*-sugarbeet": {
+      "rotation": { "x": 180, "y": 90, "z": -145 },
+      "scale": 3.83
+    }
+  },
+  "guiTransformByType": {
+    "*-sugarbeet": {
+      "translation": { "x": 0, "y": 0, "z": 0 },
+      "rotation": { "x": 180, "y": 0, "z": 32 },
+      "origin": { "x": 0.5, "y": 0.3, "z": 0.6 },
+      "scale": 3.57
+    }
+  },
+  "materialDensity": 600
+}

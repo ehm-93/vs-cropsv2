@@ -73,7 +73,7 @@ public class BlockCropV2 : BlockCrop
                 var itemStacks = new List<ItemStack>();
                 foreach (var item in api.World.Items)
                 {
-                    if (item.Code.Path == "lime")
+                    if (item.Code?.Path == "lime")
                     {
                         itemStacks.Add(new ItemStack(item));
                     }
