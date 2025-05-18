@@ -80,6 +80,23 @@ class FunctionUtils
         };
     }
 
+    public static Func<TResult> Memoize<TResult>(Func<TResult> fn)
+    {
+        Cache<TResult> cache = null;
+        return () =>
+        {
+            var current = cache;
+
+            if (current != null)
+                return current.Value;
+
+            var newValue = fn();
+            var newCache = new Cache<TResult>(newValue, DateTime.MaxValue);
+            cache = newCache;
+            return newValue;
+        };
+    }
+
     
     // Immutable state snapshot
     private class Cache<TResult>

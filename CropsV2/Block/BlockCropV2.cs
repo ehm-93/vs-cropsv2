@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;
 using Vintagestory.API.MathTools;
@@ -8,7 +11,34 @@ namespace Ehm93.VintageStory.CropsV2;
 
 public class BlockCropV2 : BlockCrop
 {
+    private readonly Func<WorldInteraction[]> WeedInteractions;
     private bool enabled = true;
+
+    public BlockCropV2()
+    {
+        WeedInteractions = FunctionUtils.Memoize(() =>
+            {
+                var itemStacks = new List<ItemStack>();
+                foreach (var item in api.World.Items)
+                {
+                    if (item is ItemHoe)
+                    {
+                        itemStacks.Add(new ItemStack(item));
+                    }
+                }
+
+                return new WorldInteraction[]
+                {
+                    new WorldInteraction()
+                    {
+                        Itemstacks = itemStacks.ToArray(),
+                        ActionLangCode = "Weed",
+                        MouseButton = EnumMouseButton.Right,
+                    }
+                };
+            }
+        );
+    }
 
     public override void OnLoaded(ICoreAPI api)
     {
@@ -86,6 +116,19 @@ public class BlockCropV2 : BlockCrop
         {
             return info;
         }
+    }
+
+    public override WorldInteraction[] GetPlacedBlockInteractionHelp(IWorldAccessor world, BlockSelection selection, IPlayer forPlayer)
+    {
+        var baseInteractions = base.GetPlacedBlockInteractionHelp(world, selection, forPlayer);
+
+        var entity = api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(selection.Position);
+        if (entity == null) return baseInteractions;
+
+        var behavior = entity.GetBehavior<BEBehaviorCropWeeds>();
+        if (behavior == null) return baseInteractions;
+
+        return behavior.WeedLevel > 0 ? baseInteractions.Concat(WeedInteractions()).ToArray() : baseInteractions;
     }
 
     // Exponential yield scaling
