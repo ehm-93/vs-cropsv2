@@ -9,8 +9,8 @@ namespace Ehm93.VintageStory.CropsV2;
 
 class BEBehaviorFarmlandNutrients : BlockEntityBehavior
 {
-    private const float k = 0.0001f;
-    private const float maxNutrientsFromAging = 65f;
+    private float k = 0.0001f;
+    private float maxNutrientsFromAging = 65f;
     private double lastCheckTotalHours = 0;
     private float[] nutrientRemainders = new float[3].Fill(0);
     private bool enabled = true;
@@ -27,6 +27,8 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
         base.Initialize(api, properties);
 
         enabled = WorldConfig.EnableFarmlandAging;
+        k = WorldConfig.FarmlandAgingRate;
+        maxNutrientsFromAging = WorldConfig.FarmlandAgingMax;
 
         if (enabled && api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
