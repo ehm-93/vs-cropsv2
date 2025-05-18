@@ -23,6 +23,7 @@ public class CropsV2ModSystem : ModSystem
 
   private void RegisterTypes(ICoreAPI api) {
     api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
+    api.RegisterBlockBehaviorClass("FarmlandInteractions", typeof(BlockBehaviorFarmlandInteractions));
     api.RegisterCropBehavior("CropWeeds", typeof(CropBehaviorWeeds));
     api.RegisterCropBehavior("CropBlight", typeof(CropBehaviorBlight));
     api.RegisterBlockEntityClass("BECropV2", typeof(BlockEntityCropV2));

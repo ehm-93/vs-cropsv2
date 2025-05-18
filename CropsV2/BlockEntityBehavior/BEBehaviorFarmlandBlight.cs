@@ -129,6 +129,7 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior, IOnBlockInteract
     public bool OnBlockInteract(IPlayer byPlayer)
     {
         if (!sporesEnabled) return false;
+        if (sporeLevel == 0) return false;
 
         var slot = byPlayer.InventoryManager.ActiveHotbarSlot;
         if (slot?.Itemstack?.Item?.Code?.Path != "lime") return false;

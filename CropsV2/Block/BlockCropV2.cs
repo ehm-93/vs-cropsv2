@@ -13,6 +13,7 @@ public class BlockCropV2 : BlockCrop
 {
     private readonly Func<WorldInteraction[]> WeedInteractions;
     private readonly Func<WorldInteraction[]> MulchInteractions;
+    private readonly Func<WorldInteraction[]> BlightInteractions;
     private bool enabled = true;
 
     public BlockCropV2()
@@ -60,6 +61,30 @@ public class BlockCropV2 : BlockCrop
                     {
                         Itemstacks = itemStacks.ToArray(),
                         ActionLangCode = "Mulch",
+                        MouseButton = EnumMouseButton.Right,
+                    }
+                };
+            }
+        );
+        BlightInteractions = FunctionUtils.Memoize(() =>
+            {
+                if (!WorldConfig.EnableBlight) return new WorldInteraction[] { };
+
+                var itemStacks = new List<ItemStack>();
+                foreach (var item in api.World.Items)
+                {
+                    if (item.Code.Path == "lime")
+                    {
+                        itemStacks.Add(new ItemStack(item));
+                    }
+                }
+
+                return new WorldInteraction[]
+                {
+                    new WorldInteraction()
+                    {
+                        Itemstacks = itemStacks.ToArray(),
+                        ActionLangCode = "Treat spores",
                         MouseButton = EnumMouseButton.Right,
                     }
                 };
@@ -161,6 +186,10 @@ public class BlockCropV2 : BlockCrop
         {
             var mulchBehavior = farmlandEntity.GetBehavior<BEBehaviorFarmlandMulch>();
             if (mulchBehavior != null) result = mulchBehavior.MulchLevel < 100 ? result.Concat(MulchInteractions()).ToArray() : result;
+
+            var blightBehavior = farmlandEntity.GetBehavior<BEBehaviorFarmlandBlight>();
+            if (blightBehavior != null && 0 < blightBehavior.SporeLevel && blightBehavior.SporeTreatment < 100)
+                result = result.Concat(BlightInteractions()).ToArray();
         }
 
         return result;
