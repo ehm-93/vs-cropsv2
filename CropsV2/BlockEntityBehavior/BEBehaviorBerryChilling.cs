@@ -8,7 +8,7 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
+class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
 {
     protected readonly Func<bool> InGreenhouse;
     protected double chilledHours = 0;
@@ -16,6 +16,7 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
     protected bool chilling = false;
     protected double chillTemp = 0;
     protected double chilledHoursRequired = 0;
+    private bool enabled = true;
 
     public bool Chilling
     {
@@ -28,6 +29,8 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
     }
 
     public double ChillProgress => Math.Clamp(chilledHours / chilledHoursRequired, 0, 1);
+
+    public bool Enabled => enabled;
 
     public BEBehaviorBerryChilling(BlockEntity blockentity) : base(blockentity)
     {
@@ -42,19 +45,16 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
         );
     }
 
-    public virtual void OnExchanged(Block block)
-    {
-        Chilling = Block?.Variant?["state"] == "empty";
-    }
-
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
 
+        enabled = WorldConfig.EnableBerryVernalization;
+
         chillTemp = properties["chillTemp"]?.AsDouble() ?? 0;
         chilledHoursRequired = (properties["chilledDaysRequired"]?.AsDouble() ?? 0) * Api.World.Calendar.HoursPerDay;
 
-        if (Api is ICoreServerAPI) Blockentity.RegisterGameTickListener(ServerTick, 4500 + Api.World.Rand.Next(1000));
+        if (enabled && Api is ICoreServerAPI) Blockentity.RegisterGameTickListener(ServerTick, 4500 + Api.World.Rand.Next(1000));
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -76,12 +76,24 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, HasChill, OnExchanged
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        if (Chilling && ChillProgress < 1)
+        if (enabled && Chilling && ChillProgress < 1)
         {
             dsc.AppendLine(Lang.Get("Dormant"));
             dsc.AppendLine(Lang.Get("Vernalized below: {0}°C", chillTemp));
             dsc.AppendLine(Lang.Get("Vernalization progress: {0}%", Math.Round(ChillProgress * 100)));
         }
+    }
+
+    public virtual void OnExchanged(Block block)
+    {
+        Chilling = Block?.Variant?["state"] == "empty";
+    }
+
+    public virtual bool CheckGrow()
+    {
+        if (!enabled) return true;
+
+        return !Chilling || 1 <= ChillProgress;
     }
 
     protected virtual void ServerTick(float df)

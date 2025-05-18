@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
@@ -78,13 +79,11 @@ internal static class BEBerryBushPatches
     {
         public static bool Prefix(BlockEntity __instance)
         {
-            var chill = __instance.GetBehavior<HasChill>();
-            if (chill is null) return true;
-            if (chill.Chilling && chill.ChillProgress < 1)
+            var behaviors = __instance.Behaviors.Where(b => b is ICheckGrow);
+            foreach (ICheckGrow behavior in behaviors)
             {
-                return false; // skip growth while chilling is incomplete
+                if (!behavior.CheckGrow()) return false;
             }
-
             return true;
         }
     }

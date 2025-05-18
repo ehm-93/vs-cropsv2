@@ -10,6 +10,7 @@ public class CropsV2ModSystem : ModSystem
   public override void Start(ICoreAPI api)
   {
     base.Start(api);
+    WorldConfig.Init(api);
     CropsV2Commands.Register(api);
     RegisterTypes(api);
     HarmonyPatch(api);

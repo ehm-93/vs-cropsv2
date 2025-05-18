@@ -1,14 +1,25 @@
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 
 namespace Ehm93.VintageStory.CropsV2;
 
 class CropBehaviorBlight : CropBehavior
 {
-    public CropBehaviorBlight(Block block) : base(block) {}
+    private bool enabled = true;
+
+    public CropBehaviorBlight(Block block) : base(block) { }
+
+    public override void Initialize(JsonObject properties)
+    {
+        base.Initialize(properties);
+        enabled = WorldConfig.EnableBlight;
+    }
 
     public override bool TryGrowCrop(ICoreAPI api, IFarmlandBlockEntity farmland, double currentTotalHours, int newGrowthStage, ref EnumHandling handling)
     {
+        if (!enabled) return true;
+
         BlockPos pos = farmland.UpPos;
         double blightLevel = GetBlightLevel(api, pos);
 

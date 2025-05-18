@@ -8,10 +8,20 @@ namespace Ehm93.VintageStory.CropsV2;
 
 public class BlockCropV2 : BlockCrop
 {
+    private bool enabled = true;
+
+    public override void OnLoaded(ICoreAPI api)
+    {
+        base.OnLoaded(api);
+        enabled = WorldConfig.EnableCropGenerations;
+    }
+
     public override ItemStack[] GetDrops(IWorldAccessor world, BlockPos pos, IPlayer byPlayer, float dropQuantityMultiplier = 1f)
     {
         var drops = base.GetDrops(world, pos, byPlayer, dropQuantityMultiplier);
-        
+
+        if (!enabled) return drops;
+
         var cropEntity = world.BlockAccessor.GetBlockEntity(pos) as BlockEntityCropV2;
         int gen = cropEntity?.Generation ?? 0;
 
@@ -63,6 +73,9 @@ public class BlockCropV2 : BlockCrop
     public override string GetPlacedBlockInfo(IWorldAccessor world, BlockPos pos, IPlayer forPlayer)
     {
         var info = base.GetPlacedBlockInfo(world, pos, forPlayer);
+
+        if (!enabled) return info;
+
         var entity = world.BlockAccessor.GetBlockEntity(pos) as BlockEntityCropV2;
         if (entity == null) return info;
         if (entity.Generation != 0)

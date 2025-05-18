@@ -19,6 +19,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
     protected SimpleParticleProperties blightParticles;
     protected (double Weight, IPressureProvider Pressure)[] inoculumPressure;
     protected (double Weight, IPressureProvider Pressure)[] susceptibilityPressure;
+    private bool enabled = true;
 
     public double BlightLevel
     {
@@ -51,14 +52,16 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
     {
         base.Initialize(api, properties);
 
+        enabled = WorldConfig.EnableBlight;
+
         InitParticles();
         InitPressureProviders();
 
-        if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
+        if (enabled && api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
             CropEntity.RegisterGameTickListener(ServerTick, 3900 + api.World.Rand.Next(200));
         }
-        if (api is ICoreClientAPI)
+        if (enabled && api is ICoreClientAPI)
         {
             CropEntity.RegisterGameTickListener(ClientTick, 400 + api.World.Rand.Next(200));
         }
@@ -123,7 +126,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
     {
         if (Api is not ICoreClientAPI capi) return;
 
-        if (BlightTier == 0)
+        if (!enabled || BlightTier == 0)
         {
             mesh = null;
             return;

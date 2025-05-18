@@ -12,17 +12,19 @@ namespace Ehm93.VintageStory.CropsV2;
 
 class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
 {
-    readonly private Random rand = new Random();
     protected MeshData mulchQuad;
     protected TextureAtlasPosition mulchTexturePos;
     protected double lastMulchTotalHours = 0;
     protected double lastMulchTickTotalHours = 0;
-    private double _mulchLevel = 0;
+    private readonly Random rand = new Random();
     private readonly Func<bool> IsExposedToRain;
+    private bool enabled = true;
+    private double _mulchLevel = 0;
 
-    public double MulchLevel {
+    public double MulchLevel
+    {
         get => _mulchLevel;
-        protected set 
+        protected set
         {
             double clamped = Math.Clamp(value, 0, 100);
             if (_mulchLevel != clamped)
@@ -45,14 +47,15 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
             throw new ArgumentException("Configuration error! FarmlandMulch behavior may only be used on farmland.");
         }
 
-        IsExposedToRain = FunctionUtils.MemoizeFor<bool>(TimeSpan.FromSeconds(60), DoIsExposedToRain);
+        IsExposedToRain = FunctionUtils.MemoizeFor(TimeSpan.FromSeconds(60), DoIsExposedToRain);
     }
 
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
+        enabled = WorldConfig.EnableMulch;
         if (GenMulchQuad()) FarmlandEntity.MarkDirty(redrawOnClient: true);
-        if (api is ICoreServerAPI)
+        if (enabled && api is ICoreServerAPI)
         {
             if (Api.World.Config.GetBool("processCrops", defaultValue: true))
             {
@@ -85,6 +88,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
 
     public virtual bool OnBlockInteract(IPlayer byPlayer)
     {
+        if (!enabled) return false;
         var slot = byPlayer.InventoryManager.ActiveHotbarSlot;
         if (slot?.Itemstack == null) return false;
 
@@ -103,7 +107,8 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        if (0 < Math.Round(MulchLevel)) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int) MulchLevel));
+        if (!enabled) return;
+        if (0 < Math.Round(MulchLevel)) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int)MulchLevel));
     }
 
     protected virtual void TickMulch()
@@ -184,7 +189,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
     {
         if (Api is not ICoreClientAPI capi) return false;
 
-        if (MulchLevel == 0)
+        if (!enabled || MulchLevel == 0)
         {
             if (mulchQuad != null)
             {

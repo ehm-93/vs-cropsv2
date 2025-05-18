@@ -1,5 +1,4 @@
 using System;
-using Ehm93.VintageStory.CropsV2;
 using Vintagestory.API.Common;
 using Vintagestory.API.Datastructures;
 using Vintagestory.API.Server;
@@ -14,6 +13,7 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
     private const float k = 0.000531f;
     private double lastCheckTotalHours = 0;
     private float[] nutrientRemainders = new float[3].Fill(0);
+    private bool eanbled = true;
 
     public BlockEntityFarmland FarmlandEntity => (BlockEntityFarmland)Blockentity;
 
@@ -26,7 +26,9 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
     {
         base.Initialize(api, properties);
 
-        if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
+        eanbled = WorldConfig.EnableFarmlandAging;
+
+        if (eanbled && api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
             Blockentity.RegisterGameTickListener(ServerTick, 25_000 + api.World.Rand.Next(10_000));
         }
