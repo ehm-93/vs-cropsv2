@@ -9,26 +9,26 @@ namespace Ehm93.VintageStory.CropsV2;
 
 class BEBehaviorFarmlandNutrients : BlockEntityBehavior
 {
-    // ~5 years for nutrition to grow from 0 -> 100
-    private const float k = 0.000531f;
+    private const float k = 0.0001f;
+    private const float maxNutrientsFromAging = 65f;
     private double lastCheckTotalHours = 0;
     private float[] nutrientRemainders = new float[3].Fill(0);
-    private bool eanbled = true;
+    private bool enabled = true;
 
     public BlockEntityFarmland FarmlandEntity => (BlockEntityFarmland)Blockentity;
 
     public BEBehaviorFarmlandNutrients(BlockEntity blockentity) : base(blockentity)
     {
-        if (blockentity is not BlockEntityFarmland) throw new ArgumentException($"Configuration error! BEBehaviorFarmlandAge may only be used against BlockEntityFarmland, found {blockentity.GetType().Name}");
+        if (blockentity is not BlockEntityFarmland) throw new ArgumentException($"Configuration error! BEBehaviorFarmlandNutrients may only be used against BlockEntityFarmland, found {blockentity.GetType().Name}");
     }
 
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
 
-        eanbled = WorldConfig.EnableFarmlandAging;
+        enabled = WorldConfig.EnableFarmlandAging;
 
-        if (eanbled && api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
+        if (enabled && api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
             Blockentity.RegisterGameTickListener(ServerTick, 25_000 + api.World.Rand.Next(10_000));
         }
@@ -106,7 +106,7 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
     protected virtual float ComputeNutrients(float current, float deltaHours)
     {
         double effectiveK = k * BoostCoef();
-        return 100f - (100f - current) * (float)Math.Exp(-effectiveK * deltaHours);
+        return maxNutrientsFromAging - (maxNutrientsFromAging - current) * (float)Math.Exp(-effectiveK * deltaHours);
     }
 
     protected virtual double MoistureCoef(double m)
