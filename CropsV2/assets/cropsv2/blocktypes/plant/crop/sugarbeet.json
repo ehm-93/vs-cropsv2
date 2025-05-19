@@ -84,8 +84,8 @@
     ]
   },
   "cropProps": {
-    "requiredNutrient": "P",
-    "nutrientConsumption": 31,
+    "requiredNutrient": "K",
+    "nutrientConsumption": 30,
     "growthStages": 5,
     "totalGrowthDays": 12,
     "coldDamageBelow": -2,

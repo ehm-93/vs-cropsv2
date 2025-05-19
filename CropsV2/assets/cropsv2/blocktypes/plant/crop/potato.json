@@ -91,13 +91,12 @@
     ]
   },
   "cropProps": {
-    "__comment": "cropsv2 have relatively high requirements for nitrogen and potassium. ",
-    "requiredNutrient": "N",
-    "nutrientConsumption": 35,
+    "requiredNutrient": "K",
+    "nutrientConsumption": 30,
     "growthStages": 7,
-    "totalGrowthDays": 16,
-    "coldDamageBelow": 4,
-    "heatDamageAbove": 35,
+    "totalGrowthDays": 19,
+    "coldDamageBelow": 0,
+    "heatDamageAbove": 27,
     "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   "collisionbox": null,

@@ -87,7 +87,8 @@
     "requiredNutrient": "N",
     "nutrientConsumption": 40,
     "growthStages": 12,
-    "totalGrowthDays": 26,
+    "totalGrowthDays": 25,
+    "coldDamageBelow": -1,
     "heatDamageAbove": 25,
     "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },

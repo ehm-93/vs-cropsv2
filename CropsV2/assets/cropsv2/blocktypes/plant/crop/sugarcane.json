@@ -66,12 +66,12 @@
     ]
   },
   "cropProps": {
-    "requiredNutrient": "N",
-    "nutrientConsumption": 35,
-    "growthStages": 8,
-    "totalGrowthDays": 20,
+    "requiredNutrient": "K",
+    "nutrientConsumption": 45,
+    "growthStages": 89,
+    "totalGrowthDays": 36,
     "coldDamageBelow": 10,
-    "heatDamageAbove": 45,
+    "heatDamageAbove": 38,
     "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   "collisionbox": null,

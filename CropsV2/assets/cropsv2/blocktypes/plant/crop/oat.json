@@ -69,13 +69,15 @@
     ]
   },
   "cropProps": {
-    "__comment": "oat",
     "requiredNutrient": "N",
-    "nutrientConsumption": 40,
+    "nutrientConsumption": 34,
     "growthStages": 7,
-    "totalGrowthMonths": 3.0,
+    "totalGrowthDays": 18,
+    "coldDamageBelow": -2,
+    "heatDamageAbove": 28,
     "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
+
   "collisionbox": null,
   "selectionbox": {
     "x1": 0.0625,
