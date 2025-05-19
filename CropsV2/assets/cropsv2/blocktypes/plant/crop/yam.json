@@ -80,14 +80,17 @@
     ]
   },
   "cropProps": {
-    "__comment": "Yams have relatively high requirements for nitrogen and potassium. ",
-    "requiredNutrient": "N",
-    "nutrientConsumption": 30,
+    "requiredNutrient": "K", // classic potassium-hungry tuber
+    "nutrientConsumption": 36, // 6 stages × 6.0 pts / stage
     "growthStages": 9,
-    "totalGrowthDays": 16,
-    "coldDamageBelow": 15,
-    "heatDamageAbove": 37,
-    "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
+    "totalGrowthDays": 30,
+    "heatDamageAbove": 40, // tolerates extreme heat
+    "coldDamageBelow": 10, // growth stalls below 10 °C
+    "behaviors": [
+      { "name": "CropWeeds" },
+      { "name": "CropBlight" }
+      // Future idea: CropTrellis (for vine support)
+    ]
   },
   "collisionbox": null,
   "selectionbox": {

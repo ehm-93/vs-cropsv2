@@ -1,0 +1,238 @@
+[
+  /* POTATO */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-potato-2",
+        "cropsv2:crop-potato-4",
+        "cropsv2:crop-potato-6"
+      ],
+      "minTemp": 4,
+      "maxTemp": 26,
+      "minRain": 0.18,
+      "maxRain": 0.75,
+      "maxForest": 0.3,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.05
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* YAM */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-yam-2",
+        "cropsv2:crop-yam-4",
+        "cropsv2:crop-yam-6"
+      ],
+      "minTemp": 18,
+      "maxTemp": 40,
+      "minRain": 0.16,
+      "maxRain": 0.7,
+      "maxForest": 0.15,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.05
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* CAULIFLOWER */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-cauliflower-4",
+        "cropsv2:crop-cauliflower-6",
+        "cropsv2:crop-cauliflower-9"
+      ],
+      "minTemp": 2,
+      "maxTemp": 25,
+      "minRain": 0.16,
+      "maxRain": 0.7,
+      "maxForest": 0.25,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.04
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* CORN */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-corn-3",
+        "cropsv2:crop-corn-3",
+        "cropsv2:crop-corn-4",
+        "cropsv2:crop-corn-5",
+        "cropsv2:crop-corn-6",
+        "cropsv2:crop-corn-9"
+      ],
+      "minTemp": 5,
+      "maxTemp": 33,
+      "minRain": 0.1,
+      "maxRain": 0.7,
+      "maxForest": 0.1,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.06
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* BEET */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-beet-2",
+        "cropsv2:crop-beet-3",
+        "cropsv2:crop-beet-5"
+      ],
+      "minTemp": 10,
+      "maxTemp": 26,
+      "minRain": 0.45,
+      "maxRain": 0.85,
+      "maxForest": 0.34,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.07
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* EGGPLANT */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-eggplant-2",
+        "cropsv2:crop-eggplant-3",
+        "cropsv2:crop-eggplant-6"
+      ],
+      "minTemp": 22,
+      "maxTemp": 34,
+      "minRain": 0.45,
+      "maxRain": 0.85,
+      "maxForest": 0.25,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.05
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* JALAPEÑO */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-jalapeno-3",
+        "cropsv2:crop-jalapeno-3",
+        "cropsv2:crop-jalapeno-4",
+        "cropsv2:crop-jalapeno-5",
+        "cropsv2:crop-jalapeno-6"
+      ],
+      "minTemp": 15,
+      "maxTemp": 32,
+      "minRain": 0.15,
+      "maxRain": 0.75,
+      "maxForest": 0.15,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.06
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* BELL PEPPER */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-pepperbell-8",
+        "cropsv2:crop-pepperbell-9",
+        "cropsv2:crop-pepperbell-10",
+        "cropsv2:crop-pepperbell-11"
+      ],
+      "minTemp": 15,
+      "maxTemp": 30,
+      "minRain": 0.15,
+      "maxRain": 0.75,
+      "maxForest": 0.15,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.06
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* SUGARCANE */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-sugarcane-4",
+        "cropsv2:crop-sugarcane-6",
+        "cropsv2:crop-sugarcane-8"
+      ],
+      "minTemp": 20,
+      "maxTemp": 38,
+      "minRain": 0.3,
+      "maxRain": 1.0,
+      "maxForest": 0.1,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.04
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* SUGAR BEET */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-sugarbeet-2",
+        "cropsv2:crop-sugarbeet-3",
+        "cropsv2:crop-sugarbeet-5"
+      ],
+      "minTemp": 10,
+      "maxTemp": 26,
+      "minRain": 0.45,
+      "maxRain": 0.85,
+      "maxForest": 0.34,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.07
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  },
+
+  /* OAT */
+  {
+    "op": "add",
+    "path": "/-",
+    "value": {
+      "blockCodes": [
+        "cropsv2:crop-oat-2",
+        "cropsv2:crop-oat-3",
+        "cropsv2:crop-oat-5"
+      ],
+      "minTemp": 10,
+      "maxTemp": 26,
+      "minRain": 0.45,
+      "maxRain": 0.85,
+      "maxForest": 0.34,
+      "quantity": { "avg": 5, "var": 5 },
+      "chance": 0.07
+    },
+    "file": "game:worldgen/blockpatches/crop.json"
+  }
+]
