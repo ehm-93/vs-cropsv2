@@ -1,7 +1,9 @@
 {
   "code": "crop",
-  "class": "BlockCrop",
+  "class": "BlockCropV2",
+  "entityClass": "BECropV2",
   "behaviors": [{ "name": "Unstable" }],
+  "entityBehaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }],
   "variantgroups": [
     { "code": "type", "states": ["sugarbeet"] },
     { "code": "stage", "states": ["1", "2", "3", "4", "5"] }
@@ -43,9 +45,9 @@
   "lightAbsorption": 0,
   "resistance": 0.5,
   "sounds": {
-    "place": "block/plant",
-    "break": "block/plant",
-    "hit": "block/plant"
+    "place": "game:block/plant",
+    "break": "game:block/plant",
+    "hit": "game:block/plant"
   },
   "rainPermeable": false,
   "dropsByType": {
@@ -87,7 +89,8 @@
     "growthStages": 5,
     "totalGrowthDays": 12,
     "coldDamageBelow": -2,
-    "heatDamageAbove": 30
+    "heatDamageAbove": 30,
+    "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   "collisionbox": null,
   "selectionbox": {

@@ -1,7 +1,9 @@
 {
   "code": "crop",
-  "class": "BlockCrop",
+  "class": "BlockCropV2",
+  "entityClass": "BECropV2",
   "behaviors": [{ "name": "Unstable" }],
+  "entityBehaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }],
   "variantgroups": [
     { "code": "type", "states": ["yam"] },
     { "code": "stage", "states": ["1", "2", "3", "4", "5", "6", "7", "8", "9"] }
@@ -84,7 +86,8 @@
     "growthStages": 9,
     "totalGrowthDays": 16,
     "coldDamageBelow": 15,
-    "heatDamageAbove": 37
+    "heatDamageAbove": 37,
+    "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   "collisionbox": null,
   "selectionbox": {
