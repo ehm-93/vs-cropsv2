@@ -80,17 +80,13 @@
     ]
   },
   "cropProps": {
-    "requiredNutrient": "K", // classic potassium-hungry tuber
-    "nutrientConsumption": 36, // 6 stages × 6.0 pts / stage
+    "requiredNutrient": "K",
+    "nutrientConsumption": 36,
     "growthStages": 9,
     "totalGrowthDays": 30,
-    "heatDamageAbove": 40, // tolerates extreme heat
-    "coldDamageBelow": 10, // growth stalls below 10 °C
-    "behaviors": [
-      { "name": "CropWeeds" },
-      { "name": "CropBlight" }
-      // Future idea: CropTrellis (for vine support)
-    ]
+    "coldDamageBelow": 10,
+    "heatDamageAbove": 40,
+    "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   "collisionbox": null,
   "selectionbox": {

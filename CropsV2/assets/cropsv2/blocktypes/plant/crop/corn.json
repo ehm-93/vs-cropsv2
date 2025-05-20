@@ -55,7 +55,7 @@
     "growthStages": 9,
     "totalGrowthDays": 20,
     "coldDamageBelow": 5,
-    "heatDamageAbove": 33,
+    "heatDamageAbove": 40,
     "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
   },
   "collisionbox": null,
