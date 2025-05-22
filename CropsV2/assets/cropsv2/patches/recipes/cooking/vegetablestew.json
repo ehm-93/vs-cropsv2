@@ -1,0 +1,900 @@
+[
+  // ********************************
+  // Base 1
+  // ********************************
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledpotato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledyam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledcauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledbeet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledeggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/0/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledjalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+
+  // ********************************
+  // Base 2
+  // ********************************
+
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledpotato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledyam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledcauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledbeet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledeggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/1/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledjalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+
+  // ********************************
+  // Base 3
+  // ********************************
+
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledpotato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledyam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledcauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledbeet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledeggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/2/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledjalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+
+  // ********************************
+  // Base 4
+  // ********************************
+
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:vegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-potato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-yam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-cauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-corn",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-beet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-eggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-jalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledpotato",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledyam",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledcauliflower",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledbeet",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledeggplant",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  },
+  {
+    "file": "game:recipes/cooking/vegetablestew.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/ingredients/3/validStacks/-",
+    "value": {
+      "type": "item",
+      "code": "cropsv2:choppedvegetable-pickledjalapeno",
+      "shapeElement": "bowl/vegetable 1/*"
+    }
+  }
+]

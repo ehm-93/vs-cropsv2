@@ -1,0 +1,24 @@
+[
+  {
+    "op": "add",
+    "path": "/attributesByType/*corn*",
+    "value": {
+      "juiceableProperties": {
+        "litresPerItem": 0.078125,
+        "liquidStack": {
+          "type": "item",
+          "code": "cropsv2:foodoilportion-corn",
+          "stacksize": 1
+        },
+        "pressedStack": {
+          "type": "item",
+          "code": "cropsv2:pressedmash-corn",
+          "stacksize": 1
+        }
+      }
+    },
+    "file": "cropsv2:itemtypes/food/vegetable.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  }
+]

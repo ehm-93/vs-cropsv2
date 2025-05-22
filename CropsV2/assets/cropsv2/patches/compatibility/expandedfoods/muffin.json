@@ -1,0 +1,72 @@
+[
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-dough",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffin-dough.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-partbaked",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffinpartbaked.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-cooked",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffin.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-charred",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffincharred.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-syruppartbaked",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffinpartbaked.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-syrup",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffin.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-syrupcharred",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/muffins/flaxmuffincharred.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/muffin.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  }
+]

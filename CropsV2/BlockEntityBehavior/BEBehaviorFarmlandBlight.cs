@@ -13,13 +13,16 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BEBehaviorFarmlandBlight : BlockEntityBehavior
+class BEBehaviorFarmlandBlight : BlockEntityBehavior, IOnBlockInteract
 {
+    public BlockEntityFarmland FarmlandEntity => Blockentity as BlockEntityFarmland;
     protected List<CropHistoryEntry> history = new();
     protected double sporeLevel = 0;
+    protected double sporeTreatment = 0;
     protected double lastCheckTotalHours = 0;
     protected SimpleParticleProperties blightParticles;
-    public BlockEntityFarmland FarmlandEntity => Blockentity as BlockEntityFarmland;
+    private bool blightEnabled = true;
+    private bool sporesEnabled = true;
 
     public BlockEntityCropV2 CropEntity =>
         Api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(Pos.UpCopy());
@@ -44,6 +47,21 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
         }
     }
 
+    public double SporeTreatment
+    {
+        get { return sporeTreatment; }
+        set
+        {
+            var clamped = Math.Clamp(value, 0, 100);
+            if (clamped != sporeTreatment)
+            {
+                sporeTreatment = clamped;
+                CropEntity?.MarkDirty(true);
+                FarmlandEntity.MarkDirty(true);
+            }
+        }
+    }
+
     public virtual double ExposureHours(Block block)
     {
         var now = Api.World.Calendar.TotalHours;
@@ -61,13 +79,16 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
     {
         base.Initialize(api, properties);
 
+        blightEnabled = WorldConfig.EnableBlight;
+        sporesEnabled = WorldConfig.EnableSpores;
+
         InitParticles();
 
-        if (api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
+        if ((blightEnabled || sporesEnabled) && api is ICoreServerAPI && api.World.Config.GetBool("processCrops", defaultValue: true))
         {
             FarmlandEntity.RegisterGameTickListener(ServerTick, 4500 + api.World.Rand.Next(1000));
         }
-        if (api is ICoreClientAPI)
+        if (sporesEnabled && api is ICoreClientAPI)
         {
             FarmlandEntity.RegisterGameTickListener(ClientTick, 400 + api.World.Rand.Next(200));
         }
@@ -76,23 +97,63 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        
-        var spores = Math.Round(sporeLevel);
-        if (0 < spores) dsc.AppendLine(Lang.Get("Blight spores: {0}%", spores));
 
-        var behavior = Api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(Pos.UpCopy())?.GetBehavior<BEBehaviorCropBlight>();
-        if (behavior == null) return;
+        if (sporesEnabled)
+        {
+            var spores = Math.Round(sporeLevel);
+            if (0 < spores) dsc.AppendLine(Lang.Get("Blight spores: {0}%", spores));
 
-        var blightLevel = Math.Round(behavior.BlightLevel);
-        if (0 < blightLevel) 
-        {
-            dsc.AppendLine(Lang.Get("Blight: {0}%", blightLevel));
+            var treatment = Math.Round(SporeTreatment);
+            if (0 < treatment) dsc.AppendLine(Lang.Get("Spore treatment: {0}%", treatment));
         }
-        else 
+
+        if (blightEnabled)
         {
-            var chance = Math.Round(behavior.OutbreakChance() * 100);
-            if (0 < chance) dsc.AppendLine(Lang.Get("Blight risk: {0}%", chance));
+            var behavior = Api.World.BlockAccessor.GetBlockEntity<BlockEntityCropV2>(Pos.UpCopy())?.GetBehavior<BEBehaviorCropBlight>();
+            if (behavior != null)
+            {
+                var blightLevel = Math.Round(behavior.BlightLevel);
+                if (0 < blightLevel)
+                {
+                    dsc.AppendLine(Lang.Get("Blight: {0}%", blightLevel));
+                }
+                else
+                {
+                    var chance = Math.Round(behavior.OutbreakChance() * 100);
+                    if (0 < chance) dsc.AppendLine(Lang.Get("Blight risk: {0}%", chance));
+                }
+            }
         }
+    }
+
+    public bool OnBlockInteract(IPlayer byPlayer)
+    {
+        if (!sporesEnabled) return false;
+        if (sporeLevel == 0) return false;
+
+        var slot = byPlayer.InventoryManager.ActiveHotbarSlot;
+        if (slot?.Itemstack?.Item?.Code?.Path != "lime") return false;
+        if (sporeTreatment == 100) return false;
+
+        SporeTreatment += 50;
+
+        if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
+        {
+            slot.TakeOut(1);
+            slot.MarkDirty();
+        }
+
+        Api.World.PlaySoundAt(
+            Api.World.BlockAccessor.GetBlock(Pos).Sounds.Hit,
+            Pos.X + 0.5,
+            Pos.InternalY + 0.75,
+            Pos.Z + 0.5,
+            byPlayer, 
+            randomizePitch: true,
+            12f
+        );
+
+        return true;
     }
 
     public override void ToTreeAttributes(ITreeAttribute tree)
@@ -101,6 +162,7 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
         tree.SetString("history", JsonConvert.SerializeObject(history));
         tree.SetDouble("sporeLevel", sporeLevel);
         tree.SetDouble("lastCheckTotalHours", lastCheckTotalHours);
+        tree.SetDouble("sporeTreatment", sporeTreatment);
     }
 
     public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
@@ -109,6 +171,7 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
         history = JsonConvert.DeserializeObject<List<CropHistoryEntry>>(tree.GetString("history") ?? "[]");
         sporeLevel = tree.GetDouble("sporeLevel");
         lastCheckTotalHours = tree.GetDouble("lastCheckTotalHours");
+        sporeTreatment = tree.GetDouble("sporeTreatment");
     }
 
     protected virtual void ServerTick(float df)
@@ -119,12 +182,8 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
 
     protected virtual void ReduceSpores()
     {
-        if (SporeLevel < 0.5)
-        {
-            SporeLevel = 0;
-            return;
-        }
-        const double decayRate = 0.02;
+        if (!sporesEnabled) return;
+
         var now = Api.World.Calendar.TotalHours;
         if (lastCheckTotalHours == 0)
         {
@@ -132,9 +191,34 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
             return;
         }
 
-        var deltaDays = (now - lastCheckTotalHours) / Api.World.Calendar.HoursPerDay;
-        SporeLevel *= Math.Pow(1 - decayRate, deltaDays);
+        if (sporeTreatment > 0) TreatSpores();
+        else DecaySpores(0.02);
+
         lastCheckTotalHours = now;
+    }
+
+    protected virtual void TreatSpores()
+    {
+        var normalized = sporeTreatment / 100;
+        DecaySpores(Math.Max(normalized * 0.2, 0.04));
+
+        var now = Api.World.Calendar.TotalHours;
+        var deltaDays = (now - lastCheckTotalHours) / Api.World.Calendar.HoursPerDay;
+
+        if (SporeTreatment < 0.5) SporeTreatment = 0;
+        else SporeTreatment *= Math.Pow(1 - 0.05, deltaDays);
+        
+        FarmlandEntity.Nutrients[0] *= (float) Math.Pow(1 - 0.1, deltaDays);
+        FarmlandEntity.Nutrients[1] *= (float) Math.Pow(1 - 0.1, deltaDays);
+        FarmlandEntity.Nutrients[2] *= (float) Math.Pow(1 - 0.1, deltaDays);
+    }
+
+    protected virtual void DecaySpores(double decayRate)
+    {
+        var now = Api.World.Calendar.TotalHours;
+        var deltaDays = (now - lastCheckTotalHours) / Api.World.Calendar.HoursPerDay;
+        if (SporeLevel < 0.5) SporeLevel = 0;
+        else SporeLevel *= Math.Pow(1 - decayRate, deltaDays);
     }
 
     protected virtual void ClientTick(float df)
@@ -143,8 +227,8 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
         {
             blightParticles.MinPos = Blockentity.Pos.ToVec3d();
             blightParticles.AddPos.Set(1, 0.0, 1); // spread around
-            blightParticles.MinQuantity = (float) Math.Ceiling(sporeLevel / 20);
-            blightParticles.AddQuantity = (float) Math.Ceiling(sporeLevel / 50);
+            blightParticles.MinQuantity = (float)Math.Ceiling(sporeLevel / 20);
+            blightParticles.AddQuantity = (float)Math.Ceiling(sporeLevel / 50);
 
             Api.World.SpawnParticles(blightParticles);
         }
@@ -152,6 +236,8 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior
 
     protected virtual void CheckHistory()
     {
+        if (!blightEnabled) return;
+
         var changed = PruneHistory();
         changed |= CheckAppendHistory();
 

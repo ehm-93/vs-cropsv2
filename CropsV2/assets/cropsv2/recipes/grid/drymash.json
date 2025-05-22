@@ -1,0 +1,42 @@
+[
+  {
+    "ingredientPattern": "K,V",
+    "recipeGroup": 1,
+    "ingredients": {
+      "K": {
+        "type": "item",
+        "code": "game:knife-*",
+        "isTool": true
+      },
+      "V": {
+        "type": "item",
+        "code": "cropsv2:pressedmashcane"
+      }
+    },
+    "width": 1,
+    "height": 2,
+    "output": { "type": "item", "code": "cropsv2:bagasse", "quantity": 4 }
+  },
+  {
+    "ingredientPattern": "K,V",
+    "recipeGroup": 1,
+    "ingredients": {
+      "K": {
+        "type": "item",
+        "code": "game:knife-*",
+        "isTool": true
+      },
+      "V": {
+        "type": "item",
+        "code": "cropsv2:pressedmashbeet"
+      }
+    },
+    "width": 1,
+    "height": 2,
+    "output": {
+      "type": "item",
+      "code": "cropsv2:sugarbeetcut",
+      "quantity": 4
+    }
+  }
+]

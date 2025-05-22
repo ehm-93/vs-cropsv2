@@ -7,7 +7,15 @@
     "value": [
       { "name": "FarmlandMulch" },
       { "name": "FarmlandWeeds" },
-      { "name": "FarmlandBlight" }
+      { "name": "FarmlandBlight" },
+      { "name": "FarmlandNutrients" }
     ]
+  },
+  {
+    "file": "game:blocktypes/soil/farmland.json",
+    "side": "Server",
+    "op": "add",
+    "path": "/behaviors",
+    "value": [{ "name": "FarmlandInteractions" }]
   }
 ]

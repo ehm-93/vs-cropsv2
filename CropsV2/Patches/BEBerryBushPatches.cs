@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using HarmonyLib;
@@ -18,7 +19,7 @@ internal static class BEBerryBushPatches
 
     private static void PatchBerryBushOnExchanged(Harmony harmony, ILogger logger)
     {
-        // var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
+        //var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
         var berryBushType = typeof(BlockEntityBerryBush);
         var target = TryGetMethod(berryBushType, "OnExchanged", logger);
         var postfix = typeof(OnExchangedPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public);
@@ -81,13 +82,11 @@ internal static class BEBerryBushPatches
     {
         public static bool Prefix(BlockEntity __instance)
         {
-            var chill = __instance.GetBehavior<HasChill>();
-            if (chill is null) return true;
-            if (chill.Chilling && chill.ChillProgress < 1)
+            var behaviors = __instance.Behaviors.Where(b => b is ICheckGrow);
+            foreach (ICheckGrow behavior in behaviors)
             {
-                return false; // skip growth while chilling is incomplete
+                if (!behavior.CheckGrow()) return false;
             }
-
             return true;
         }
     }
