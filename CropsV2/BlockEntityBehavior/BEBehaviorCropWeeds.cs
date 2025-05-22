@@ -21,6 +21,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     readonly private double maxGrowChance = 1;
     readonly private double minGrowChance = 0.01;
     readonly private double growth = 10;
+    private bool enabled = true;
     private PressureProvider[] primaryPressure;
     private NeighborPressureProvider neighborPressure;
     private PressureProvider antiPressure;
@@ -60,9 +61,12 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
+
+        enabled = WorldConfig.EnableWeeds;
+
         if (api is ICoreServerAPI)
         {
-            if (Api.World.Config.GetBool("processCrops", defaultValue: true))
+            if (enabled && Api.World.Config.GetBool("processCrops", defaultValue: true))
             {
                 CropEntity.RegisterGameTickListener(Tick, 3900 + api.World.Rand.Next(200));
             }
@@ -104,6 +108,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
+        if (!enabled) return;
         var rounded = Math.Round(weedLevel);
         if (rounded > 0) dsc.AppendLine(Lang.Get("Weeds: {0}%", rounded));
     }
@@ -112,7 +117,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     {
         if (Api is not ICoreClientAPI capi) return false;
 
-        if (WeedLevel == 0)
+        if (!enabled || WeedLevel == 0)
         {
             if (weedMesh != null)
             {

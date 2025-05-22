@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
@@ -24,7 +26,7 @@ class CBehaviorHoeWeeds : CollectibleBehavior
         base.OnLoaded(api);
         Api = api;
     }
-
+    
     public override void OnHeldInteractStart(ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling, ref EnumHandling handling)
     {
         base.OnHeldInteractStart(slot, byEntity, blockSel, entitySel, firstEvent, ref handHandling, ref handling);
@@ -33,7 +35,7 @@ class CBehaviorHoeWeeds : CollectibleBehavior
 
         var behavior = FindCropWeedBehavior(blockSel.Position);
         if (behavior == null) return;
-        
+
         var lvlBefore = behavior.WeedLevel;
         behavior.WeedLevel -= HoeImpact();
         if (lvlBefore != behavior.WeedLevel)

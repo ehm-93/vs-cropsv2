@@ -1,0 +1,91 @@
+{
+  "code": "crop",
+  "class": "BlockCropV2",
+  "entityClass": "BECropV2",
+  "behaviors": [{ "name": "Unstable" }],
+  "entityBehaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }],
+  "variantgroups": [
+    { "code": "type", "states": ["sugarcane"] },
+    { "code": "stage", "states": ["1", "2", "3", "4", "5", "6", "7", "8"] }
+  ],
+  "creativeinventory": { "general": ["*"], "plants": ["*"] },
+  "renderpass": "OpaqueNoCull",
+  "shape": { "base": "cropsv2:block/plant/crop/sugarcane/stage{stage}" },
+  "blockmaterial": "Plant",
+  "faceCullMode": "NeverCull",
+  "randomizeRotations": true,
+  "attributes": {
+    "sitHeight": 0.9,
+    "tickGrowthProbability": 0.05,
+    "handbook": {
+      "include": true
+    }
+  },
+  "sideopaque": {
+    "all": false
+  },
+  "sidesolid": {
+    "all": false
+  },
+  "replaceable": 3000,
+  "lightAbsorption": 0,
+  "selectionBox": {
+    "x1": 0.0625,
+    "y1": 0,
+    "z1": 0.0625,
+    "x2": 0.9375,
+    "y2": 4,
+    "z2": 0.9375
+  },
+  "resistance": 0.5,
+  "sounds": {
+    "place": "game:block/plant",
+    "break": "game:block/plant",
+    "hit": "game:block/plant"
+  },
+  "rainPermeable": false,
+  "dropsByType": {
+    "*-8": [
+      {
+        "type": "item",
+        "code": "cropsv2:seeds-{type}",
+        "quantity": { "avg": 1.2 }
+      },
+      {
+        "type": "block",
+        "code": "cropsv2:sugarcane",
+        "quantity": { "avg": 8 }
+      }
+    ],
+    "*": [
+      {
+        "type": "item",
+        "code": "cropsv2:seeds-{type}",
+        "quantity": { "avg": 0.7 }
+      }
+    ]
+  },
+  "cropProps": {
+    "requiredNutrient": "K",
+    "nutrientConsumption": 45,
+    "growthStages": 89,
+    "totalGrowthDays": 36,
+    "coldDamageBelow": 10,
+    "heatDamageAbove": 45,
+    "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
+  },
+  "collisionbox": null,
+  "selectionbox": {
+    "x1": 0.0625,
+    "y1": 0,
+    "z1": 0.0625,
+    "x2": 0.9375,
+    "y2": 0.25,
+    "z2": 0.9375
+  },
+  "materialDensity": 200,
+  "combustibleProps": {
+    "burnTemperature": 600,
+    "burnDuration": 10
+  }
+}

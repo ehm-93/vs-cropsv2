@@ -1,5 +1,6 @@
 using System;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.GameContent;
 
@@ -7,10 +8,21 @@ namespace Ehm93.VintageStory.CropsV2;
 
 class CropBehaviorWeeds : CropBehavior
 {
-    public CropBehaviorWeeds(Block block) : base(block) {}
+    private bool enabled = true;
+
+
+    public CropBehaviorWeeds(Block block) : base(block) { }
+
+    public override void Initialize(JsonObject properties)
+    {
+        base.Initialize(properties);
+        enabled = WorldConfig.EnableWeeds;
+    }
 
     public override bool TryGrowCrop(ICoreAPI api, IFarmlandBlockEntity farmland, double currentTotalHours, int newGrowthStage, ref EnumHandling handling)
     {
+        if (!enabled) return true;
+
         BlockPos pos = farmland.UpPos;
         double weedLevel = GetWeedLevel(api, pos);        // 0–100
         double maturity = GetCropMaturity(api, pos);      // 0.0–1.0
@@ -18,7 +30,7 @@ class CropBehaviorWeeds : CropBehavior
 
         // Later generations are more sensitive to weeds
         double genFactor = Sigmoid(generation, 5, 0.7);              // 0.5 at gen 5, 0.9+ by gen 8+
-        
+
         // Less mature crops are more vulnerable
         double maturityFactor = 1.0 - Sigmoid(maturity, 0.5, 10);    // 1.0 at sprout, ~0 at maturity
 

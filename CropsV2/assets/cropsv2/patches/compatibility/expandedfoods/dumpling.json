@@ -1,0 +1,49 @@
+[
+  {
+    "file": "cropsv2:recipes/kneading/dumpling.json",
+    "op": "replace",
+    "path": "/0/enabled",
+    "value": true,
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-raw",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/dumpling/flaxraw.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/dumpling.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-partbaked",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/dumpling/flaxpartbaked.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/dumpling.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-cooked",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/dumpling/flaxcooked.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/dumpling.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-charred",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/dumpling/flaxcharred.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/dumpling.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  }
+]

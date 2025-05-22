@@ -1,0 +1,57 @@
+[
+  {
+    "file": "cropsv2:recipes/kneading/pasta.json",
+    "op": "replace",
+    "path": "/0/enabled",
+    "value": true,
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-dough",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/pasta/flax-pastaball.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/pasta.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-flat",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/pasta/flax-pasta.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/pasta.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-cut",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/pasta/flax-pastacut.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/pasta.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/renderIngredientsByType/*-cooked",
+    "value": {
+      "cropsv2:flour-oat": "cropsv2:shapes/item/food/bread/pasta/flax-pastacooked.json"
+    },
+    "file": "expandedfoods:itemtypes/food/mixing/pasta.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  },
+  {
+    "op": "add",
+    "path": "/attributes/expandedNutritionPropsByType/*-dough/cropsv2:flour-oat",
+    "value": { "saturation": 100, "foodcategory": "Grain" },
+    "file": "expandedfoods:itemtypes/food/mixing/pasta.json",
+    "side": "server",
+    "dependsOn": [{ "modid": "expandedfoods" }]
+  }
+]

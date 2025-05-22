@@ -10,25 +10,29 @@ using Vintagestory.GameContent;
 
 namespace Ehm93.VintageStory.CropsV2;
 
-class BEBehaviorFarmlandMulch : BlockEntityBehavior
+class BEBehaviorFarmlandMulch : BlockEntityBehavior, IOnBlockInteract
 {
-    readonly private Random rand = new Random();
     protected MeshData mulchQuad;
     protected TextureAtlasPosition mulchTexturePos;
     protected double lastMulchTotalHours = 0;
     protected double lastMulchTickTotalHours = 0;
-    private double _mulchLevel = 0;
+    private readonly Random rand = new Random();
     private readonly Func<bool> IsExposedToRain;
+    private bool enabled = true;
+    private double _mulchLevel = 0;
 
-    public double MulchLevel {
+    public double MulchLevel
+    {
         get => _mulchLevel;
-        protected set 
+        protected set
         {
             double clamped = Math.Clamp(value, 0, 100);
             if (_mulchLevel != clamped)
             {
                 _mulchLevel = clamped;
-                if (GenMulchQuad()) FarmlandEntity.MarkDirty(redrawOnClient: true);
+                GenMulchQuad();
+                FarmlandEntity.MarkDirty(redrawOnClient: true);
+                CropEntity?.MarkDirty(redrawOnClient: true);
             }
         }
     }
@@ -37,7 +41,9 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
         get { return (BlockEntityFarmland) Blockentity; } 
     }
 
-    public BEBehaviorFarmlandMulch(BlockEntity blockEntity) 
+    public BlockEntityCropV2 CropEntity => Api?.World?.BlockAccessor?.GetBlockEntity<BlockEntityCropV2>(Pos?.UpCopy());
+
+    public BEBehaviorFarmlandMulch(BlockEntity blockEntity)
         : base(blockEntity)
     {
         if (blockEntity is not BlockEntityFarmland)
@@ -45,14 +51,15 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
             throw new ArgumentException("Configuration error! FarmlandMulch behavior may only be used on farmland.");
         }
 
-        IsExposedToRain = FunctionUtils.MemoizeFor<bool>(TimeSpan.FromSeconds(60), DoIsExposedToRain);
+        IsExposedToRain = FunctionUtils.MemoizeFor(TimeSpan.FromSeconds(60), DoIsExposedToRain);
     }
 
     public override void Initialize(ICoreAPI api, JsonObject properties)
     {
         base.Initialize(api, properties);
+        enabled = WorldConfig.EnableMulch;
         if (GenMulchQuad()) FarmlandEntity.MarkDirty(redrawOnClient: true);
-        if (api is ICoreServerAPI)
+        if (enabled && api is ICoreServerAPI)
         {
             if (Api.World.Config.GetBool("processCrops", defaultValue: true))
             {
@@ -85,6 +92,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
 
     public virtual bool OnBlockInteract(IPlayer byPlayer)
     {
+        if (!enabled) return false;
         var slot = byPlayer.InventoryManager.ActiveHotbarSlot;
         if (slot?.Itemstack == null) return false;
 
@@ -103,7 +111,9 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        if (0 < Math.Round(MulchLevel)) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int) MulchLevel));
+        if (!enabled) return;
+        var rounded = Math.Round(MulchLevel);
+        if (0 < rounded) dsc.AppendLine(Lang.Get("Mulch: {0}%", (int)rounded));
     }
 
     protected virtual void TickMulch()
@@ -140,9 +150,9 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
 
     protected virtual bool OnBlockInteractWithDryGrass(IPlayer byPlayer, ItemSlot slot)
     {
-        if (Math.Round(MulchLevel) >= 100) return false;
+        if (MulchLevel >= 100) return false;
 
-        MulchLevel += 33.3333;
+        MulchLevel += 35;
 
         lastMulchTotalHours = Api.World.Calendar.TotalHours;
         if (!byPlayer.WorldData.CurrentGameMode.HasFlag(EnumGameMode.Creative))
@@ -184,7 +194,7 @@ class BEBehaviorFarmlandMulch : BlockEntityBehavior
     {
         if (Api is not ICoreClientAPI capi) return false;
 
-        if (MulchLevel == 0)
+        if (!enabled || MulchLevel == 0)
         {
             if (mulchQuad != null)
             {

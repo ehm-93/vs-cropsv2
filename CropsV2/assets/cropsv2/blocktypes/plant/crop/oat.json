@@ -1,0 +1,95 @@
+{
+  "code": "crop",
+  "class": "BlockCropV2",
+  "entityClass": "BECropV2",
+  "behaviors": [{ "name": "Unstable" }],
+  "entityBehaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }],
+  "variantgroups": [
+    { "code": "type", "states": ["oat"] },
+    { "code": "stage", "states": ["1", "2", "3", "4", "5", "6", "7"] }
+  ],
+  "creativeinventory": { "general": ["*"], "plants": ["*"] },
+  "renderpass": "OpaqueNoCull",
+  "shape": { "base": "game:block/plant/crop/default*" },
+  "blockmaterial": "Plant",
+  "textures": {
+    "crop": { "base": "cropsv2:block/plant/crop/oat/normal{stage}" }
+  },
+  "attributes": {
+    "butterflyFeedByType": {
+      "*-1": false,
+      "*-9": false,
+      "*": true
+    },
+    "beeFeedByType": {
+      "*-1": false,
+      "*-9": false,
+      "*": true
+    },
+    "sitHeight": 0.55,
+    "tickGrowthProbability": 0.05,
+    "handbook": {
+      "include": true
+    }
+  },
+  "sideopaque": {
+    "all": false
+  },
+  "sidesolid": {
+    "all": false
+  },
+  "replaceable": 3000,
+  "lightAbsorption": 0,
+  "resistance": 0.5,
+  "sounds": {
+    "place": "game:block/plant",
+    "break": "game:block/plant",
+    "hit": "game:block/plant"
+  },
+  "rainPermeable": false,
+  "dropsByType": {
+    "*-7": [
+      {
+        "type": "item",
+        "code": "cropsv2:seeds-oat",
+        "quantity": { "avg": 1.2 }
+      },
+      {
+        "type": "item",
+        "code": "cropsv2:grain-oat",
+        "quantity": { "avg": 12, "var": 2 }
+      }
+    ],
+    "*": [
+      {
+        "type": "item",
+        "code": "cropsv2:seeds-oat",
+        "quantity": { "avg": 0.7 }
+      }
+    ]
+  },
+  "cropProps": {
+    "requiredNutrient": "N",
+    "nutrientConsumption": 34,
+    "growthStages": 7,
+    "totalGrowthDays": 18,
+    "coldDamageBelow": -5,
+    "heatDamageAbove": 28,
+    "behaviors": [{ "name": "CropWeeds" }, { "name": "CropBlight" }]
+  },
+
+  "collisionbox": null,
+  "selectionbox": {
+    "x1": 0.0625,
+    "y1": 0,
+    "z1": 0.0625,
+    "x2": 0.9375,
+    "y2": 0.25,
+    "z2": 0.9375
+  },
+  "materialDensity": 200,
+  "combustibleProps": {
+    "burnTemperature": 600,
+    "burnDuration": 10
+  }
+}
