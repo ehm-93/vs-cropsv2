@@ -41,7 +41,7 @@ public class ItemPlantableSeedV2 : ItemPlantableSeed
             player = byEntity.World.PlayerByUid(((EntityPlayer)byEntity).PlayerUID);
         }
 
-        bool num = ((BlockEntityFarmland)blockEntity).TryPlant(block);
+        bool num = ((BlockEntityFarmland)blockEntity).TryPlant(block, itemslot, byEntity, blockSel);
         if (num)
         {
             byEntity.World.PlaySoundAt(new AssetLocation("sounds/block/plant"), position, 0.4375, player);
@@ -51,7 +51,7 @@ public class ItemPlantableSeedV2 : ItemPlantableSeed
                 itemslot.TakeOut(1);
                 itemslot.MarkDirty();
             }
-            
+
             var seedGen = itemslot.Itemstack?.Attributes?.GetInt("generation") ?? 0;
             var cropEntity = byEntity.World.BlockAccessor.GetBlockEntity(position.UpCopy()) as BlockEntityCropV2;
             if (cropEntity != null)
