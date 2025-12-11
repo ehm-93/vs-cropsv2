@@ -12,61 +12,13 @@ internal static class BEBerryBushPatches
 {
     public static void Patch(Harmony harmony, ILogger logger)
     {
-        PatchBerryBushOnExchanged(harmony, logger);
-        PatchBerryBushCheckGrow(harmony, logger);
-        PatchBerryBushGetBlockInfo(harmony, logger);
-    }
+        var onExchangedPostfix = new HarmonyMethod(typeof(OnExchangedPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public));
+        var checkGrowPrefix = new HarmonyMethod(typeof(CheckGrowPatch).GetMethod("Prefix", BindingFlags.Static | BindingFlags.Public));
+        var getBlockInfoPostfix = new HarmonyMethod(typeof(GetBlockInfoPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public));
 
-    private static void PatchBerryBushOnExchanged(Harmony harmony, ILogger logger)
-    {
-        //var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
-        var berryBushType = typeof(BlockEntityBerryBush);
-        var target = TryGetMethod(berryBushType, "OnExchanged", logger);
-        var postfix = typeof(OnExchangedPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public);
-        if (target != null && postfix != null)
-        {
-            harmony.Patch(target, postfix: new HarmonyMethod(postfix));
-            logger.Debug("Patched {0}.", target);
-        }
-    }
-
-    private static void PatchBerryBushCheckGrow(Harmony harmony, ILogger logger)
-    {
-        // var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEBerryPlantType() : typeof(BlockEntityBerryBush);
-        var berryBushType = typeof(BlockEntityBerryBush);
-        var target = TryGetMethod(berryBushType, "CheckGrow", logger);
-        var prefix = typeof(CheckGrowPatch).GetMethod("Prefix", BindingFlags.Static | BindingFlags.Public);
-        if (target != null && prefix != null)
-        {
-            harmony.Patch(target, prefix: new HarmonyMethod(prefix));
-            logger.Debug("Patched {0}.", target);
-        }
-    }
-
-    private static void PatchBerryBushGetBlockInfo(Harmony harmony, ILogger logger)
-    {
-        // var berryBushType = Herbarium.IsLoaded() ? Herbarium.BEGroundBerryPlantType() : typeof(BlockEntityBerryBush);
-        var berryBushType = typeof(BlockEntityBerryBush);
-        var target = TryGetMethod(berryBushType, "GetBlockInfo", logger);
-        var postfix = typeof(GetBlockInfoPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.Public);
-        if (target != null && postfix != null)
-        {
-            harmony.Patch(target, postfix: new HarmonyMethod(postfix));
-            logger.Debug("Patched {0}.", target);
-        }
-    }
-
-    private static MethodInfo TryGetMethod(Type type, string name, ILogger logger)
-    {
-        try
-        {
-            return type.GetMethod(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        }
-        catch (AmbiguousMatchException ex)
-        {
-            logger.Warning($"Ambiguous match for method {name} in {type.FullName}: {ex.Message}");
-            return null;
-        }
+        PatchUtil.PatchAllOverrides(harmony, typeof(BlockEntityBerryBush), "OnExchanged", postfix: onExchangedPostfix);
+        PatchUtil.PatchAllOverrides(harmony, typeof(BlockEntityBerryBush), "CheckGrow", prefix: checkGrowPrefix);
+        PatchUtil.PatchAllOverrides(harmony, typeof(BlockEntityBerryBush), "GetBlockInfo", postfix: getBlockInfoPostfix);
     }
 
     public static class OnExchangedPatch

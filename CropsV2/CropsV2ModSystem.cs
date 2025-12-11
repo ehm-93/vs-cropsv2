@@ -6,7 +6,7 @@ namespace Ehm93.VintageStory.CropsV2;
 public class CropsV2ModSystem : ModSystem
 {
   private Harmony patcher;
-  
+
   public override void Start(ICoreAPI api)
   {
     base.Start(api);
@@ -15,7 +15,7 @@ public class CropsV2ModSystem : ModSystem
     RegisterTypes(api);
     HarmonyPatch(api);
   }
-  
+
   public override void Dispose()
   {
     HarmonyUnpatch();
