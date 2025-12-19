@@ -10,21 +10,39 @@ namespace Ehm93.VintageStory.CropsV2;
 
 class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
 {
+    // memoized function to check if the block is in a greenhouse
     protected readonly Func<bool> InGreenhouse;
+    // number of accrued chilled hours
     protected double chilledHours = 0;
+    // last check time in total hours
     protected double lastCheckTotalHours = 0;
-    protected bool chilling = false;
+    // the temperature below which vernalization occurs
     protected double chillTemp = 0;
+    // number of chilled hours required for vernalization
     protected double chilledHoursRequired = 0;
+    // devernalization threshold (fraction of chilled hours progress)
+    // example: 0.5 means that if the chill progress is below 50%
+    //          then devernalization can occur
+    protected double devernalizationThreshold = 0.50;
+    // temperature above which devernalization occurs
+    protected double devernalizationTemperature = 0;
+    // fraction of chilled hours retained per hour above devernalizationTemperature
+    protected double devernalizationFactor = 0.6667;
+    // temperature above which devernalization always occurs, ignoring threshold
+    protected double forceDevernalizationTemperature = 0;
+    // fraction of chilled hours retained per hour above forceDevernalizationTemperature
+    protected double forceDevernalizationFactor = 0;
     private bool enabled = true;
 
     public bool Chilling
     {
-        get { return chilling; }
+        get { return ChillProgress < 1; }
         set
         {
-            if (!chilling && value) chilledHours = 0;
-            chilling = value;
+            if (Chilling == value) return;
+            if (!Chilling) chilledHours = 0;
+            else chilledHours = chilledHoursRequired;
+            Blockentity.MarkDirty(true);
         }
     }
 
@@ -51,8 +69,15 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
 
         enabled = WorldConfig.EnableBerryVernalization;
 
-        chillTemp = properties["chillTemp"]?.AsDouble() ?? 0;
-        chilledHoursRequired = (properties["chilledDaysRequired"]?.AsDouble() ?? 0) * Api.World.Calendar.HoursPerDay;
+        chillTemp = properties["chillTemp"].AsDoubleOrDefault(chillTemp);
+        chilledHoursRequired = properties["chilledDaysRequired"].AsDoubleOrDefault(chilledHoursRequired / Api.World.Calendar.HoursPerDay) * Api.World.Calendar.HoursPerDay;
+        devernalizationThreshold = properties["devernalizationThreshold"].AsDoubleOrDefault(devernalizationThreshold);
+        devernalizationTemperature = properties["devernalizationTemperature"].AsDoubleOrDefault(chillTemp + 3);
+        devernalizationFactor = properties["devernalizationFactor"].AsDoubleOrDefault(devernalizationFactor);
+        forceDevernalizationTemperature = properties["forceDevernalizationTemperature"].AsDoubleOrDefault(devernalizationTemperature + 5);
+        forceDevernalizationFactor = properties["forceDevernalizationFactor"].AsDoubleOrDefault(forceDevernalizationFactor);
+
+        if (Block.Variant?["state"] == "ripe") Chilling = false;
 
         if (enabled && Api is ICoreServerAPI) Blockentity.RegisterGameTickListener(ServerTick, 4500 + Api.World.Rand.Next(1000));
     }
@@ -62,7 +87,6 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
         base.ToTreeAttributes(tree);
         tree.SetDouble("chilledHours", chilledHours);
         tree.SetDouble("lastCheckTotalHours", lastCheckTotalHours);
-        tree.SetBool("chilling", chilling);
     }
 
     public override void FromTreeAttributes(ITreeAttribute tree, IWorldAccessor worldAccessForResolve)
@@ -70,14 +94,14 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
         base.FromTreeAttributes(tree, worldAccessForResolve);
         chilledHours = tree.TryGetDouble("chilledHours") ?? 0;
         lastCheckTotalHours = tree.TryGetDouble("lastCheckTotalHours") ?? 0;
-        chilling = tree.TryGetBool("chilling") ?? false;
     }
 
     public override void GetBlockInfo(IPlayer forPlayer, StringBuilder dsc)
     {
         base.GetBlockInfo(forPlayer, dsc);
-        if (enabled && Chilling && ChillProgress < 1)
+        if (enabled && Chilling)
         {
+            dsc.Clear();
             dsc.AppendLine(Lang.Get("Dormant"));
             dsc.AppendLine(Lang.Get("Vernalized below: {0}°C", chillTemp));
             dsc.AppendLine(Lang.Get("Vernalization progress: {0}%", Math.Round(ChillProgress * 100)));
@@ -86,7 +110,8 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
 
     public virtual void OnExchanged(Block block)
     {
-        Chilling = Block?.Variant?["state"] == "empty";
+        if (Block == block) return;
+        if (block?.Variant?["state"] == "empty") Chilling = true;
     }
 
     public virtual bool CheckGrow()
@@ -107,7 +132,7 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
 
         var now = Api.World.Calendar.TotalHours;
 
-        if (!chilling || lastCheckTotalHours == 0)
+        if (!Chilling || lastCheckTotalHours == 0)
         {
             lastCheckTotalHours = now;
             return;
@@ -120,23 +145,44 @@ class BEBehaviorBerryChilling : BlockEntityBehavior, ICheckGrow, OnExchanged
         {
             checkTime += intervalHours;
 
-            var temp = Api.World.BlockAccessor.GetClimateAt(Pos, EnumGetClimateMode.ForSuppliedDate_TemperatureOnly, checkTime).Temperature;
+            var temp = Api.World.BlockAccessor.GetClimateAt(
+                Pos,
+                EnumGetClimateMode.ForSuppliedDate_TemperatureOnly,
+                checkTime / Api.World.Calendar.HoursPerDay
+            ).Temperature;
             temp += InGreenhouse() ? 5 : 0;
             if (temp <= chillTemp)
             {
                 chilledHours += intervalHours;
             }
+            else if (temp > forceDevernalizationTemperature)
+            {
+                chilledHours *= Math.Pow(forceDevernalizationFactor, intervalHours);
+            }
+            else if (temp > devernalizationTemperature && ChillProgress < devernalizationThreshold)
+            {
+                chilledHours *= Math.Pow(devernalizationFactor, intervalHours);
+            }
         }
 
         var tempNow = Api.World.BlockAccessor.GetClimateAt(Pos).Temperature + (InGreenhouse() ? 5 : 0);
+        var remainingHours = now - checkTime;
         if (tempNow <= chillTemp)
         {
-            chilledHours += now - checkTime;
+            chilledHours += remainingHours;
+        }
+        else if (tempNow > forceDevernalizationTemperature)
+        {
+            chilledHours *= Math.Pow(forceDevernalizationFactor, remainingHours);
+        }
+        else if (tempNow > devernalizationTemperature && ChillProgress < devernalizationThreshold)
+        {
+            chilledHours *= Math.Pow(devernalizationFactor, remainingHours);
         }
 
         lastCheckTotalHours = now;
 
-        if (progressBefore != 1 && ChillProgress == 1)
+        if (progressBefore != ChillProgress)
         {
             Blockentity.MarkDirty(true);
         }

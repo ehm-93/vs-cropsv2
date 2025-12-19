@@ -1,5 +1,8 @@
-﻿using HarmonyLib;
+﻿using System.Linq;
+using HarmonyLib;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
+using Vintagestory.API.Server;
 
 namespace Ehm93.VintageStory.CropsV2;
 
@@ -21,6 +24,14 @@ public class CropsV2ModSystem : ModSystem
     HarmonyUnpatch();
   }
 
+  public override void AssetsFinalize(ICoreAPI api)
+  {
+    // https://github.com/gabriella-campos-davis/Herbarium/pull/20
+    if (!Herbarium.IsLoaded()) RegisterBerryChilling(api);
+
+    base.AssetsFinalize(api);
+  }
+
   private void RegisterTypes(ICoreAPI api) {
     api.RegisterBlockClass("BlockCropV2", typeof(BlockCropV2));
     api.RegisterBlockBehaviorClass("FarmlandInteractions", typeof(BlockBehaviorFarmlandInteractions));
@@ -37,6 +48,29 @@ public class CropsV2ModSystem : ModSystem
     if (!Herbarium.IsLoaded()) api.RegisterBlockEntityBehaviorClass("BerryChilling", typeof(BEBehaviorBerryChilling));
     api.RegisterItemClass("ItemPlantableSeedV2", typeof(ItemPlantableSeedV2));
     api.RegisterCollectibleBehaviorClass("HoeWeeds", typeof(CBehaviorHoeWeeds));
+  }
+
+  private void RegisterBerryChilling(ICoreAPI api)
+  {
+    if (api.Side != EnumAppSide.Server) {
+        return;
+    }
+
+    foreach (var b in api.World.Blocks)
+    {
+        if (b.Code.Domain != "game") continue;
+        if (!b.Code.Path.StartsWith("bigberrybush-") || b.Code.Path.StartsWith("smallberrybush-")) continue;
+
+        b.EntityClass ??= "Generic";
+        b.BlockEntityBehaviors = [
+            ..b.BlockEntityBehaviors,
+            new BlockEntityBehaviorType
+            {
+                Name = "BerryChilling",
+                properties = JsonObject.FromJson("{\"chillTemp\":7,\"chilledDaysRequired\":10}")
+            },
+        ];
+    }
   }
 
   private void HarmonyPatch(ICoreAPI api)

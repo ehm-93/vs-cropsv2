@@ -69,7 +69,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
         texturePrefixByStage = properties["texturePrefixByStage"]
             ?.AsObject<Dictionary<string, Dictionary<string, string>>>()
             ?.ToDictionary(kvp => int.Parse(kvp.Key), kvp => kvp.Value);
-  
+
         GenMesh();
     }
 
@@ -409,7 +409,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
         private readonly IEnumerable<BlockPos> neighborPositions;
         private readonly Func<double> Blightness;
         private readonly string targetCrop;
-        
+
         private readonly static System.Func<double, double> CalculatePressure = FunctionUtils.MemoizeStepBounded(0.01, 0, 1, x =>
             x == 0 ? 0 : FunctionUtils.Sigmoid(x, b, a)
         );
@@ -631,7 +631,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
     {
         private readonly BlockEntityCropV2 cropEntity;
 
-        private static readonly System.Func<double, double> PressureCurve = 
+        private static readonly System.Func<double, double> PressureCurve =
             FunctionUtils.MemoizeStepBounded(
                 step: 0.05,
                 minInclusive: 0,
