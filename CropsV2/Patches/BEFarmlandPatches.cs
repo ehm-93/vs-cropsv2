@@ -25,12 +25,15 @@ internal class BEFarmlandPatches
         }
     }
 
+    // 1.22: OnTesselation moved up from BlockEntityFarmland to its new base BlockEntitySoilNutrition.
+    // Attribute-based [HarmonyPatch] resolves the target with declared-only lookup (no base-type walk),
+    // so the patch must target the class that actually declares the method.
     [HarmonyPatchCategory("cropsv2")]
-    [HarmonyPatch(typeof(BlockEntityFarmland), "OnTesselation")]
+    [HarmonyPatch(typeof(BlockEntitySoilNutrition), "OnTesselation")]
     internal static class OnTesselationPatch
     {
         [HarmonyPostfix]
-        public static void After(BlockEntityFarmland __instance, ref bool __result, ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
+        public static void After(BlockEntitySoilNutrition __instance, ref bool __result, ITerrainMeshPool mesher, ITesselatorAPI tessThreadTesselator)
         {
             bool flag = false;
             for (int i = 0; i < __instance.Behaviors.Count; i++)
@@ -41,16 +44,17 @@ internal class BEFarmlandPatches
         }
     }
 
+    // 1.22: updateMoistureLevel and the moistureLevel field live on the base BlockEntitySoilNutrition.
     [HarmonyPatchCategory("cropsv2")]
-    [HarmonyPatch(typeof(BlockEntityFarmland), "updateMoistureLevel", new Type[] {
+    [HarmonyPatch(typeof(BlockEntitySoilNutrition), "updateMoistureLevel", new Type[] {
         typeof(double), typeof(float), typeof(bool), typeof(ClimateCondition)
     })]
     internal static class UpdateMoistureLevelPatch
     {
-        static private FieldInfo moistureLevel = AccessTools.Field(typeof(BlockEntityFarmland), "moistureLevel");
+        static private FieldInfo moistureLevel = AccessTools.Field(typeof(BlockEntitySoilNutrition), "moistureLevel");
 
         [HarmonyPrefix]
-        public static void Before(BlockEntityFarmland __instance, ref float __state)
+        public static void Before(BlockEntitySoilNutrition __instance, ref float __state)
         {
             var behavior = __instance.GetBehavior<BEBehaviorFarmlandMulch>();
             if (behavior == null) return;
@@ -60,7 +64,7 @@ internal class BEFarmlandPatches
         }
 
         [HarmonyPostfix]
-        public static void After(BlockEntityFarmland __instance, ref float __state)
+        public static void After(BlockEntitySoilNutrition __instance, ref float __state)
         {
             var behavior = __instance.GetBehavior<BEBehaviorFarmlandMulch>();
             if (behavior == null) return;
@@ -76,12 +80,13 @@ internal class BEFarmlandPatches
         }
     }
 
+    // 1.22: OnBlockInteract lives on the base BlockEntitySoilNutrition.
     [HarmonyPatchCategory("cropsv2")]
-    [HarmonyPatch(typeof(BlockEntityFarmland), "OnBlockInteract")]
+    [HarmonyPatch(typeof(BlockEntitySoilNutrition), "OnBlockInteract")]
     internal static class OnBlockInteractPatch
     {
         [HarmonyPrefix]
-        public static bool Before(BlockEntityFarmland __instance, ref bool __result, IPlayer byPlayer)
+        public static bool Before(BlockEntitySoilNutrition __instance, ref bool __result, IPlayer byPlayer)
         {
             var behaviors = __instance.Behaviors.Where(i => i is IOnBlockInteract);
             if (behaviors == null) return true;

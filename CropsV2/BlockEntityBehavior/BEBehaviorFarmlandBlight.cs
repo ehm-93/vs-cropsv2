@@ -144,7 +144,7 @@ class BEBehaviorFarmlandBlight : BlockEntityBehavior, IOnBlockInteract
         }
 
         Api.World.PlaySoundAt(
-            Api.World.BlockAccessor.GetBlock(Pos).Sounds.Hit,
+            Api.World.BlockAccessor.GetBlock(Pos).Sounds.Hit.Location,
             Pos.X + 0.5,
             Pos.InternalY + 0.75,
             Pos.Z + 0.5,

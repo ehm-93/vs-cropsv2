@@ -229,7 +229,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
     {
         if (HasMulch() || FarmlandEntity == null) return 0;
         var growChance = WeedGrowthChance();
-        if (FarmlandEntity.roomness > 0) growChance /= 2; // greenhouse
+        if (FarmlandEntity.Roomness > 0) growChance /= 2; // greenhouse
         var spreadChance = neighborPressure.Value;
         return Math.Clamp(1 - (1 - growChance) * (1 - spreadChance), minSproutChance, maxSproutChance);
     }
@@ -338,7 +338,7 @@ class BEBehaviorCropWeeds : BlockEntityBehavior
                 var farmland = FarmlandEntity();
                 if (farmland == null) return 0;
                 var temp = api.World.BlockAccessor.GetClimateAt(farmland.Pos, EnumGetClimateMode.NowValues).Temperature;
-                if (farmland.roomness > 0) temp += 5; // greenhouse
+                if (farmland.Roomness > 0) temp += 5; // greenhouse
                 return CalculatePressure(temp);
             }
         }
