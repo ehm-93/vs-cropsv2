@@ -134,6 +134,6 @@ class BEBehaviorFarmlandNutrients : BlockEntityBehavior
 
     protected virtual bool InGreenhouse()
     {
-        return FarmlandEntity.roomness > 0;
+        return FarmlandEntity.Roomness > 0;
     }
 }

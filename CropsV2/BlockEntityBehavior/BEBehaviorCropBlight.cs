@@ -291,7 +291,7 @@ class BEBehaviorCropBlight : BlockEntityBehavior, OnExchanged
 
     private bool InGreenhouse()
     {
-        return FarmlandEntity?.roomness > 0;
+        return FarmlandEntity?.Roomness > 0;
     }
 
     private Dictionary<string, AssetLocation> InferTextureLocations(Shape shape)
